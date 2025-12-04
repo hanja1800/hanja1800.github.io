@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://hanja1800.github.io/sitemap.xml
+
+# Allow all search engines to crawl the data
+Allow: /data.json
+Allow: /index.html
+Allow: /script.js
+Allow: /style.css
