@@ -327,7 +327,7 @@ function filterData() {
             ddeus.toLowerCase().includes(searchTerm);
 
         const matchEducation = !education || gyoyuksujun === education;
-        const matchGrade = !grade || geubsu.includes(grade);
+        const matchGrade = !grade || geubsu === grade;
         const matchLength = !length || jangdaneum === length;
         const matchSyllable = !selectedSyllable || eum === selectedSyllable;
         const notEndingWhenFiltered = !selectedSyllable || !gubun.includes('끝음절');
