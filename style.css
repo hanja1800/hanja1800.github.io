@@ -865,7 +865,7 @@ body.dark-mode footer a {
 
 }
 
-/* 급수 배지 - 단일 색상 명도 그라데이션 (8급→특급) */
+/* 급수 배지 - 13단계 최적화 명도 그라데이션 */
 .grade-badge {
     display: inline-block;
     padding: 4px 12px;
@@ -887,93 +887,89 @@ body.dark-mode footer a {
 /* 8급 (가장 밝음 - 초급) */
 .grade-8 {
     background: #E3F2FD;
-    color: #0D47A1;
+    color: #01579B;
     border-color: #BBDEFB;
 }
 
-/* 7급 */
+/* 준7급 */
 .grade-7-2 {
     background: #BBDEFB;
-    color: #0D47A1;
+    color: #01579B;
 }
 
+/* 7급 */
 .grade-7 {
     background: #90CAF9;
-    color: #0D47A1;
+    color: #01579B;
+}
+
+/* 준6급 */
+.grade-6-2 {
+    background: #64B5F6;
+    color: #01579B;
 }
 
 /* 6급 */
-.grade-6-2 {
-    background: #64B5F6;
-    color: #0D47A1;
-}
-
 .grade-6 {
     background: #42A5F5;
     color: white;
 }
 
-/* 5급 */
+/* 준5급 */
 .grade-5-2 {
     background: #2196F3;
     color: white;
 }
 
+/* 5급 */
 .grade-5 {
     background: #1E88E5;
     color: white;
 }
 
-/* 4급 */
+/* 준4급 */
 .grade-4-2 {
     background: #1976D2;
     color: white;
 }
 
+/* 4급 */
 .grade-4 {
     background: #1565C0;
     color: white;
 }
 
-/* 3급 */
+/* 준3급 */
 .grade-3-2 {
     background: #0D47A1;
     color: white;
 }
 
+/* 3급 (여기서부터 테두리로 강조) */
 .grade-3 {
-    background: #0A3D91;
+    background: #0C3D8A;
     color: white;
-}
-
-/* 2급 */
-.grade-2 {
-    background: #083680;
-    color: white;
-    font-weight: 700;
-}
-
-/* 1급 */
-.grade-1 {
-    background: #062E6F;
-    color: white;
+    border: 2px solid #42A5F5;
     font-weight: 700;
 }
 
 /* 준특급 */
 .grade-special-2 {
-    background: #042047;
+    background: #0A3474;
     color: white;
+    border: 2px solid #64B5F6;
     font-weight: 700;
+    box-shadow: 0 2px 8px rgba(100, 181, 246, 0.3);
 }
 
-/* 특급 (가장 어두움 - 최고급) */
+/* 특급 (최고급 - 금색 강조) */
 .grade-special {
-    background: #001A33;
-    color: white;
+    background: linear-gradient(135deg, #082A5E 0%, #051A3D 100%);
+    color: #FFD700;
+    border: 2px solid #FFD700;
     font-weight: 700;
-    box-shadow: 0 2px 8px rgba(0, 26, 51, 0.4);
-    border-color: #0D47A1;
+    box-shadow: 0 3px 10px rgba(255, 215, 0, 0.4);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 /* 기본 (급수 없음) */
@@ -983,18 +979,31 @@ body.dark-mode footer a {
     border: 1px solid #e0e0e0;
 }
 
-/* 다크모드 */
+/* 다크모드 최적화 */
 body.dark-mode .grade-badge {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* 다크모드에서 낮은 급수는 약간 더 밝게 조정 */
+/* 다크모드에서 밝은 급수는 더 밝게 */
 body.dark-mode .grade-8 {
     background: #BBDEFB;
-    color: #0D47A1;
+    color: #01579B;
 }
 
 body.dark-mode .grade-7-2 {
     background: #90CAF9;
-    color: #0D47A1;
+    color: #01579B;
+}
+
+body.dark-mode .grade-7 {
+    background: #64B5F6;
+    color: #01579B;
+}
+
+/* 다크모드에서 특급 */
+body.dark-mode .grade-special {
+    background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%);
+    color: #FFD700;
+    border-color: #FFD700;
+    box-shadow: 0 3px 10px rgba(255, 215, 0, 0.5);
 }
