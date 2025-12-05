@@ -398,7 +398,7 @@ function generateSyllableButtons(chosung) {
     }
 
     let buttonsHTML = sortedSyllables.map(syllable =>
-        `< button class="syllable-btn" data - syllable="${syllable}" aria - label="${syllable} 음절 필터" > ${syllable}</button > `
+        `< button class="syllable-btn" data-syllable="${syllable}" aria - label="${syllable} 음절 필터" > ${syllable}</button > `
     ).join('');
 
     syllableContainer.innerHTML = buttonsHTML;
@@ -595,9 +595,9 @@ function updatePagination(totalPages) {
     let buttonsHTML = '';
     for (let i = startPage; i <= endPage; i++) {
         if (i === currentPage) {
-            buttonsHTML += `< button class="active" aria - label="현재 페이지 ${i}" aria - current="page" > ${i}</button > `;
+            buttonsHTML += `< button class="active" aria-label="현재 페이지 ${i}" aria - current="page" > ${i}</button > `;
         } else {
-            buttonsHTML += `< button onclick = "goToPage(${i})" aria - label="${i}페이지로 이동" > ${i}</button > `;
+            buttonsHTML += `< button onclick = "goToPage(${i})" aria-label="${i}페이지로 이동" > ${i}</button > `;
         }
     }
 
