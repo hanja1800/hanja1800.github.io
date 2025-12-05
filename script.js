@@ -236,7 +236,7 @@ function getGradeClass(geubsu) {
 // 로딩 상태 표시
 function showLoadingState() {
     const tbody = document.getElementById('tableBody');
-    tbody.innerHTML = ` < tr><td colspan="7" style="text-align:center;padding:40px;"><div style="display:inline-block;"><div style="font-size:2rem;margin-bottom:10px;">⏳</div><p>데이터를 불러오는 중...</p></div></td></tr>`;
+    tbody.innerHTML = ` <tr><td colspan="7" style="text-align:center;padding:40px;"><div style="display:inline-block;"><div style="font-size:2rem;margin-bottom:10px;">⏳</div><p>데이터를 불러오는 중...</p></div></td></tr>`;
 }
 
 // 에러 상태 표시
@@ -515,7 +515,7 @@ function generateSyllableButtons(chosung) {
         return;
     }
 
-    let buttonsHTML = sortedSyllables.map(syllable => `< button class="syllable-btn" data - syllable="${syllable}" aria - label="${syllable} 음절 필터" > $ {
+    let buttonsHTML = sortedSyllables.map(syllable => `<button class="syllable-btn" data - syllable="${syllable}" aria - label="${syllable} 음절 필터" > $ {
             syllable
         }
 
@@ -723,7 +723,7 @@ function updatePagination(totalPages) {
 
     for (let i = startPage; i <= endPage; i++) {
         if (i === currentPage) {
-            buttonsHTML += `< button class="active" aria - label="현재 페이지 ${i}" aria - current="page">$ {
+            buttonsHTML +=  button class="active" aria - label="현재 페이지 ${i}" aria - current="page">$ {
                 i
             }
 
@@ -731,7 +731,7 @@ function updatePagination(totalPages) {
         }
 
         else {
-            buttonsHTML += `< button onclick="goToPage(${i})" aria - label="${i}페이지로 이동">$ {
+            buttonsHTML += `<button onclick="goToPage(${i})" aria - label="${i}페이지로 이동">$ {
                 i
             }
 
