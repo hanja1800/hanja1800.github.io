@@ -565,7 +565,7 @@ function displayData(data) {
             <td class="hanja-char">${huneum}</td>
             <td>${gubun || '-'}</td>
             <td>${gyoyuksujun || '-'}</td>
-            <td><span class="grade-badge ${gradeClass}" data-grade="${geubsu || '-'}" title="클릭하여 ${geubsu || '-'}로 필터링">${geubsu || '-'}</span></td>
+            <td><span class="grade-badge ${gradeClass}" data-grade="${geubsu || '-'}" title="클릭하여 ${geubsu || '-'}으로 필터링">${geubsu || '-'}</span></td>
             <td><span class="length-badge ${jangdaneum ? 'length-' + jangdaneum : 'length-없음'}">${jangdaneum || '없음'}</span></td>
             <td>
                 ${url ?
