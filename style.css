@@ -1124,3 +1124,204 @@ body.dark-mode .filter-chip-remove:hover {
     background: #ff5722;
     color: white;
 }
+
+/* ===== 커스텀 드롭다운 (체크박스 필터) ===== */
+
+.custom-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-button {
+    width: 100%;
+    padding: 10px 12px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.dropdown-button:hover {
+    border-color: #999;
+    background: #f8f9ff;
+}
+
+.dropdown-button:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.dropdown-label {
+    flex: 1;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-arrow {
+    margin-left: 8px;
+    font-size: 0.8rem;
+    color: #666;
+    transition: transform 0.2s ease;
+}
+
+.custom-dropdown.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    max-height: 400px;
+    display: none;
+    flex-direction: column;
+}
+
+.custom-dropdown.open .dropdown-menu {
+    display: flex;
+}
+
+.dropdown-search {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.dropdown-search-input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.dropdown-search-input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.checkbox-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+    user-select: none;
+}
+
+.checkbox-item:hover {
+    background: #f8f9ff;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin: 0 8px 0 0;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
+
+.checkbox-item span {
+    flex: 1;
+    font-size: 0.95rem;
+}
+
+.checkbox-item.hidden {
+    display: none;
+}
+
+.dropdown-footer {
+    display: flex;
+    gap: 8px;
+    padding: 10px;
+    border-top: 1px solid #eee;
+}
+
+.dropdown-apply-btn,
+.dropdown-reset-btn {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dropdown-apply-btn {
+    background: #667eea;
+    color: white;
+}
+
+.dropdown-apply-btn:hover {
+    background: #5568d3;
+}
+
+.dropdown-reset-btn {
+    background: #f5f5f5;
+    color: #666;
+}
+
+.dropdown-reset-btn:hover {
+    background: #e0e0e0;
+}
+
+/* 다크모드 */
+body.dark-mode .dropdown-button {
+    background: #3a3a3a;
+    border-color: #555;
+    color: #e0e0e0;
+}
+
+body.dark-mode .dropdown-button:hover {
+    background: #4a4a4a;
+    border-color: #666;
+}
+
+body.dark-mode .dropdown-menu {
+    background: #2d2d2d;
+    border-color: #444;
+}
+
+body.dark-mode .dropdown-search-input {
+    background: #3a3a3a;
+    border-color: #555;
+    color: #e0e0e0;
+}
+
+body.dark-mode .checkbox-item:hover {
+    background: #3a3a3a;
+}
+
+body.dark-mode .dropdown-footer {
+    border-top-color: #444;
+}
+
+body.dark-mode .dropdown-reset-btn {
+    background: #3a3a3a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .dropdown-reset-btn:hover {
+    background: #4a4a4a;
+}
