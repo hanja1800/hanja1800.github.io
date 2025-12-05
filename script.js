@@ -398,7 +398,7 @@ function generateSyllableButtons(chosung) {
     }
 
     let buttonsHTML = sortedSyllables.map(syllable =>
-        `< button class="syllable-btn" data-syllable="${syllable}" aria - label="${syllable} 음절 필터" > ${syllable}</button > `
+        `< button class="syllable-btn" data-syllable="${syllable}" aria-label="${syllable} 음절 필터" > ${syllable}</button > `
     ).join('');
 
     syllableContainer.innerHTML = buttonsHTML;
