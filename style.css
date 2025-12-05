@@ -1013,3 +1013,114 @@ body.dark-mode .grade-special {
     border-color: #FFD700;
     box-shadow: 0 3px 10px rgba(255, 215, 0, 0.5);
 }
+/* ===== 활성 필터 칩 스타일 (엑셀 스타일) ===== */
+
+.active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0 15px 0;
+    padding: 12px;
+    background: #f8f9ff;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 4px 6px 12px;
+    background: white;
+    border: 1px solid #d0d0d0;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.filter-chip:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.filter-chip-label {
+    color: #666;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+.filter-chip-value {
+    color: #333;
+    font-weight: 600;
+}
+
+.filter-chip-remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: #e0e0e0;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    line-height: 1;
+    color: #666;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.filter-chip-remove:hover {
+    background: #ff5722;
+    color: white;
+    transform: scale(1.1);
+}
+
+.filter-chip-remove:active {
+    transform: scale(0.95);
+}
+
+/* 장단음 뱃지 클릭 가능 스타일 */
+.length-badge {
+    cursor: pointer;
+}
+
+.length-badge:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    filter: brightness(1.1);
+}
+
+.length-badge:active {
+    transform: translateY(0) scale(1.02);
+}
+
+/* 다크모드 지원 */
+body.dark-mode .active-filters {
+    background: #2d2d2d;
+    border-color: #444;
+}
+
+body.dark-mode .filter-chip {
+    background: #3a3a3a;
+    border-color: #555;
+}
+
+body.dark-mode .filter-chip-label {
+    color: #aaa;
+}
+
+body.dark-mode .filter-chip-value {
+    color: #e0e0e0;
+}
+
+body.dark-mode .filter-chip-remove {
+    background: #4a4a4a;
+    color: #aaa;
+}
+
+body.dark-mode .filter-chip-remove:hover {
+    background: #ff5722;
+    color: white;
+}
