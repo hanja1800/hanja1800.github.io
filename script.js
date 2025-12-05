@@ -1,58 +1,77 @@
 // 한자 데이터
-let hanjaData = [];
-let sortedHanjaData = []; // 정렬된 데이터 (1회만 정렬)
+let hanjaData=[];
+let sortedHanjaData=[]; // 정렬된 데이터 (1회만 정렬)
 
 // 페이지네이션 상태
-let currentPage = 1;
-const itemsPerPage = 20;
+let currentPage=1;
+const itemsPerPage=20;
 
 // 초성 및 음절 필터 상태
-let selectedChosung = '';
-let selectedSyllable = '';
+let selectedChosung='';
+let selectedSyllable='';
 
 // 즐겨찾기 상태
-let favorites = new Set();
-let showOnlyFavorites = false;
+let favorites=new Set();
+let showOnlyFavorites=false;
 
 // 음절 캐시 (성능 개선)
-let syllableCache = {};
+let syllableCache= {}
+
+;
 
 // ===== 즐겨찾기 localStorage 관리 함수 =====
 
 // localStorage에서 즐겨찾기 불러오기
 function loadFavorites() {
     try {
-        const saved = localStorage.getItem('hanja-favorites');
+        const saved=localStorage.getItem('hanja-favorites');
+
         if (saved) {
-            const favArray = JSON.parse(saved);
-            favorites = new Set(favArray);
+            const favArray=JSON.parse(saved);
+            favorites=new Set(favArray);
         }
-    } catch (error) {
-        console.error('즐겨찾기 로드 실패:', error);
-        favorites = new Set();
     }
+
+    catch (error) {
+        console.error('즐겨찾기 로드 실패:', error);
+        favorites=new Set();
+    }
+
     updateFavoritesCount();
 }
 
 // localStorage에 즐겨찾기 저장하기
 function saveFavorites() {
     try {
-        const favArray = Array.from(favorites);
+        const favArray=Array.from(favorites);
         localStorage.setItem('hanja-favorites', JSON.stringify(favArray));
-    } catch (error) {
+    }
+
+    catch (error) {
         console.error('즐겨찾기 저장 실패:', error);
     }
 }
 
 // 즐겨찾기 토글 (추가/제거)
 function toggleFavorite(huneum, gubun) {
-    const uniqueKey = `${huneum}| ${gubun} `;
+    const uniqueKey=`$ {
+        huneum
+    }
+
+    | $ {
+        gubun
+    }
+
+    `;
 
     if (favorites.has(uniqueKey)) {
         favorites.delete(uniqueKey);
-    } else {
+    }
+
+    else {
         favorites.add(uniqueKey);
     }
+
     saveFavorites();
     updateFavoritesCount();
     filterData();
@@ -60,29 +79,42 @@ function toggleFavorite(huneum, gubun) {
 
 // 즐겨찾기 여부 확인
 function isFavorite(huneum, gubun) {
-    const uniqueKey = `${huneum}| ${gubun} `;
+    const uniqueKey=`$ {
+        huneum
+    }
+
+    | $ {
+        gubun
+    }
+
+    `;
     return favorites.has(uniqueKey);
 }
 
 // 즐겨찾기 개수 업데이트
 function updateFavoritesCount() {
-    const countElement = document.getElementById('favoritesCount');
+    const countElement=document.getElementById('favoritesCount');
+
     if (countElement) {
-        countElement.textContent = favorites.size;
+        countElement.textContent=favorites.size;
     }
 }
 
 // 즐겨찾기 필터 토글
 function toggleFavoritesFilter() {
-    showOnlyFavorites = !showOnlyFavorites;
-    const btn = document.getElementById('favoritesOnlyBtn');
+    showOnlyFavorites= !showOnlyFavorites;
+    const btn=document.getElementById('favoritesOnlyBtn');
+
     if (btn) {
         if (showOnlyFavorites) {
             btn.classList.add('active');
-        } else {
+        }
+
+        else {
             btn.classList.remove('active');
         }
     }
+
     filterDataAndReset();
 }
 
@@ -90,7 +122,8 @@ function toggleFavoritesFilter() {
 
 // localStorage에서 다크모드 설정 불러오기
 function loadDarkMode() {
-    const isDark = localStorage.getItem('darkMode') === 'true';
+    const isDark=localStorage.getItem('darkMode')==='true';
+
     if (isDark) {
         document.body.classList.add('dark-mode');
         updateDarkModeButton(true);
@@ -99,23 +132,25 @@ function loadDarkMode() {
 
 // 다크모드 토글
 function toggleDarkMode() {
-    const isDark = document.body.classList.toggle('dark-mode');
+    const isDark=document.body.classList.toggle('dark-mode');
     localStorage.setItem('darkMode', isDark);
     updateDarkModeButton(isDark);
 }
 
 // 다크모드 버튼 아이콘 업데이트
 function updateDarkModeButton(isDark) {
-    const btn = document.getElementById('darkModeBtn');
+    const btn=document.getElementById('darkModeBtn');
+
     if (btn) {
-        btn.textContent = isDark ? '☀️' : '🌙';
-        btn.title = isDark ? '라이트모드로 전환' : '다크모드로 전환';
+        btn.textContent=isDark ? '☀️': '🌙';
+        btn.title=isDark ? '라이트모드로 전환': '다크모드로 전환';
     }
 }
 
 // 다크모드 버튼 초기화
 function initDarkModeButton() {
-    const btn = document.getElementById('darkModeBtn');
+    const btn=document.getElementById('darkModeBtn');
+
     if (btn) {
         btn.addEventListener('click', toggleDarkMode);
     }
@@ -123,162 +158,188 @@ function initDarkModeButton() {
 
 // 한글 초성 추출 함수
 function getChosung(char) {
-    const code = char.charCodeAt(0) - 0xAC00;
+    const code=char.charCodeAt(0) - 0xAC00;
     if (code < 0 || code > 11171) return null;
-    const chosungIndex = Math.floor(code / 588);
-    const chosungs = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+    const chosungIndex=Math.floor(code / 588);
+    const chosungs=['ㄱ',
+    'ㄲ',
+    'ㄴ',
+    'ㄷ',
+    'ㄸ',
+    'ㄹ',
+    'ㅁ',
+    'ㅂ',
+    'ㅃ',
+    'ㅅ',
+    'ㅆ',
+    'ㅇ',
+    'ㅈ',
+    'ㅉ',
+    'ㅊ',
+    'ㅋ',
+    'ㅌ',
+    'ㅍ',
+    'ㅎ'];
     return chosungs[chosungIndex];
 }
 
 // 기본 초성 매핑
 function normalizeChosung(chosung) {
-    const map = {
+    const map= {
         'ㄲ': 'ㄱ',
-        'ㄸ': 'ㄷ',
-        'ㅃ': 'ㅂ',
-        'ㅆ': 'ㅅ',
-        'ㅉ': 'ㅈ'
-    };
+            'ㄸ': 'ㄷ',
+            'ㅃ': 'ㅂ',
+            'ㅆ': 'ㅅ',
+            'ㅉ': 'ㅈ'
+    }
+
+    ;
     return map[chosung] || chosung;
 }
 
 // 필드 정규화 함수 (BOM 처리)
 function getField(item, fieldName) {
-    return item[fieldName] || item[`\ufeff${fieldName} `] || '';
+    return item[fieldName] || item[`\ufeff$ {
+        fieldName
+    }
+
+    `] || '';
 }
 
 // 급수 배지 클래스 생성 함수
 function getGradeClass(geubsu) {
-    if (!geubsu || geubsu === '-') return 'grade-default';
+    if ( !geubsu || geubsu==='-') return 'grade-default';
 
-    const gradeMap = {
+    const gradeMap= {
         '8급': 'grade-8',
-        '준7급': 'grade-7-2',
-        '7급': 'grade-7',
-        '준6급': 'grade-6-2',
-        '6급': 'grade-6',
-        '준5급': 'grade-5-2',
-        '5급': 'grade-5',
-        '준4급': 'grade-4-2',
-        '4급': 'grade-4',
-        '준3급': 'grade-3-2',
-        '3급': 'grade-3',
-        '2급': 'grade-2',
-        '1급': 'grade-1',
-        '준특급': 'grade-special-2',
-        '특급': 'grade-special'
-    };
+            '준7급': 'grade-7-2',
+            '7급': 'grade-7',
+            '준6급': 'grade-6-2',
+            '6급': 'grade-6',
+            '준5급': 'grade-5-2',
+            '5급': 'grade-5',
+            '준4급': 'grade-4-2',
+            '4급': 'grade-4',
+            '준3급': 'grade-3-2',
+            '3급': 'grade-3',
+            '2급': 'grade-2',
+            '1급': 'grade-1',
+            '준특급': 'grade-special-2',
+            '특급': 'grade-special'
+    }
+
+    ;
 
     return gradeMap[geubsu] || 'grade-default';
 }
 
 // 로딩 상태 표시
 function showLoadingState() {
-    const tbody = document.getElementById('tableBody');
-    tbody.innerHTML = `
-    < tr >
-    <td colspan="7" style="text-align:center;padding:40px;">
-        <div style="display:inline-block;">
-            <div style="font-size:2rem;margin-bottom:10px;">⏳</div>
-            <p>데이터를 불러오는 중...</p>
-        </div>
-    </td>
-        </tr >
-    `;
+    const tbody=document.getElementById('tableBody');
+    tbody.innerHTML=` < tr><td colspan="7" style="text-align:center;padding:40px;"><div style="display:inline-block;"><div style="font-size:2rem;margin-bottom:10px;">⏳</div><p>데이터를 불러오는 중...</p></div></td></tr>`;
 }
 
 // 에러 상태 표시
 function showErrorState(error) {
-    const tbody = document.getElementById('tableBody');
-    const resultCount = document.getElementById('resultCount');
+    const tbody=document.getElementById('tableBody');
+    const resultCount=document.getElementById('resultCount');
 
-    let errorMessage = '데이터를 불러올 수 없습니다.';
-    let errorDetail = '';
+    let errorMessage='데이터를 불러올 수 없습니다.';
+    let errorDetail='';
 
     if (error.message.includes('HTTP error')) {
-        errorMessage = '서버에서 데이터를 가져올 수 없습니다.';
-        errorDetail = '네트워크 연결을 확인해주세요.';
-    } else if (error.message.includes('JSON')) {
-        errorMessage = '데이터 형식이 올바르지 않습니다.';
-        errorDetail = '관리자에게 문의해주세요.';
-    } else if (!navigator.onLine) {
-        errorMessage = '인터넷 연결이 끊어졌습니다.';
-        errorDetail = '네트워크 연결을 확인하고 다시 시도해주세요.';
+        errorMessage='서버에서 데이터를 가져올 수 없습니다.';
+        errorDetail='네트워크 연결을 확인해주세요.';
     }
 
-    tbody.innerHTML = `
-    < tr >
-    <td colspan="7" style="text-align:center;padding:40px;">
-        <div style="display:inline-block;max-width:400px;">
-            <div style="font-size:3rem;margin-bottom:15px;">⚠️</div>
-            <h3 style="color:#d32f2f;margin-bottom:10px;font-size:1.2rem;">${errorMessage}</h3>
-            ${errorDetail ? `<p style="color:#666;margin-bottom:20px;font-size:0.95rem;">${errorDetail}</p>` : ''}
-            <button
-                onclick="location.reload()"
-                style="
-                            padding:10px 20px;
-                            font-size:1rem;
-                            font-weight:600;
-                            background:#667eea;
-                            color:white;
-                            border:none;
-                            border-radius:8px;
-                            cursor:pointer;
-                            transition:all 0.3s;
-                            box-shadow:0 2px 4px rgba(0,0,0,0.1);
-                        "
-                onmouseover="this.style.background='#5568d3'"
-                onmouseout="this.style.background='#667eea'"
-                aria-label="페이지 새로고침">
-                🔄 다시 시도
-            </button>
-        </div>
-    </td>
-        </tr >
-    `;
+    else if (error.message.includes('JSON')) {
+        errorMessage='데이터 형식이 올바르지 않습니다.';
+        errorDetail='관리자에게 문의해주세요.';
+    }
 
-    if (resultCount) resultCount.textContent = '데이터 로드 실패';
+    else if ( !navigator.onLine) {
+        errorMessage='인터넷 연결이 끊어졌습니다.';
+        errorDetail='네트워크 연결을 확인하고 다시 시도해주세요.';
+    }
+
+    tbody.innerHTML=` < tr><td colspan="7" style="text-align:center;padding:40px;"><div style="display:inline-block;max-width:400px;"><div style="font-size:3rem;margin-bottom:15px;">⚠️</div><h3 style="color:#d32f2f;margin-bottom:10px;font-size:1.2rem;">$ {
+        errorMessage
+    }
+
+    </h3>$ {
+        errorDetail ? `<p style="color:#666;margin-bottom:20px;font-size:0.95rem;">$ {
+            errorDetail
+        }
+
+        </p>` : ''
+    }
+
+    <button onclick="location.reload()"
+    style="
+ padding:10px 20px;
+    font-size:1rem;
+    font-weight:600;
+    background:#667eea;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    transition:all 0.3s;
+    box-shadow:0 2px 4px rgba(0, 0, 0, 0.1);
+    "
+ onmouseover="this.style.background='#5568d3'"
+    onmouseout="this.style.background='#667eea'"
+    aria-label="페이지 새로고침">🔄 다시 시도 </button></div></td></tr>`;
+
+    if (resultCount) resultCount.textContent='데이터 로드 실패';
 }
 
 
 // 데이터 로드
-fetch('data.json')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status} `);
+fetch('data.json') .then(response=> {
+        if ( !response.ok) {
+            throw new Error(`HTTP error ! status: $ {
+                    response.status
+                }
+
+                `);
         }
+
         return response.json();
-    })
-    .then(data => {
+
+    }) .then(data=> {
+
         // 데이터 유효성 검증
-        if (!Array.isArray(data) || data.length === 0) {
+        if ( !Array.isArray(data) || data.length===0) {
             throw new Error('데이터가 비어있거나 형식이 올바르지 않습니다.');
         }
 
-        hanjaData = data;
+        hanjaData=data;
 
         // 정렬은 최초 1회만 수행 (성능 최적화)
-        sortedHanjaData = [...hanjaData].sort((a, b) => {
-            const hanjaA = getField(a, '한자');
-            const hanjaB = getField(b, '한자');
-            if (hanjaA !== hanjaB) return hanjaA.localeCompare(hanjaB);
+        sortedHanjaData=[...hanjaData].sort((a, b)=> {
+                const hanjaA=getField(a, '한자');
+                const hanjaB=getField(b, '한자');
+                if (hanjaA !==hanjaB) return hanjaA.localeCompare(hanjaB);
 
-            const eumA = getField(a, '음');
-            const eumB = getField(b, '음');
-            if (eumA !== eumB) return eumA.localeCompare(eumB);
+                const eumA=getField(a, '음');
+                const eumB=getField(b, '음');
+                if (eumA !==eumB) return eumA.localeCompare(eumB);
 
-            const ddeusA = getField(a, '뜻');
-            const ddeusB = getField(b, '뜻');
-            if (ddeusA !== ddeusB) return ddeusA.localeCompare(ddeusB);
+                const ddeusA=getField(a, '뜻');
+                const ddeusB=getField(b, '뜻');
+                if (ddeusA !==ddeusB) return ddeusA.localeCompare(ddeusB);
 
-            const getNumber = (str) => {
-                const match = str.match(/- (\d+)$/);
-                return match ? parseInt(match[1]) : 0;
-            };
-            const gubunA = getField(a, '구분');
-            const gubunB = getField(b, '구분');
-            return getNumber(gubunA) - getNumber(gubunB);
-        });
+                const getNumber=(str)=> {
+                    const match=str.match(/- (\d+)$/);
+                    return match ? parseInt(match[1]) : 0;
+                }
+
+                ;
+                const gubunA=getField(a, '구분');
+                const gubunB=getField(b, '구분');
+                return getNumber(gubunA) - getNumber(gubunB);
+            });
 
         loadFavorites();
         loadDarkMode();
@@ -289,225 +350,261 @@ fetch('data.json')
         initClearFavoritesButton();
         initDarkModeButton();
 
-        console.log(`✅ ${hanjaData.length}개의 한자 데이터 로드 완료(정렬 완료)`);
-    })
-    .catch(error => {
+        console.log(`✅ $ {
+                hanjaData.length
+            }
+
+            개의 한자 데이터 로드 완료(정렬 완료)`);
+
+    }) .catch(error=> {
         console.error('데이터 로드 실패:', error);
         showErrorState(error);
     });
 
 // 검색 및 필터
-const searchInput = document.getElementById('searchInput');
-const educationFilter = document.getElementById('educationFilter');
-const gradeFilter = document.getElementById('gradeFilter');
-const lengthFilter = document.getElementById('lengthFilter');
+const searchInput=document.getElementById('searchInput');
+const educationFilter=document.getElementById('educationFilter');
+const lengthFilter=document.getElementById('lengthFilter');
+
+// 급수 다중 선택 필터
+let selectedGrades=[]; // 선택된 급수들
+const gradeDropdown=document.getElementById('gradeDropdown');
+const gradeFilterBtn=document.getElementById('gradeFilterBtn');
+const gradeDropdownMenu=document.getElementById('gradeDropdownMenu');
 
 // Debounce 함수 (성능 최적화)
 function debounce(func, wait) {
     let timeout;
+
     return function executedFunction(...args) {
-        const later = () => {
+        const later=()=> {
             clearTimeout(timeout);
             func(...args);
-        };
+        }
+
+        ;
         clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
+        timeout=setTimeout(later, wait);
+    }
+
+    ;
 }
 
 // 이벤트 위임: 즐겨찾기 버튼 클릭 처리 (보안 및 성능 향상)
-document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.favorite-star');
-    if (!btn) return;
+document.addEventListener('click', (e)=> {
+        const btn=e.target.closest('.favorite-star');
+        if ( !btn) return;
 
-    e.stopPropagation();
-    const huneum = btn.dataset.huneum;
-    const gubun = btn.dataset.gubun;
+        e.stopPropagation();
+        const huneum=btn.dataset.huneum;
+        const gubun=btn.dataset.gubun;
 
-    if (huneum && gubun) {
-        toggleFavorite(huneum, gubun);
-    }
-});
+        if (huneum && gubun) {
+            toggleFavorite(huneum, gubun);
+        }
+    });
 
 // 이벤트 위임: 급수 뱃지 클릭 처리 (빠른 필터링)
-document.addEventListener('click', (e) => {
-    const badge = e.target.closest('.grade-badge');
-    if (!badge) return;
+document.addEventListener('click', (e)=> {
+        const badge=e.target.closest('.grade-badge');
+        if ( !badge) return;
 
-    const gradeValue = badge.dataset.grade;
-    if (!gradeValue || gradeValue === '-') return;
+        const gradeValue=badge.dataset.grade;
+        if ( !gradeValue || gradeValue==='-') return;
 
-    e.stopPropagation();
+        e.stopPropagation();
 
-    // 급수 필터 드롭다운 값 설정
-    const gradeFilter = document.getElementById('gradeFilter');
-    if (gradeFilter) {
-        gradeFilter.value = gradeValue;
+        // 해당 급수만 선택
+        selectedGrades=[gradeValue];
+        updateGradeCheckboxes();
+        updateGradeButtonLabel();
         filterDataAndReset();
-    }
-});
+    });
 
 // 이벤트 위임: 장단음 뱃지 클릭 처리 (빠른 필터링)
-document.addEventListener('click', (e) => {
-    const badge = e.target.closest('.length-badge');
-    if (!badge) return;
+document.addEventListener('click', (e)=> {
+        const badge=e.target.closest('.length-badge');
+        if ( !badge) return;
 
-    const lengthValue = badge.dataset.length;
-    if (!lengthValue || lengthValue === '없음') return;
+        const lengthValue=badge.dataset.length;
+        if ( !lengthValue || lengthValue==='없음') return;
 
-    e.stopPropagation();
-    
-    // 장단음 필터 드롭다운 값 설정
-    const lengthFilter = document.getElementById('lengthFilter');
-    if (lengthFilter) {
-        lengthFilter.value = lengthValue;
-        filterDataAndReset();
-    }
-});
+        e.stopPropagation();
+
+        // 장단음 필터 드롭다운 값 설정
+        const lengthFilter=document.getElementById('lengthFilter');
+
+        if (lengthFilter) {
+            lengthFilter.value=lengthValue;
+            filterDataAndReset();
+        }
+    });
 
 // 검색 입력에 debounce 적용 (300ms 지연)
 searchInput.addEventListener('input', debounce(filterDataAndReset, 300));
 educationFilter.addEventListener('change', filterDataAndReset);
-gradeFilter.addEventListener('change', filterDataAndReset);
 lengthFilter.addEventListener('change', filterDataAndReset);
 
 // 음절 캐시 생성 함수 (성능 개선)
 function buildSyllableCache() {
-    syllableCache = {};
-    const chosungs = ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+    syllableCache= {}
 
-    chosungs.forEach(chosung => {
-        const syllables = new Set();
-        hanjaData.forEach(item => {
-            const eum = getField(item, '음').trim();
-            const gubun = getField(item, '구분');
+    ;
+    const chosungs=['ㄱ',
+    'ㄴ',
+    'ㄷ',
+    'ㄹ',
+    'ㅁ',
+    'ㅂ',
+    'ㅅ',
+    'ㅇ',
+    'ㅈ',
+    'ㅊ',
+    'ㅋ',
+    'ㅌ',
+    'ㅍ',
+    'ㅎ'];
 
-            if (!eum || eum.length === 0 || gubun.includes('끝음절')) {
-                return;
-            }
+    chosungs.forEach(chosung=> {
+            const syllables=new Set();
 
-            const firstChar = eum.charAt(0);
-            const actualChosung = getChosung(firstChar);
-            const normalized = normalizeChosung(actualChosung);
+            hanjaData.forEach(item=> {
+                    const eum=getField(item, '음').trim();
+                    const gubun=getField(item, '구분');
 
-            if (normalized === chosung) {
-                syllables.add(eum);
-            }
+                    if ( !eum || eum.length===0 || gubun.includes('끝음절')) {
+                        return;
+                    }
+
+                    const firstChar=eum.charAt(0);
+                    const actualChosung=getChosung(firstChar);
+                    const normalized=normalizeChosung(actualChosung);
+
+                    if (normalized===chosung) {
+                        syllables.add(eum);
+                    }
+                });
+            syllableCache[chosung]=Array.from(syllables).sort();
         });
-        syllableCache[chosung] = Array.from(syllables).sort();
-    });
 }
 
 // 초성 필터 초기화 함수
 function initChosungFilter() {
-    document.querySelectorAll('.chosung-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            const chosung = this.dataset.chosung;
+    document.querySelectorAll('.chosung-btn').forEach(btn=> {
+            btn.addEventListener('click', function () {
+                    const chosung=this.dataset.chosung;
 
-            document.querySelectorAll('.chosung-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
+                    document.querySelectorAll('.chosung-btn').forEach(b=> b.classList.remove('active'));
+                    this.classList.add('active');
 
-            selectedChosung = chosung;
-            selectedSyllable = '';
+                    selectedChosung=chosung;
+                    selectedSyllable='';
 
-            if (chosung === '') {
-                document.getElementById('syllableButtons').innerHTML = '';
-                document.getElementById('syllableButtons').classList.remove('show');
-            } else {
-                generateSyllableButtons(chosung);
-            }
+                    if (chosung==='') {
+                        document.getElementById('syllableButtons').innerHTML='';
+                        document.getElementById('syllableButtons').classList.remove('show');
+                    }
 
-            filterDataAndReset();
+                    else {
+                        generateSyllableButtons(chosung);
+                    }
+
+                    filterDataAndReset();
+                });
         });
-    });
 }
 
 // 음절 버튼 생성 함수 (캐시 사용)
 function generateSyllableButtons(chosung) {
-    const syllableContainer = document.getElementById('syllableButtons');
-    const sortedSyllables = syllableCache[chosung] || [];
+    const syllableContainer=document.getElementById('syllableButtons');
+    const sortedSyllables=syllableCache[chosung] || [];
 
-    if (sortedSyllables.length === 0) {
-        syllableContainer.innerHTML = '<div class="no-syllables-message">해당 초성으로 시작하는 한자가 없습니다.</div>';
+    if (sortedSyllables.length===0) {
+        syllableContainer.innerHTML='<div class="no-syllables-message">해당 초성으로 시작하는 한자가 없습니다.</div>';
         syllableContainer.classList.add('show');
         return;
     }
 
-    let buttonsHTML = sortedSyllables.map(syllable =>
-        `< button class="syllable-btn" data - syllable="${syllable}" aria - label="${syllable} 음절 필터" > ${syllable}</button > `
-    ).join('');
+    let buttonsHTML=sortedSyllables.map(syllable=> `< button class="syllable-btn" data - syllable="${syllable}" aria - label="${syllable} 음절 필터" > $ {
+            syllable
+        }
 
-    syllableContainer.innerHTML = buttonsHTML;
+        </button > `).join('');
+
+    syllableContainer.innerHTML=buttonsHTML;
     syllableContainer.classList.add('show');
 
-    syllableContainer.querySelectorAll('.syllable-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            syllableContainer.querySelectorAll('.syllable-btn').forEach(b => b.classList.remove('active'));
+    syllableContainer.querySelectorAll('.syllable-btn').forEach(btn=> {
+            btn.addEventListener('click', function () {
+                    syllableContainer.querySelectorAll('.syllable-btn').forEach(b=> b.classList.remove('active'));
 
-            if (selectedSyllable === this.dataset.syllable) {
-                selectedSyllable = '';
-            } else {
-                selectedSyllable = this.dataset.syllable;
-                this.classList.add('active');
-            }
+                    if (selectedSyllable===this.dataset.syllable) {
+                        selectedSyllable='';
+                    }
 
-            filterDataAndReset();
+                    else {
+                        selectedSyllable=this.dataset.syllable;
+                        this.classList.add('active');
+                    }
+
+                    filterDataAndReset();
+                });
         });
-    });
 }
 
 // 필터링 조건을 생성하는 함수 (중복 제거)
 function createFilterPredicate() {
-    const searchTerm = searchInput.value.toLowerCase();
-    const education = educationFilter.value;
-    const grade = gradeFilter.value;
-    const length = lengthFilter.value;
+    const searchTerm=searchInput.value.toLowerCase();
+    const education=educationFilter.value;
+    const grade=gradeFilter.value;
+    const length=lengthFilter.value;
 
-    return (item) => {
-        const hanja = getField(item, '한자');
-        const eum = getField(item, '음');
-        const cheoteum = getField(item, '첫음');
-        const ddeus = getField(item, '뜻');
-        const gyoyuksujun = getField(item, '교육수준');
-        const geubsu = getField(item, '급수');
-        const jangdaneum = getField(item, '장단음');
-        const gubun = getField(item, '구분');
-        const huneum = getField(item, '훈음');
+    return (item)=> {
+        const hanja=getField(item, '한자');
+        const eum=getField(item, '음');
+        const cheoteum=getField(item, '첫음');
+        const ddeus=getField(item, '뜻');
+        const gyoyuksujun=getField(item, '교육수준');
+        const geubsu=getField(item, '급수');
+        const jangdaneum=getField(item, '장단음');
+        const gubun=getField(item, '구분');
+        const huneum=getField(item, '훈음');
 
-        const matchSearch = !searchTerm ||
-            hanja.includes(searchTerm) ||
-            eum.toLowerCase().includes(searchTerm) ||
-            cheoteum.toLowerCase().includes(searchTerm) ||
-            ddeus.toLowerCase().includes(searchTerm);
+        const matchSearch= !searchTerm || hanja.includes(searchTerm) || eum.toLowerCase().includes(searchTerm) || cheoteum.toLowerCase().includes(searchTerm) || ddeus.toLowerCase().includes(searchTerm);
 
-        const matchEducation = !education || gyoyuksujun === education;
-        const matchGrade = !grade || geubsu === grade;
-        const matchLength = !length || jangdaneum === length;
+        const matchEducation= !education || gyoyuksujun===education;
+        const matchGrade=selectedGrades.length===0 || selectedGrades.includes(geubsu);
+        const matchLength= !length || jangdaneum===length;
 
         // 초성 필터링: selectedSyllable이 있으면 정확히 그 음절만, 없으면 초성으로 필터링
-        let matchChosung = true;
+        let matchChosung=true;
+
         if (selectedSyllable) {
             // 음절이 선택된 경우: 정확히 그 음절만
-            matchChosung = eum === selectedSyllable;
-        } else if (selectedChosung) {
-            // 초성만 선택된 경우: 해당 초성으로 시작하는 모든 한자
-            const firstChar = eum.charAt(0);
-            const actualChosung = getChosung(firstChar);
-            const normalized = normalizeChosung(actualChosung);
-            matchChosung = normalized === selectedChosung;
+            matchChosung=eum===selectedSyllable;
         }
 
-        const notEndingWhenFiltered = !selectedSyllable || !gubun.includes('끝음절');
-        const matchFavorites = !showOnlyFavorites || isFavorite(huneum, gubun);
+        else if (selectedChosung) {
+            // 초성만 선택된 경우: 해당 초성으로 시작하는 모든 한자
+            const firstChar=eum.charAt(0);
+            const actualChosung=getChosung(firstChar);
+            const normalized=normalizeChosung(actualChosung);
+            matchChosung=normalized===selectedChosung;
+        }
+
+        const notEndingWhenFiltered= !selectedSyllable || !gubun.includes('끝음절');
+        const matchFavorites= !showOnlyFavorites || isFavorite(huneum, gubun);
 
         return matchSearch && matchEducation && matchGrade && matchLength && matchChosung && notEndingWhenFiltered && matchFavorites;
-    };
+    }
+
+    ;
 }
 
 function filterData() {
-    const predicate = createFilterPredicate();
+    const predicate=createFilterPredicate();
     // 이미 정렬된 데이터에서 필터링만 수행 (성능 최적화)
-    const filtered = sortedHanjaData.filter(predicate);
+    const filtered=sortedHanjaData.filter(predicate);
 
     displayData(filtered);
 
@@ -516,7 +613,7 @@ function filterData() {
 }
 
 function filterDataAndReset() {
-    currentPage = 1;
+    currentPage=1;
     filterData();
     updateActiveFiltersDisplay();
 }
@@ -524,125 +621,166 @@ function filterDataAndReset() {
 // 접근성: 스크린 리더용 결과 알림
 function announceSearchResults(filteredData) {
     // 필터링된 데이터에서 고유 한자 개수 계산
-    const uniqueCount = new Set(
-        filteredData.map(item => getField(item, '한자'))
-    ).size;
+    const uniqueCount=new Set(filteredData.map(item=> getField(item, '한자'))).size;
 
-    let announcement = document.getElementById('searchAnnouncement');
-    if (!announcement) {
-        announcement = document.createElement('div');
-        announcement.id = 'searchAnnouncement';
-        announcement.className = 'sr-only';
+    let announcement=document.getElementById('searchAnnouncement');
+
+    if ( !announcement) {
+        announcement=document.createElement('div');
+        announcement.id='searchAnnouncement';
+        announcement.className='sr-only';
         announcement.setAttribute('role', 'status');
         announcement.setAttribute('aria-live', 'polite');
         document.body.appendChild(announcement);
     }
-    announcement.textContent = `${uniqueCount}개의 한자가 검색되었습니다.`;
+
+    announcement.textContent=`$ {
+        uniqueCount
+    }
+
+    개의 한자가 검색되었습니다.`;
 }
 
 function displayData(data) {
-    const tbody = document.getElementById('tableBody');
-    const resultCount = document.getElementById('resultCount');
+    const tbody=document.getElementById('tableBody');
+    const resultCount=document.getElementById('resultCount');
 
-    if (data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;">검색 결과가 없습니다.</td></tr>';
-        resultCount.textContent = '0개 한자';
+    if (data.length===0) {
+        tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:40px;">검색 결과가 없습니다.</td></tr>';
+        resultCount.textContent='0개 한자';
         updatePagination(0);
         return;
     }
 
     // 데이터는 이미 정렬되어 전달됨 (성능 최적화)
-    const sortedData = data;
+    const sortedData=data;
 
-    const totalPages = Math.ceil(sortedData.length / itemsPerPage);
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const pageData = sortedData.slice(startIndex, endIndex);
+    const totalPages=Math.ceil(sortedData.length / itemsPerPage);
+    const startIndex=(currentPage - 1) * itemsPerPage;
+    const endIndex=startIndex+itemsPerPage;
+    const pageData=sortedData.slice(startIndex, endIndex);
 
-    tbody.innerHTML = pageData.map(item => {
-        const huneum = getField(item, '훈음');
-        const gubun = getField(item, '구분');
-        const gyoyuksujun = getField(item, '교육수준');
-        const geubsu = getField(item, '급수');
-        const jangdaneum = getField(item, '장단음');
-        const url = getField(item, 'URL');
-        const isFav = isFavorite(huneum, gubun);
+    tbody.innerHTML=pageData.map(item=> {
+            const huneum=getField(item, '훈음');
+            const gubun=getField(item, '구분');
+            const gyoyuksujun=getField(item, '교육수준');
+            const geubsu=getField(item, '급수');
+            const jangdaneum=getField(item, '장단음');
+            const url=getField(item, 'URL');
+            const isFav=isFavorite(huneum, gubun);
 
-        // 급수 배지 클래스 생성
-        const gradeClass = getGradeClass(geubsu);
+            // 급수 배지 클래스 생성
+            const gradeClass=getGradeClass(geubsu);
 
-        return `
-        <tr>
-            <td>
-                <button class="favorite-star ${isFav ? 'active' : ''}" 
-                        data-huneum="${huneum.replace(/"/g, '&quot;')}"
-                        data-gubun="${gubun.replace(/"/g, '&quot;')}"
-                        aria-label="${huneum} ${isFav ? '즐겨찾기 제거' : '즐겨찾기 추가'}">
-                    ${isFav ? '⭐' : '☆'}
-                </button>
-            </td>
-            <td class="hanja-char">${huneum}</td>
-            <td>${gubun || '-'}</td>
-            <td>${gyoyuksujun || '-'}</td>
-            <td><span class="grade-badge ${gradeClass}" data-grade="${geubsu || '-'}" title="클릭하여 ${geubsu || '-'}으로 필터링">${geubsu || '-'}</span></td>
-            <td><span class="length-badge ${jangdaneum ? 'length-' + jangdaneum : 'length-없음'}" data-length="${jangdaneum || '없음'}" title="클릭하여 ${jangdaneum || '없음'} 필터링">${jangdaneum || '없음'}</span></td>
-            <td>
-                ${url ?
-                `<a href="${url}" target="_blank" rel="noopener noreferrer" class="blog-link" aria-label="${huneum} 한자 상세 보기">보기</a>` :
-                '<span style="color:#999;">-</span>'}
-            </td>
-        </tr>
-    `;
-    }).join('');
+            return ` <tr> <td> <button class="favorite-star ${isFav ? 'active' : ''}"
+            data-huneum="${huneum.replace(/" /g, '&quot;')
+    }
 
-    const uniqueHanja = new Set(sortedData.map(item => getField(item, '한자'))).size;
-    resultCount.textContent = `${uniqueHanja}개 한자`;
+    "
+ data-gubun="${gubun.replace(/" /g,
+    '&quot;')
+}
 
-    updatePagination(totalPages);
+"
+ aria-label="${huneum} ${isFav ? '즐겨찾기 제거' : '즐겨찾기 추가'}">$ {
+    isFav ? '⭐': '☆'
+}
+
+</button></td><td class="hanja-char">$ {
+    huneum
+}
+
+</td><td>$ {
+    gubun || '-'
+}
+
+</td><td>$ {
+    gyoyuksujun || '-'
+}
+
+</td><td><span class="grade-badge ${gradeClass}" data-grade="${geubsu || '-'}" title="클릭하여 ${geubsu || '-'}으로 필터링">$ {
+    geubsu || '-'
+}
+
+</span></td><td><span class="length-badge ${jangdaneum ? 'length-' + jangdaneum : 'length-없음'}" data-length="${jangdaneum || '없음'}" title="클릭하여 ${jangdaneum || '없음'} 필터링">$ {
+    jangdaneum || '없음'
+}
+
+</span></td><td>$ {
+    url ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="blog-link" aria-label="${huneum} 한자 상세 보기">보기</a>`:
+        '<span style="color:#999;">-</span>'
+}
+
+</td></tr>`;
+}).join('');
+
+const uniqueHanja=new Set(sortedData.map(item=> getField(item, '한자'))).size;
+
+resultCount.textContent=`$ {
+    uniqueHanja
+}
+
+개 한자`;
+
+updatePagination(totalPages);
 
 }
 
 function updatePagination(totalPages) {
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const pageNumbers = document.getElementById('pageNumbers');
+    const prevBtn=document.getElementById('prevBtn');
+    const nextBtn=document.getElementById('nextBtn');
+    const pageNumbers=document.getElementById('pageNumbers');
 
-    if (totalPages === 0) {
-        prevBtn.disabled = true;
-        nextBtn.disabled = true;
-        pageNumbers.innerHTML = '';
+    if (totalPages===0) {
+        prevBtn.disabled=true;
+        nextBtn.disabled=true;
+        pageNumbers.innerHTML='';
         return;
     }
 
-    prevBtn.disabled = currentPage === 1;
-    nextBtn.disabled = currentPage === totalPages;
+    prevBtn.disabled=currentPage===1;
+    nextBtn.disabled=currentPage===totalPages;
 
-    const maxVisible = 10;
-    let startPage, endPage;
+    const maxVisible=10;
+    let startPage,
+    endPage;
 
-    if (totalPages <= maxVisible) {
-        startPage = 1;
-        endPage = totalPages;
-    } else {
-        const blockNumber = Math.ceil(currentPage / maxVisible);
-        startPage = (blockNumber - 1) * maxVisible + 1;
-        endPage = Math.min(blockNumber * maxVisible, totalPages);
+    if (totalPages <=maxVisible) {
+        startPage=1;
+        endPage=totalPages;
     }
 
-    let buttonsHTML = '';
-    for (let i = startPage; i <= endPage; i++) {
-        if (i === currentPage) {
-            buttonsHTML += `< button class="active" aria - label="현재 페이지 ${i}" aria - current="page" > ${i}</button > `;
-        } else {
-            buttonsHTML += `< button onclick = "goToPage(${i})" aria - label="${i}페이지로 이동" > ${i}</button > `;
+    else {
+        const blockNumber=Math.ceil(currentPage / maxVisible);
+        startPage=(blockNumber - 1) * maxVisible+1;
+        endPage=Math.min(blockNumber * maxVisible, totalPages);
+    }
+
+    let buttonsHTML='';
+
+    for (let i=startPage; i <=endPage; i++) {
+        if (i===currentPage) {
+            buttonsHTML+=`< button class="active" aria - label="현재 페이지 ${i}" aria - current="page">$ {
+                i
+            }
+
+            </button>`;
+        }
+
+        else {
+            buttonsHTML+=`< button onclick="goToPage(${i})" aria - label="${i}페이지로 이동">$ {
+                i
+            }
+
+            </button>`;
         }
     }
 
-    pageNumbers.innerHTML = buttonsHTML;
+    pageNumbers.innerHTML=buttonsHTML;
 }
 
 function goToPage(page) {
-    currentPage = page;
+    currentPage=page;
     filterData();
 }
 
@@ -658,7 +796,8 @@ function prevPage() {
 
 // 즐겨찾기 버튼 초기화
 function initFavoritesButton() {
-    const btn = document.getElementById('favoritesOnlyBtn');
+    const btn=document.getElementById('favoritesOnlyBtn');
+
     if (btn) {
         btn.addEventListener('click', toggleFavoritesFilter);
     }
@@ -666,19 +805,25 @@ function initFavoritesButton() {
 
 // 즐겨찾기 전체 삭제
 function clearAllFavorites() {
-    if (favorites.size === 0) {
+    if (favorites.size===0) {
         alert('삭제할 즐겨찾기가 없습니다.');
         return;
     }
 
-    if (confirm(`${favorites.size}개의 즐겨찾기를 모두 삭제하시겠습니까 ? `)) {
+    if (confirm(`$ {
+                favorites.size
+            }
+
+            개의 즐겨찾기를 모두 삭제하시겠습니까 ? `)) {
         favorites.clear();
         saveFavorites();
         updateFavoritesCount();
 
         if (showOnlyFavorites) {
             toggleFavoritesFilter();
-        } else {
+        }
+
+        else {
             filterData();
         }
 
@@ -687,7 +832,8 @@ function clearAllFavorites() {
 }
 
 function initClearFavoritesButton() {
-    const btn = document.getElementById('clearFavoritesBtn');
+    const btn=document.getElementById('clearFavoritesBtn');
+
     if (btn) {
         btn.addEventListener('click', clearAllFavorites);
     }
@@ -695,36 +841,38 @@ function initClearFavoritesButton() {
 
 // 키보드 단축키 지원 (선택사항)
 document.addEventListener('keydown', function (e) {
-    // Ctrl/Cmd + K: 검색창 포커스
-    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        searchInput.focus();
-    }
 
-    // 화살표 키로 페이지 이동 (검색창에 포커스가 없을 때만)
-    if (document.activeElement !== searchInput) {
-        if (e.key === 'ArrowLeft' && currentPage > 1) {
-            prevPage();
-        } else if (e.key === 'ArrowRight') {
-            const totalPages = Math.ceil(
-                hanjaData.filter(() => true).length / itemsPerPage
-            );
-            if (currentPage < totalPages) {
-                nextPage();
+        // Ctrl/Cmd + K: 검색창 포커스
+        if ((e.ctrlKey || e.metaKey) && e.key==='k') {
+            e.preventDefault();
+            searchInput.focus();
+        }
+
+        // 화살표 키로 페이지 이동 (검색창에 포커스가 없을 때만)
+        if (document.activeElement !==searchInput) {
+            if (e.key==='ArrowLeft' && currentPage > 1) {
+                prevPage();
+            }
+
+            else if (e.key==='ArrowRight') {
+                const totalPages=Math.ceil(hanjaData.filter(()=> true).length / itemsPerPage);
+
+                if (currentPage < totalPages) {
+                    nextPage();
+                }
             }
         }
-    }
-});
+    });
 // ===== 활성 필터 칩 표시 기능 =====
 
 // 활성 필터 칩 표시 업데이트
 function updateActiveFiltersDisplay() {
-    const container = document.getElementById('activeFilters');
-    const chips = [];
+    const container=document.getElementById('activeFilters');
+    const chips=[];
 
-    const education = educationFilter.value;
-    const grade = gradeFilter.value;
-    const length = lengthFilter.value;
+    const education=educationFilter.value;
+    const grade=gradeFilter.value;
+    const length=lengthFilter.value;
 
     if (education) {
         chips.push({
@@ -732,65 +880,214 @@ function updateActiveFiltersDisplay() {
             label: '교육수준',
             value: education
         });
+}
+
+if (selectedGrades.length > 0) {
+    chips.push({
+
+        type: 'grade',
+        label: '급수',
+        value: selectedGrades.length <=2 ? selectedGrades.join(', ') : `$ {
+            selectedGrades[0]
+        }
+
+        외 $ {
+            selectedGrades.length - 1
+        }
+
+        개`
+    });
+}
+
+if (length) {
+    chips.push({
+        type: 'length',
+        label: '장단음',
+        value: length
+    });
+}
+
+if (chips.length===0) {
+    container.style.display='none';
+    container.innerHTML='';
+    return;
+}
+
+container.style.display='flex';
+
+container.innerHTML=chips.map(chip=> ` <div class="filter-chip" data-filter-type="${chip.type}" > <span class="filter-chip-label" >$ {
+        chip.label
     }
 
-    if (grade) {
-        chips.push({
-            type: 'grade',
-            label: '급수',
-            value: grade
-        });
+    :</span> <span class="filter-chip-value" >$ {
+        chip.value
     }
 
-    if (length) {
-        chips.push({
-            type: 'length',
-            label: '장단음',
-            value: length
-        });
-    }
-
-    if (chips.length === 0) {
-        container.style.display = 'none';
-        container.innerHTML = '';
-        return;
-    }
-
-    container.style.display = 'flex';
-    container.innerHTML = chips.map(chip => `
-        <div class="filter-chip" data-filter-type="${chip.type}">
-            <span class="filter-chip-label">${chip.label}:</span>
-            <span class="filter-chip-value">${chip.value}</span>
-            <button class="filter-chip-remove" 
-                    data-filter-type="${chip.type}"
-                    aria-label="${chip.label} 필터 제거"
-                    title="클릭하여 ${chip.label} 필터 제거">
-                ×
-            </button>
-        </div>
-    `).join('');
+    </span> <button class="filter-chip-remove"
+    data-filter-type="${chip.type}"
+    aria-label="${chip.label} 필터 제거"
+    title="클릭하여 ${chip.label} 필터 제거" > × </button> </div> `).join('');
 }
 
 // 이벤트 위임: 필터 칩 제거 버튼 클릭
-document.addEventListener('click', (e) => {
-    const removeBtn = e.target.closest('.filter-chip-remove');
-    if (!removeBtn) return;
+document.addEventListener('click', (e)=> {
+        const removeBtn=e.target.closest('.filter-chip-remove');
+        if ( !removeBtn) return;
 
+        e.stopPropagation();
+        const filterType=removeBtn.dataset.filterType;
+
+        // 해당 필터 드롭다운을 '전체'로 리셋
+        switch (filterType) {
+            case 'education': educationFilter.value='';
+            break;
+            case 'grade': selectedGrades=[];
+            updateGradeCheckboxes();
+            updateGradeButtonLabel();
+            break;
+            case 'length': lengthFilter.value='';
+            break;
+        }
+
+        filterDataAndReset();
+    });
+// ===== 급수 커스텀 드롭다운 (체크박스 필터) =====
+
+// 드롭다운 열기/닫기
+function toggleGradeDropdown(e) {
     e.stopPropagation();
-    const filterType = removeBtn.dataset.filterType;
+    gradeDropdown.classList.toggle('open');
+}
 
-    // 해당 필터 드롭다운을 '전체'로 리셋
-    switch (filterType) {
-        case 'education':
-            educationFilter.value = '';
-            break;
-        case 'grade':
-            gradeFilter.value = '';
-            break;
-        case 'length':
-            lengthFilter.value = '';
-            break;
+// 외부 클릭 시 드롭다운 닫기
+document.addEventListener('click', (e)=> {
+        if ( !gradeDropdown.contains(e.target)) {
+            gradeDropdown.classList.remove('open');
+        }
+    });
+
+// 드롭다운 내부 클릭 시 닫히지 않게
+gradeDropdownMenu.addEventListener('click', (e)=> {
+        e.stopPropagation();
+    });
+
+// 버튼 텍스트 업데이트
+function updateGradeButtonLabel() {
+    const label=document.querySelector('#gradeFilterBtn .dropdown-label');
+
+    if (selectedGrades.length===0) {
+        label.textContent='전체';
     }
 
-    filterDataAndReset();
-});
+    else if (selectedGrades.length===1) {
+        label.textContent=selectedGrades[0];
+    }
+
+    else if (selectedGrades.length <=3) {
+        label.textContent=selectedGrades.join(', ');
+    }
+
+    else {
+        label.textContent=`$ {
+            selectedGrades[0]
+        }
+
+        외 $ {
+            selectedGrades.length - 1
+        }
+
+        개`;
+    }
+}
+
+// 체크박스 상태 업데이트
+function updateGradeCheckboxes() {
+    const checkboxes=gradeDropdownMenu.querySelectorAll('input[type="checkbox"]');
+    const allCheckbox=gradeDropdownMenu.querySelector('input[data-grade="all"]');
+
+    checkboxes.forEach(checkbox=> {
+            if (checkbox.dataset.grade==='all') {
+                checkbox.checked=selectedGrades.length===0;
+            }
+
+            else {
+                checkbox.checked=selectedGrades.includes(checkbox.value);
+            }
+        });
+}
+
+// 체크박스 변경 이벤트
+gradeDropdownMenu.addEventListener('change', (e)=> {
+        if (e.target.type !=='checkbox') return;
+
+        const checkbox=e.target;
+        const value=checkbox.value;
+
+        if (checkbox.dataset.grade==='all') {
+            // 전체 선택
+            selectedGrades=[];
+            updateGradeCheckboxes();
+        }
+
+        else {
+            if (checkbox.checked) {
+
+                // 급수 추가
+                if ( !selectedGrades.includes(value)) {
+                    selectedGrades.push(value);
+                }
+            }
+
+            else {
+                // 급수 제거
+                selectedGrades=selectedGrades.filter(g=> g !==value);
+            }
+
+            updateGradeCheckboxes();
+        }
+
+        // 버튼 라벨 업데이트 (적용 버튼 없이 실시간 업데이트하려면)
+        // updateGradeButtonLabel();
+        // filterDataAndReset();
+    });
+
+// 검색 기능
+const gradeSearchInput=document.getElementById('gradeSearchInput');
+
+gradeSearchInput.addEventListener('input', (e)=> {
+        const searchTerm=e.target.value.toLowerCase();
+        const items=gradeDropdownMenu.querySelectorAll('.checkbox-item');
+
+        items.forEach(item=> {
+                const text=item.textContent.toLowerCase();
+
+                if (text.includes(searchTerm) || item.querySelector('[data-grade="all"]')) {
+                    item.classList.remove('hidden');
+                }
+
+                else {
+                    item.classList.add('hidden');
+                }
+            });
+    });
+
+// 적용 버튼
+document.getElementById('gradeApplyBtn').addEventListener('click', ()=> {
+        updateGradeButtonLabel();
+        gradeDropdown.classList.remove('open');
+        filterDataAndReset();
+    });
+
+// 초기화 버튼
+document.getElementById('gradeResetBtn').addEventListener('click', ()=> {
+        selectedGrades=[];
+        updateGradeCheckboxes();
+        updateGradeButtonLabel();
+        filterDataAndReset();
+    });
+
+// 드롭다운 버튼 클릭
+gradeFilterBtn.addEventListener('click', toggleGradeDropdown);
+
+// 초기화
+updateGradeButtonLabel();
