@@ -347,6 +347,24 @@ document.addEventListener('click', (e) => {
     }
 });
 
+// 이벤트 위임: 장단음 뱃지 클릭 처리 (빠른 필터링)
+document.addEventListener('click', (e) => {
+    const badge = e.target.closest('.length-badge');
+    if (!badge) return;
+
+    const lengthValue = badge.dataset.length;
+    if (!lengthValue || lengthValue === '없음') return;
+
+    e.stopPropagation();
+    
+    // 장단음 필터 드롭다운 값 설정
+    const lengthFilter = document.getElementById('lengthFilter');
+    if (lengthFilter) {
+        lengthFilter.value = lengthValue;
+        filterDataAndReset();
+    }
+});
+
 // 검색 입력에 debounce 적용 (300ms 지연)
 searchInput.addEventListener('input', debounce(filterDataAndReset, 300));
 educationFilter.addEventListener('change', filterDataAndReset);
@@ -500,6 +518,7 @@ function filterData() {
 function filterDataAndReset() {
     currentPage = 1;
     filterData();
+    updateActiveFiltersDisplay();
 }
 
 // 접근성: 스크린 리더용 결과 알림
@@ -566,7 +585,7 @@ function displayData(data) {
             <td>${gubun || '-'}</td>
             <td>${gyoyuksujun || '-'}</td>
             <td><span class="grade-badge ${gradeClass}" data-grade="${geubsu || '-'}" title="클릭하여 ${geubsu || '-'}으로 필터링">${geubsu || '-'}</span></td>
-            <td><span class="length-badge ${jangdaneum ? 'length-' + jangdaneum : 'length-없음'}">${jangdaneum || '없음'}</span></td>
+            <td><span class="length-badge ${jangdaneum ? 'length-' + jangdaneum : 'length-없음'}" data-length="${jangdaneum || '없음'}" title="클릭하여 ${jangdaneum || '없음'} 필터링">${jangdaneum || '없음'}</span></td>
             <td>
                 ${url ?
                 `<a href="${url}" target="_blank" rel="noopener noreferrer" class="blog-link" aria-label="${huneum} 한자 상세 보기">보기</a>` :
@@ -695,4 +714,83 @@ document.addEventListener('keydown', function (e) {
             }
         }
     }
+});
+// ===== 활성 필터 칩 표시 기능 =====
+
+// 활성 필터 칩 표시 업데이트
+function updateActiveFiltersDisplay() {
+    const container = document.getElementById('activeFilters');
+    const chips = [];
+
+    const education = educationFilter.value;
+    const grade = gradeFilter.value;
+    const length = lengthFilter.value;
+
+    if (education) {
+        chips.push({
+            type: 'education',
+            label: '교육수준',
+            value: education
+        });
+    }
+
+    if (grade) {
+        chips.push({
+            type: 'grade',
+            label: '급수',
+            value: grade
+        });
+    }
+
+    if (length) {
+        chips.push({
+            type: 'length',
+            label: '장단음',
+            value: length
+        });
+    }
+
+    if (chips.length === 0) {
+        container.style.display = 'none';
+        container.innerHTML = '';
+        return;
+    }
+
+    container.style.display = 'flex';
+    container.innerHTML = chips.map(chip => `
+        <div class="filter-chip" data-filter-type="${chip.type}">
+            <span class="filter-chip-label">${chip.label}:</span>
+            <span class="filter-chip-value">${chip.value}</span>
+            <button class="filter-chip-remove" 
+                    data-filter-type="${chip.type}"
+                    aria-label="${chip.label} 필터 제거"
+                    title="클릭하여 ${chip.label} 필터 제거">
+                ×
+            </button>
+        </div>
+    `).join('');
+}
+
+// 이벤트 위임: 필터 칩 제거 버튼 클릭
+document.addEventListener('click', (e) => {
+    const removeBtn = e.target.closest('.filter-chip-remove');
+    if (!removeBtn) return;
+
+    e.stopPropagation();
+    const filterType = removeBtn.dataset.filterType;
+
+    // 해당 필터 드롭다운을 '전체'로 리셋
+    switch (filterType) {
+        case 'education':
+            educationFilter.value = '';
+            break;
+        case 'grade':
+            gradeFilter.value = '';
+            break;
+        case 'length':
+            lengthFilter.value = '';
+            break;
+    }
+
+    filterDataAndReset();
 });
