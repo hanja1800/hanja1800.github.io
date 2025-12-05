@@ -662,30 +662,15 @@ function displayData(data) {
         const gradeClass = getGradeClass(geubsu);
 
         return ` <tr> <td> <button class="favorite-star ${isFav ? 'active' : ''}"
-            data-huneum="${huneum.replace(/" /g, '&quot;')
-            }
+            data-huneum="${huneum.replace(/"/g, '&quot;')}"
+            data-gubun="${gubun.replace(/"/g, '&quot;')}"
+            aria-label="${huneum} ${isFav ? '즐겨찾기 제거' : '즐겨찾기 추가'}">${isFav ? '⭐' : '☆'}
 
-    "
- data-gubun="${gubun.replace(/" /g,
-                '&quot;')
-            }
+</button></td><td class="hanja-char">${huneum}
 
-"
- aria-label="${huneum} ${isFav ? '즐겨찾기 제거' : '즐겨찾기 추가'}">$ {
-    isFav ? '⭐': '☆'
-}
+</td><td>${gubun || '-'}
 
-</button></td><td class="hanja-char">$ {
-    huneum
-}
-
-</td><td>$ {
-    gubun || '-'
-}
-
-</td><td>$ {
-    gyoyuksujun || '-'
-}
+</td><td>${gyoyuksujun || '-'}
 
 </td><td><span class="grade-badge ${gradeClass}" data-grade="${geubsu || '-'}" title="클릭하여 ${geubsu || '-'}으로 필터링">${geubsu || '-'}
 
@@ -698,9 +683,7 @@ function displayData(data) {
 
     const uniqueHanja = new Set(sortedData.map(item => getField(item, '한자'))).size;
 
-    resultCount.textContent = `${uniqueHanja}
-
-개 한자`;
+    resultCount.textContent = `${uniqueHanja}개 한자`;
 
     updatePagination(totalPages);
 
