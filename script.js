@@ -988,15 +988,7 @@ function updateGradeButtonLabel() {
     }
 
     else {
-        label.textContent=`$ {
-            selectedGrades[0]
-        }
-
-        외 $ {
-            selectedGrades.length - 1
-        }
-
-        개`;
+        label.textContent = `${selectedGrades[0]} 외 ${selectedGrades.length - 1}개`;
     }
 }
 
