@@ -814,6 +814,29 @@ footer a {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* 모든 필터 초기화 버튼 */
+.reset-all-btn {
+    padding: 10px 16px;
+    background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 6px rgba(245, 158, 11, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.reset-all-btn:hover {
+    background: linear-gradient(135deg, #ea580c 0%, #dc2626 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+}
+
 /* 다크모드 스타일 */
 body.dark-mode,
 body.dark-mode * {
@@ -850,10 +873,12 @@ body.dark-mode .chosung-filter-section {
     background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
 }
 
+
 body.dark-mode .chosung-btn,
 body.dark-mode .syllable-btn,
 body.dark-mode .favorites-toggle-btn,
-body.dark-mode .dark-mode-btn {
+body.dark-mode .dark-mode-btn,
+body.dark-mode .reset-all-btn {
     background: #3a3a3a;
     color: #e0e0e0;
     border-color: #555;
@@ -1372,184 +1397,4 @@ body.dark-mode .dropdown-reset-btn {
 
 body.dark-mode .dropdown-reset-btn:hover {
     background: #4a4a4a;
-}
-
-/* ========================================
-   모바일 카드 뷰 (Mobile Card View)
-   ======================================== */
-
-@media (max-width: 768px) {
-
-    /* 테이블 구조 해제 */
-    table,
-    thead,
-    tbody,
-    th,
-    td,
-    tr {
-        display: block;
-    }
-
-    /* 테이블 헤더 숨김 */
-    thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-
-    /* 각 행을 카드로 변환 */
-    tbody tr {
-        background: #fff;
-        margin-bottom: 15px;
-        padding: 15px;
-        padding-top: 45px;
-        /* 별표 공간 확보 */
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-        border: 1px solid #eee;
-        position: relative;
-    }
-
-    tbody tr:hover {
-        background: #fff;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
-    }
-
-    /* 각 셀을 한 줄씩 배치 */
-    td {
-        border: none;
-        border-bottom: 1px solid #f5f5f5;
-        position: relative;
-        padding: 10px 0;
-        padding-left: 40%;
-        text-align: right;
-        min-height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        width: 100% !important;
-        /* 고정 너비 무시 */
-    }
-
-    td:last-child {
-        border-bottom: none;
-    }
-
-    /* data-label을 이용한 가짜 헤더 생성 */
-    td:before {
-        content: attr(data-label);
-        position: absolute;
-        left: 0;
-        width: 35%;
-        padding-right: 10px;
-        white-space: nowrap;
-        text-align: left;
-        font-weight: 600;
-        color: #666;
-        font-size: 0.9rem;
-    }
-
-    /* 한자(훈음) 강조 - 카드의 제목처럼 */
-    td.hanja-char {
-        font-size: 1.3rem;
-        font-weight: bold;
-        color: #333;
-        padding: 0 0 15px 0;
-        text-align: center;
-        display: block;
-        margin-bottom: 10px;
-        border-bottom: 2px solid #667eea !important;
-        justify-content: center;
-    }
-
-    td.hanja-char:before {
-        display: none;
-        /* 한자에는 라벨 숨김 */
-    }
-
-    /* 즐겨찾기 별표 - 카드 우측 상단 고정 */
-    td.fav-col {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        width: auto;
-        padding: 0;
-        border: none;
-        min-height: auto;
-    }
-
-    td.fav-col:before {
-        display: none;
-    }
-
-    /* 링크 버튼 스타일 */
-    td.link-col {
-        padding-left: 0;
-        text-align: center;
-        justify-content: center;
-    }
-
-    td.link-col:before {
-        display: none;
-    }
-
-    .blog-link {
-        width: 100%;
-        text-align: center;
-        background: linear-gradient(135deg, #f0f4f8 0%, #e8eef3 100%);
-        padding: 12px;
-        border-radius: 8px;
-        font-weight: 600;
-        color: #1976d2;
-        text-decoration: none;
-        display: block;
-        transition: all 0.3s;
-    }
-
-    .blog-link:hover {
-        background: linear-gradient(135deg, #e0e7f0 0%, #d8dfe8 100%);
-        transform: translateY(-1px);
-        box-shadow: 0 2px 8px rgba(25, 118, 210, 0.2);
-    }
-
-    /* 급수/장단음 배지 크기 조정 */
-    .grade-badge,
-    .length-badge {
-        font-size: 0.85rem;
-        padding: 4px 10px;
-    }
-
-    /* 다크모드 카드 뷰 */
-    body.dark-mode tbody tr {
-        background: #2d2d2d;
-        border-color: #444;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    body.dark-mode tbody tr:hover {
-        background: #2d2d2d;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
-    }
-
-    body.dark-mode td {
-        border-bottom-color: #3a3a3a;
-    }
-
-    body.dark-mode td:before {
-        color: #aaa;
-    }
-
-    body.dark-mode td.hanja-char {
-        color: #fff;
-        border-bottom-color: #4a5568 !important;
-    }
-
-    body.dark-mode .blog-link {
-        background: linear-gradient(135deg, #3a3a3a 0%, #2d2d2d 100%);
-        color: #64b5f6;
-    }
-
-    body.dark-mode .blog-link:hover {
-        background: linear-gradient(135deg, #4a4a4a 0%, #3d3d3d 100%);
-    }
 }

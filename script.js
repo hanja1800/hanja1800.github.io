@@ -243,6 +243,47 @@ clearSearchBtn.addEventListener('click', () => {
 educationFilter.addEventListener('change', filterDataAndReset);
 lengthFilter.addEventListener('change', filterDataAndReset);
 
+// 모든 필터 초기화 함수
+function resetAllFilters() {
+    // 1. 검색어 초기화
+    searchInput.value = '';
+    clearSearchBtn.style.display = 'none';
+
+    // 2. 교육수준 필터 초기화
+    educationFilter.value = '';
+
+    // 3. 급수 필터 초기화 (모든 체크박스 해제)
+    selectedGrades = [];
+    updateGradeCheckboxes();
+    updateGradeButtonLabel();
+
+    // 4. 장단음 필터 초기화
+    lengthFilter.value = '';
+
+    // 5. 초성/음절 필터 초기화
+    selectedChosung = null;
+    selectedSyllable = null;
+    document.querySelectorAll('.chosung-btn').forEach(btn => btn.classList.remove('active'));
+    const syllableButtons = document.getElementById('syllableButtons');
+    if (syllableButtons) {
+        syllableButtons.innerHTML = '';
+        syllableButtons.classList.remove('show');
+    }
+
+    // 6. 즐겨찾기 필터 해제
+    if (showOnlyFavorites) {
+        showOnlyFavorites = false;
+        const favBtn = document.getElementById('favoritesOnlyBtn');
+        if (favBtn) favBtn.classList.remove('active');
+    }
+
+    // 7. 데이터 다시 필터링
+    filterDataAndReset();
+}
+
+// 모든 필터 초기화 버튼 이벤트
+document.getElementById('resetAllFiltersBtn').addEventListener('click', resetAllFilters);
+
 function buildSyllableCache() {
     syllableCache = {};
     const chosungs = ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
@@ -369,13 +410,13 @@ function displayData(data) {
         const url = getField(item, 'URL');
 
         return `<tr>
-            <td class="fav-col"><button class="favorite-star ${isFav ? 'active' : ''}" data-huneum="${huneum}" data-gubun="${gubun}">${isFav ? '⭐' : '☆'}</button></td>
-            <td class="hanja-char" data-label="훈음">${huneum}</td>
-            <td data-label="구분">${gubun || '-'}</td>
-            <td data-label="교육수준">${getField(item, '교육수준') || '-'}</td>
-            <td data-label="급수"><span class="grade-badge ${gradeClass}" data-grade="${getField(item, '급수')}">${getField(item, '급수') || '-'}</span></td>
-            <td data-label="장단음"><span class="length-badge length-${getField(item, '장단음') || '없음'}" data-length="${getField(item, '장단음')}">${getField(item, '장단음') || '없음'}</span></td>
-            <td class="link-col" data-label="상세정보">${url ? `<a href="${url}" target="_blank" class="blog-link">블로그 보기</a>` : '-'}</td>
+            <td><button class="favorite-star ${isFav ? 'active' : ''}" data-huneum="${huneum}" data-gubun="${gubun}">${isFav ? '⭐' : '☆'}</button></td>
+            <td class="hanja-char">${huneum}</td>
+            <td>${gubun || '-'}</td>
+            <td>${getField(item, '교육수준') || '-'}</td>
+            <td><span class="grade-badge ${gradeClass}" data-grade="${getField(item, '급수')}">${getField(item, '급수') || '-'}</span></td>
+            <td><span class="length-badge length-${getField(item, '장단음') || '없음'}" data-length="${getField(item, '장단음')}">${getField(item, '장단음') || '없음'}</span></td>
+            <td>${url ? `<a href="${url}" target="_blank" class="blog-link">블로그 보기</a>` : '-'}</td>
         </tr>`;
     }).join('');
 
