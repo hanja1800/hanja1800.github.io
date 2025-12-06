@@ -88,6 +88,7 @@ h1 {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+
 /* 검색창과 필터를 하나의 그리드로 */
 .search-filter-grid {
     display: grid;
@@ -95,20 +96,61 @@ h1 {
     gap: 15px;
 }
 
-#searchInput {
+/* 검색 입력 래퍼 (X 버튼 포함) */
+.search-input-wrapper {
     grid-column: 1 / -1;
+    position: relative;
+}
+
+#searchInput {
     width: 100%;
-    padding: 10px 15px;
+    padding: 10px 40px 10px 15px;
+    /* 오른쪽에 X 버튼 공간 확보 */
     font-size: 1rem;
     border: 2px solid #ddd;
     border-radius: 8px;
     transition: all 0.3s;
 }
 
+/* 검색 지우기 버튼 */
+.clear-search-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #999;
+    cursor: pointer;
+    display: none;
+    /* 기본 숨김 */
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.clear-search-btn:hover {
+    color: #333;
+    background: #f0f0f0;
+}
+
 #searchInput:focus {
     outline: none;
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* 다크모드 검색 X 버튼 */
+body.dark-mode .clear-search-btn {
+    color: #999;
+}
+
+body.dark-mode .clear-search-btn:hover {
+    color: #e0e0e0;
+    background: #3a3a3a;
 }
 
 .filter-group label {
@@ -877,11 +919,22 @@ body.dark-mode footer a {
     transition: all 0.2s ease;
     white-space: nowrap;
     border: 1px solid transparent;
+    cursor: pointer;
+    /* 클릭 가능 표시 */
 }
 
 .grade-badge:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px) scale(1.05);
+    /* 호버 시 더 크게 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    /* 그림자 강화 */
+    filter: brightness(1.1);
+    /* 밝기 증가 */
+}
+
+.grade-badge:active {
+    transform: translateY(0) scale(1.02);
+    /* 클릭 시 효과 */
 }
 
 /* 8급 (가장 밝음 - 초급) */
@@ -1006,4 +1059,497 @@ body.dark-mode .grade-special {
     color: #FFD700;
     border-color: #FFD700;
     box-shadow: 0 3px 10px rgba(255, 215, 0, 0.5);
+}
+
+/* ===== 활성 필터 칩 스타일 (엑셀 스타일) ===== */
+
+.active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0 15px 0;
+    padding: 12px;
+    background: #f8f9ff;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 4px 6px 12px;
+    background: white;
+    border: 1px solid #d0d0d0;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.filter-chip:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.filter-chip-label {
+    color: #666;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+.filter-chip-value {
+    color: #333;
+    font-weight: 600;
+}
+
+.filter-chip-remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: #e0e0e0;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    line-height: 1;
+    color: #666;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.filter-chip-remove:hover {
+    background: #ff5722;
+    color: white;
+    transform: scale(1.1);
+}
+
+.filter-chip-remove:active {
+    transform: scale(0.95);
+}
+
+/* 장단음 뱃지 클릭 가능 스타일 */
+.length-badge {
+    cursor: pointer;
+}
+
+.length-badge:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    filter: brightness(1.1);
+}
+
+.length-badge:active {
+    transform: translateY(0) scale(1.02);
+}
+
+/* 다크모드 지원 */
+body.dark-mode .active-filters {
+    background: #2d2d2d;
+    border-color: #444;
+}
+
+body.dark-mode .filter-chip {
+    background: #3a3a3a;
+    border-color: #555;
+}
+
+body.dark-mode .filter-chip-label {
+    color: #aaa;
+}
+
+body.dark-mode .filter-chip-value {
+    color: #e0e0e0;
+}
+
+body.dark-mode .filter-chip-remove {
+    background: #4a4a4a;
+    color: #aaa;
+}
+
+body.dark-mode .filter-chip-remove:hover {
+    background: #ff5722;
+    color: white;
+}
+
+/* ===== 커스텀 드롭다운 (체크박스 필터) ===== */
+
+.custom-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-button {
+    width: 100%;
+    padding: 10px 12px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.dropdown-button:hover {
+    border-color: #999;
+    background: #f8f9ff;
+}
+
+.dropdown-button:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.dropdown-label {
+    flex: 1;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-arrow {
+    margin-left: 8px;
+    font-size: 0.8rem;
+    color: #666;
+    transition: transform 0.2s ease;
+}
+
+.custom-dropdown.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    max-height: 400px;
+    display: none;
+    flex-direction: column;
+}
+
+.custom-dropdown.open .dropdown-menu {
+    display: flex;
+}
+
+.dropdown-search {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.dropdown-search-input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.dropdown-search-input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.checkbox-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+    user-select: none;
+}
+
+.checkbox-item:hover {
+    background: #f8f9ff;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin: 0 8px 0 0;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
+
+.checkbox-item span {
+    flex: 1;
+    font-size: 0.95rem;
+}
+
+.checkbox-item.hidden {
+    display: none;
+}
+
+.dropdown-footer {
+    display: flex;
+    gap: 8px;
+    padding: 10px;
+    border-top: 1px solid #eee;
+}
+
+.dropdown-apply-btn,
+.dropdown-reset-btn {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dropdown-apply-btn {
+    background: #667eea;
+    color: white;
+}
+
+.dropdown-apply-btn:hover {
+    background: #5568d3;
+}
+
+.dropdown-reset-btn {
+    background: #f5f5f5;
+    color: #666;
+}
+
+.dropdown-reset-btn:hover {
+    background: #e0e0e0;
+}
+
+/* 다크모드 */
+body.dark-mode .dropdown-button {
+    background: #3a3a3a;
+    border-color: #555;
+    color: #e0e0e0;
+}
+
+body.dark-mode .dropdown-button:hover {
+    background: #4a4a4a;
+    border-color: #666;
+}
+
+body.dark-mode .dropdown-menu {
+    background: #2d2d2d;
+    border-color: #444;
+}
+
+body.dark-mode .dropdown-search-input {
+    background: #3a3a3a;
+    border-color: #555;
+    color: #e0e0e0;
+}
+
+body.dark-mode .checkbox-item:hover {
+    background: #3a3a3a;
+}
+
+body.dark-mode .dropdown-footer {
+    border-top-color: #444;
+}
+
+body.dark-mode .dropdown-reset-btn {
+    background: #3a3a3a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .dropdown-reset-btn:hover {
+    background: #4a4a4a;
+}
+
+/* ========================================
+   모바일 카드 뷰 (Mobile Card View)
+   ======================================== */
+
+@media (max-width: 768px) {
+
+    /* 테이블 구조 해제 */
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+    }
+
+    /* 테이블 헤더 숨김 */
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    /* 각 행을 카드로 변환 */
+    tbody tr {
+        background: #fff;
+        margin-bottom: 15px;
+        padding: 15px;
+        padding-top: 45px;
+        /* 별표 공간 확보 */
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        border: 1px solid #eee;
+        position: relative;
+    }
+
+    tbody tr:hover {
+        background: #fff;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+    }
+
+    /* 각 셀을 한 줄씩 배치 */
+    td {
+        border: none;
+        border-bottom: 1px solid #f5f5f5;
+        position: relative;
+        padding: 10px 0;
+        padding-left: 40%;
+        text-align: right;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        width: 100% !important;
+        /* 고정 너비 무시 */
+    }
+
+    td:last-child {
+        border-bottom: none;
+    }
+
+    /* data-label을 이용한 가짜 헤더 생성 */
+    td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 35%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: 600;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    /* 한자(훈음) 강조 - 카드의 제목처럼 */
+    td.hanja-char {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #333;
+        padding: 0 0 15px 0;
+        text-align: center;
+        display: block;
+        margin-bottom: 10px;
+        border-bottom: 2px solid #667eea !important;
+        justify-content: center;
+    }
+
+    td.hanja-char:before {
+        display: none;
+        /* 한자에는 라벨 숨김 */
+    }
+
+    /* 즐겨찾기 별표 - 카드 우측 상단 고정 */
+    td.fav-col {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: auto;
+        padding: 0;
+        border: none;
+        min-height: auto;
+    }
+
+    td.fav-col:before {
+        display: none;
+    }
+
+    /* 링크 버튼 스타일 */
+    td.link-col {
+        padding-left: 0;
+        text-align: center;
+        justify-content: center;
+    }
+
+    td.link-col:before {
+        display: none;
+    }
+
+    .blog-link {
+        width: 100%;
+        text-align: center;
+        background: linear-gradient(135deg, #f0f4f8 0%, #e8eef3 100%);
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: 600;
+        color: #1976d2;
+        text-decoration: none;
+        display: block;
+        transition: all 0.3s;
+    }
+
+    .blog-link:hover {
+        background: linear-gradient(135deg, #e0e7f0 0%, #d8dfe8 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(25, 118, 210, 0.2);
+    }
+
+    /* 급수/장단음 배지 크기 조정 */
+    .grade-badge,
+    .length-badge {
+        font-size: 0.85rem;
+        padding: 4px 10px;
+    }
+
+    /* 다크모드 카드 뷰 */
+    body.dark-mode tbody tr {
+        background: #2d2d2d;
+        border-color: #444;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    body.dark-mode tbody tr:hover {
+        background: #2d2d2d;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    body.dark-mode td {
+        border-bottom-color: #3a3a3a;
+    }
+
+    body.dark-mode td:before {
+        color: #aaa;
+    }
+
+    body.dark-mode td.hanja-char {
+        color: #fff;
+        border-bottom-color: #4a5568 !important;
+    }
+
+    body.dark-mode .blog-link {
+        background: linear-gradient(135deg, #3a3a3a 0%, #2d2d2d 100%);
+        color: #64b5f6;
+    }
+
+    body.dark-mode .blog-link:hover {
+        background: linear-gradient(135deg, #4a4a4a 0%, #3d3d3d 100%);
+    }
 }

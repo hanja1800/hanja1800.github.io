@@ -102,8 +102,11 @@
         <h2 class="sr-only">검색 및 필터</h2>
         <div class="search-section">
             <div class="search-filter-grid">
-                <input type="text" id="searchInput" placeholder="한자, 음으로 검색..." autocomplete="off" autofocus
-                    aria-label="한자 검색">
+                <div class="search-input-wrapper">
+                    <input type="text" id="searchInput" placeholder="한자, 음으로 검색..." autocomplete="off" autofocus
+                        aria-label="한자 검색">
+                    <button id="clearSearchBtn" class="clear-search-btn" aria-label="검색어 삭제">×</button>
+                </div>
 
                 <div class="filter-group">
                     <label for="educationFilter">교육수준</label>
@@ -115,23 +118,89 @@
                 </div>
 
                 <div class="filter-group">
-                    <label for="gradeFilter">급수</label>
-                    <select id="gradeFilter" aria-label="급수 필터">
-                        <option value="">전체</option>
-                        <option value="8급">8급</option>
-                        <option value="준7급">준7급</option>
-                        <option value="7급">7급</option>
-                        <option value="준6급">준6급</option>
-                        <option value="6급">6급</option>
-                        <option value="준5급">준5급</option>
-                        <option value="5급">5급</option>
-                        <option value="준4급">준4급</option>
-                        <option value="4급">4급</option>
-                        <option value="준3급">준3급</option>
-                        <option value="3급">3급</option>
-                        <option value="준특급">준특급</option>
-                        <option value="특급">특급</option>
-                    </select>
+                    <label for="gradeFilterBtn">급수</label>
+                    <div class="custom-dropdown" id="gradeDropdown">
+                        <button type="button" id="gradeFilterBtn" class="dropdown-button" aria-label="급수 필터">
+                            <span class="dropdown-label">전체</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </button>
+                        <div class="dropdown-menu" id="gradeDropdownMenu">
+                            <div class="dropdown-search">
+                                <input type="text" placeholder="검색..." class="dropdown-search-input"
+                                    id="gradeSearchInput">
+                            </div>
+                            <div class="checkbox-list">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="" data-grade="all" checked>
+                                    <span>전체</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="8급" data-grade="8급">
+                                    <span>8급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="준7급" data-grade="준7급">
+                                    <span>준7급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="7급" data-grade="7급">
+                                    <span>7급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="준6급" data-grade="준6급">
+                                    <span>준6급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="6급" data-grade="6급">
+                                    <span>6급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="준5급" data-grade="준5급">
+                                    <span>준5급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="5급" data-grade="5급">
+                                    <span>5급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="준4급" data-grade="준4급">
+                                    <span>준4급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="4급" data-grade="4급">
+                                    <span>4급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="준3급" data-grade="준3급">
+                                    <span>준3급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="3급" data-grade="3급">
+                                    <span>3급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="2급" data-grade="2급">
+                                    <span>2급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="1급" data-grade="1급">
+                                    <span>1급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="준특급" data-grade="준특급">
+                                    <span>준특급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="특급" data-grade="특급">
+                                    <span>특급</span>
+                                </label>
+                            </div>
+                            <div class="dropdown-footer">
+                                <button type="button" class="dropdown-apply-btn" id="gradeApplyBtn">적용</button>
+                                <button type="button" class="dropdown-reset-btn" id="gradeResetBtn">초기화</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="filter-group">
@@ -187,7 +256,10 @@
         <div class="result-info">
             <span id="resultCount">1800개 한자</span>
         </div>
-
+        <!-- 활성 필터 칩 표시 -->
+        <div id="activeFilters" class="active-filters" style="display: none;">
+            <!-- 필터 칩이 동적으로 추가됩니다 -->
+        </div>
         <div class="table-container">
             <table id="hanjaTable">
                 <caption class="sr-only">교육용 한자 1800자 목록 - 훈음, 구분, 교육수준, 급수, 장단음 정보 포함</caption>
@@ -229,6 +301,7 @@
         }
     </script>
 </body>
+
 
 
 </html>
