@@ -370,7 +370,12 @@ function displayData(data) {
         const gubun = getField(item, '구분');
         const isFav = isFavorite(huneum, gubun);
         const gradeClass = getGradeClass(getField(item, '급수'));
-        const url = getField(item, 'URL');
+        // ▼ 수정된 코드 (추천)
+        let url = getField(item, 'URL');
+        // url이 있고(참이고), 동시에 'http'로 시작하지 않으면(이상한 데이터면) 빈 값으로 만들어버림
+        if (url && !url.startsWith('http')) {
+           url = ''; 
+        }
 
         return `<tr>
             <td><button class="favorite-star ${isFav ? 'active' : ''}" data-huneum="${huneum}" data-gubun="${gubun}">${isFav ? '⭐' : '☆'}</button></td>
