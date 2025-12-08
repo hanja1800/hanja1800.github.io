@@ -398,7 +398,7 @@ th {
     text-align: left;
     font-weight: 600;
     font-size: 0.9rem;
-   
+    
 }
 
 /* 열 너비 설정 */
@@ -691,6 +691,7 @@ footer a {
     }
 
     .table-container {
+        
         margin: 0 -15px;
         border-radius: 0;
         position: relative;
