@@ -213,8 +213,12 @@
                 </div>
 
                 <div class="favorites-filter">
-                    <button id="favoritesOnlyBtn" class="favorites-toggle-btn" aria-label="즐겨찾기만 보기">
+                    <button id="favoritesOnlyBtn" class="favorites-toggle-btn">
                         ⭐ 즐겨찾기만 보기 (<span id="favoritesCount">0</span>)
+                    </button>
+                    <!-- 👇 이 버튼 추가 -->
+                    <button id="recentViewBtn" class="recent-view-btn">
+                        📖 최근 본 한자 (<span id="recentViewCount">0</span>)
                     </button>
                 </div>
                 <div class="dark-mode-toggle">
@@ -300,13 +304,13 @@
     <!-- 네이버 애널리틱스 추적 코드 시작 -->
     <script type="text/javascript" src="//wcs.pstatic.net/wcslog.js"></script>
     <script type="text/javascript">
-    if(!wcs_add) var wcs_add = {};
-    wcs_add["wa"] = "58d0b976a4cbcc";
-    if(window.wcs) {
-      wcs_do();
-}
-</script>
-<!-- 네이버 애널리틱스 추적 코드 끝 -->
+        if (!wcs_add) var wcs_add = {};
+        wcs_add["wa"] = "58d0b976a4cbcc";
+        if (window.wcs) {
+            wcs_do();
+        }
+    </script>
+    <!-- 네이버 애널리틱스 추적 코드 끝 -->
 </body>
 
 
