@@ -754,37 +754,3 @@ function toggleRecentModal() {
         modal.style.display = 'none';
     }
 }
-// ==========================================
-//  🏗️ 테이블 헤더 고정 위치 자동 계산
-// ==========================================
-
-function adjustTableHeaderOffset() {
-    const searchSection = document.querySelector('.search-section');
-    const ths = document.querySelectorAll('th');
-    
-    if (!searchSection || ths.length === 0) return;
-
-    // 검색 영역의 현재 높이 측정
-    const headerHeight = searchSection.getBoundingClientRect().height;
-
-    // 모든 th(테이블 헤더)에 top 위치 적용
-    ths.forEach(th => {
-        th.style.top = `${headerHeight}px`;
-    });
-}
-
-// 이벤트 리스너 등록
-window.addEventListener('resize', adjustTableHeaderOffset);
-window.addEventListener('load', adjustTableHeaderOffset);
-window.addEventListener('scroll', adjustTableHeaderOffset, { passive: true });
-
-const observer = new MutationObserver(adjustTableHeaderOffset);
-const searchSection = document.querySelector('.search-section');
-
-if (searchSection) {
-    observer.observe(searchSection, { 
-        childList: true, 
-        subtree: true,   
-        attributes: true 
-    });
-}
