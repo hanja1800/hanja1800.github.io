@@ -150,13 +150,17 @@ fetch('data.json').then(response => {
 }).then(data => {
     if (!Array.isArray(data) || data.length === 0) throw new Error('데이터 오류');
 
-    hanjaData = data;
-    sortedHanjaData = [...hanjaData].sort((a, b) => {
-        const hanjaA = getField(a, '한자');
-        const hanjaB = getField(b, '한자');
-        if (hanjaA !== hanjaB) return hanjaA.localeCompare(hanjaB);
-        return 0;
+    // ▼▼▼ 이 부분을 추가/수정하면 데이터가 깔끔해집니다 ▼▼▼
+    hanjaData = data.map(item => {
+        const cleanItem = {};
+        for (const key in item) {
+            // 키(Key) 이름에 붙은 이상한 특수문자(\ufeff) 제거
+            const cleanKey = key.replace(/^\ufeff/, '');
+            cleanItem[cleanKey] = item[key];
+        }
+        return cleanItem;
     });
+    // ▲▲▲ 여기까지 ▲▲▲
 
     loadFavorites();
     loadDarkMode();
