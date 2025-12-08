@@ -376,7 +376,7 @@ body.dark-mode .clear-favorites-text-btn:hover {
 }
 
 .table-container {
-    overflow-x: auto;
+    /* overflow-x: auto; -> 삭제됨 */
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
@@ -693,6 +693,7 @@ footer a {
         margin: 0 -15px;
         border-radius: 0;
         position: relative;
+        overflow-x: auto; /* <--- ✅ 여기에 추가해 주세요! */
     }
 
     /* 스크롤 힌트 */
