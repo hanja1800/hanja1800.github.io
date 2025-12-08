@@ -545,25 +545,24 @@ function initRecentView() {
     if (closeBtn) closeBtn.addEventListener('click', () => modal.style.display = 'none');
     if (clearBtn) clearBtn.addEventListener('click', clearRecentHistory);
     
-    // [중요] 테이블 내 링크 클릭 이벤트 위임
+    // [수정됨] 테이블 내 링크 클릭 이벤트 위임
     document.getElementById('tableBody').addEventListener('click', function(e) {
-        const linkBtn = e.target.closest('.blog-link');
+        const linkBtn = e.target.closest('.blog-link'); // 클릭한 링크 요소(<a> 태그)
         
         if (linkBtn) {
-            const tr = linkBtn.closest('tr');
-            if (tr) {
-                // 화면에 보이는 훈음 텍스트 가져오기
-                const huneumText = tr.querySelector('td:nth-child(2)').textContent.trim();
+            // 1. 클릭한 링크의 주소(href)를 가져옵니다. (이건 절대 변하지 않는 값!)
+            const targetUrl = linkBtn.getAttribute('href');
+            
+            setTimeout(() => {
+                // 2. 훈음 글자 대신 'URL'이 같은지 확인해서 데이터를 찾습니다.
+                const item = sortedHanjaData.find(d => getField(d, 'URL') === targetUrl);
                 
-                // [핵심] 딜레이 방지: setTimeout을 0초로 설정하여
-                // 브라우저가 '새 탭 열기' 동작을 먼저 수행하도록 양보함 (비동기 효과)
-                setTimeout(() => {
-                    const item = sortedHanjaData.find(d => getField(d, '훈음') === huneumText);
-                    if (item) {
-                        addToRecent(item);
-                    }
-                }, 0);
-            }
+                if (item) {
+                    addToRecent(item);
+                } else {
+                    console.log('데이터를 찾을 수 없습니다:', targetUrl); // 디버깅용
+                }
+            }, 0);
         }
     });
 
