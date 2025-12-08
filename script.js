@@ -584,16 +584,29 @@ document.getElementById('clearRecentBtn')?.addEventListener('click', () => {
     updateRecentlyViewedUI();
 });
 
-// 최근 본 한자 클릭 → 검색창에 넣고 검색
+// 최근 본 한자 클릭 → 블로그스팟 원문 바로 열기
 document.getElementById('recentList')?.addEventListener('click', e => {
     const item = e.target.closest('.recent-item');
     if (!item) return;
+
+    // 해당 행의 원본 데이터 찾기
     const huneum = item.dataset.huneum;
-    searchInput.value = huneum;
-    clearSearchBtn.style.display = 'block';
-    filterDataAndReset();
-    // 스크롤해서 테이블 보이게
-    document.querySelector('.table-container').scrollIntoView({ behavior: 'smooth' });
+    const gubun = item.dataset.gubun || '';
+    
+    const found = hanjaData.find(d => 
+        getField(d, '훈음') === huneum && 
+        (getField(d, '구분') || '') === gubun
+    );
+
+    if (found && getField(found, 'URL')) {
+        window.open(getField(found, 'URL'), '_blank');
+    } else {
+        // URL이 없거나 못 찾으면 기존처럼 검색
+        searchInput.value = huneum;
+        clearSearchBtn.style.display = 'block';
+        filterDataAndReset();
+        document.querySelector('.table-container').scrollIntoView({ behavior: 'smooth' });
+    }
 });
 
 // 테이블 행 클릭 시 최근 본 한자에 추가
