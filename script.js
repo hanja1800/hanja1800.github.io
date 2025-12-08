@@ -37,8 +37,11 @@ function saveFavorites() {
     try {
         const favArray = Array.from(favorites);
         localStorage.setItem('hanja-favorites', JSON.stringify(favArray));
-    } catch (error) {
-        console.error('즐겨찾기 저장 실패:', error);
+    } catch (e) {
+        console.error('즐겨찾기 저장 실패:', e);
+        if (e.name === 'QuotaExceededError') {
+            alert('저장 공간이 부족하여 즐겨찾기를 추가할 수 없습니다.');
+        }
     }
 }
 
@@ -590,11 +593,25 @@ function loadRecentHistory() {
 }
 
 function saveRecentHistory() {
-    localStorage.setItem('hanja-recent-view', JSON.stringify(recentHistory));
-    updateRecentCount();
-    // 모달이 열려있다면 리스트 즉시 갱신
-    if (document.getElementById('recentModal').style.display === 'flex') {
-        renderRecentList();
+    try {
+        localStorage.setItem('hanja-recent-view', JSON.stringify(recentHistory));
+        updateRecentCount();
+        
+        // 모달이 열려있다면 리스트 즉시 갱신
+        if (document.getElementById('recentModal') && document.getElementById('recentModal').style.display === 'flex') {
+            renderRecentList();
+        }
+    } catch (e) {
+        // 저장 실패 시 (용량 초과 등)
+        console.error('로컬 스토리지 저장 실패:', e);
+        
+        // 만약 용량이 꽉 찼다면 가장 오래된(마지막) 항목을 하나 더 지우고 재시도하는 로직을 넣을 수도 있습니다.
+        if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+            alert('저장 공간이 부족하여 최근 본 한자를 저장할 수 없습니다.');
+            // 선택 사항: 오래된 항목 강제 삭제 후 재시도 로직
+            // recentHistory.pop(); 
+            // saveRecentHistory();
+        }
     }
 }
 
