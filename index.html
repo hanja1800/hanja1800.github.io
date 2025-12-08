@@ -214,14 +214,15 @@
 
                 <div class="favorites-filter">
                     <button id="favoritesOnlyBtn" class="favorites-toggle-btn" aria-label="즐겨찾기만 보기">
-                        ⭐ 즐겨찾기만 보기 (<span id="favoritesCount">0</span>)
+                        즐겨찾기만 보기 (<span id="favoritesCount">0</span>)
                     </button>
-                </div>
-                <!-- 즐겨찾기 버튼 바로 옆에 추가 (favorites-filter 안에) -->
-                <div class="recent-trigger">
-                    <button id="openRecentModal" class="recent-open-btn">
-                        내가 살펴본 단어 <span id="recentCountBadge">0</span>
-                    </button>
+
+                    <!-- 즐겨찾기 버튼 바로 옆에 추가 (같은 favorites-filter 안에!) -->
+                    <div class="recent-trigger">
+                        <button id="openRecentModal" class="recent-open-btn">
+                            내가 살펴본 단어 <span id="recentCountBadge">0</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="dark-mode-toggle">
@@ -241,7 +242,8 @@
                 <div class="recent-list" id="recentList">
                     <!-- JS에서 자동 생성 -->
                 </div>
-            </div>  </div>
+            </div>
+        </div>
         <!-- 초성 필터 -->
         <h2 class="sr-only">초성 필터</h2>
         <div class="chosung-filter-section">
@@ -319,7 +321,7 @@
                 <button id="clearRecentBtn">전체 삭제</button>
             </div>
         </div>
-        </div>
+    </div>
     <footer>
         <p>데이터 출처: <a href="https://korean-pronunciation.blogspot.com/" target="_blank">우리말의 장단음을 공부하는 블로그</a></p>
     </footer>
@@ -356,16 +358,12 @@
     <!-- 네이버 애널리틱스 추적 코드 시작 -->
     <script type="text/javascript" src="//wcs.pstatic.net/wcslog.js"></script>
     <script type="text/javascript">
-    if(!wcs_add) var wcs_add = {};
-    wcs_add["wa"] = "58d0b976a4cbcc";
-    if(window.wcs) {
-      wcs_do();
-}
-</script>
-<!-- 네이버 애널리틱스 추적 코드 끝 -->
+        if (!wcs_add) var wcs_add = {};
+        wcs_add["wa"] = "58d0b976a4cbcc";
+        if (window.wcs) {
+            wcs_do();
+        }
+    </script>
+    <!-- 네이버 애널리틱스 추적 코드 끝 -->
 </body>
-
-
-
-
 </html>
