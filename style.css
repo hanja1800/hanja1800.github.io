@@ -1,3 +1,5 @@
+--- START OF FILE style.css ---
+
 /* =========================================
    1. CSS 변수 정의 (색상 테마 통합 관리)
    ========================================= */
@@ -17,7 +19,7 @@
     --gray-bg: #f9f9f9;              /* 연한 회색 배경 (최근 본 한자 내용) */
     --disabled-color: #999;          /* 비활성 색상 (버튼, 폰트) */
     
-    /* [컴포넌트별 색상 변수] */
+    /* [컴포넌트별 색상 변수 - 하드코딩된 색상 변수화 포함] */
     --btn-hover-bg: #e9ecef;        /* 버튼류 호버/액티브 배경 */
     --btn-hover-border: #495057;    /* 버튼류 호버/액티브 테두리 */
     --pagination-hover-bg: #e8f0fe;
@@ -26,6 +28,15 @@
     --recent-hanja-color: #00796b;
     --recent-hover-bg: #e0f2f1;
     --recent-delete-hover: #d32f2f;
+    
+    /* [즐겨찾기, 최근 본 한자] 호버/액티브 변수 통일 (하드코딩 제거) */
+    --fav-toggle-hover-bg: #fff3e0;
+    --fav-toggle-hover-border: #ff9800;
+    --fav-toggle-hover-text: #e65100;
+    --fav-toggle-active-bg: #ff9800;
+    --clear-btn-hover-bg: #ffebee; /* #ffebee */
+    --clear-btn-hover-border: #ff5722;
+    --clear-btn-hover-text: #ff5722;
 }
 
 body.dark-mode {
@@ -53,7 +64,17 @@ body.dark-mode {
     --recent-hanja-color: #80cbc4;
     --recent-hover-bg: #3a3a3a;
     --recent-delete-hover: #ff5722;
+
+    /* [즐겨찾기, 최근 본 한자] 호버/액티브 다크 모드 재정의 */
+    /* 다크모드에서는 라이트 모드의 주황색 계열 호버 대신, 일반 호버를 따르도록 개별 컴포넌트에서 재정의 */
+    --fav-toggle-hover-bg: var(--card-bg);
+    --fav-toggle-hover-border: #ff9800;
+    --fav-toggle-hover-text: #e65100;
+    --clear-btn-hover-bg: var(--btn-hover-bg);
+    --clear-btn-hover-border: #ff5722;
+    --clear-btn-hover-text: #ff5722;
 }
+
 
 /* =========================================
    2. 전역 리셋 및 기본 설정
@@ -62,11 +83,19 @@ body.dark-mode {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* ❌ transition: none !important; 는 아래 body.dark-mode에만 남기고 제거 */
+}
+
+/* A11y: prefers-reduced-motion 지원 추가 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
 }
 
 html { scroll-behavior: smooth; }
 
+/* A11y: .sr-only 구현 개선 (clip-path 사용) */
 .sr-only {
     position: absolute;
     width: 1px;
@@ -74,7 +103,8 @@ html { scroll-behavior: smooth; }
     padding: 0;
     margin: -1px;
     overflow: hidden;
-    clip: rect(0, 0, 0, 0);
+    clip: rect(0 0 0 0); /* 레거시 지원 */
+    clip-path: inset(50%); /* 현대적인 대체 */
     white-space: nowrap;
     border-width: 0;
 }
@@ -87,9 +117,21 @@ body {
     padding: 20px;
 }
 
-/* 다크모드 전환 시 깜빡임 방지를 위해 body 하위 요소에만 transition 제거 */
+/* body.dark-mode * { transition: none !important; } 수정: 깜빡임 방지용으로 특정 속성만 단축 */
 body.dark-mode * {
-    transition: none !important;
+    transition-property: background-color, color, border-color, box-shadow;
+    transition-duration: 0s !important;
+}
+
+/* A11y: 키보드 사용자를 위한 명확한 포커스 표시 (명시적인 focus 스타일이 없는 요소 대상) */
+:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--accent-color) 70%, transparent);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+/* 커스텀 focus 스타일을 사용하는 요소에 대해서는 전역 focus 스타일 제거 */
+#searchInput:focus-visible, .filter-group select:focus-visible, .dropdown-button:focus-visible {
+    outline: none;
 }
 
 .container {
@@ -121,12 +163,13 @@ h1 { color: var(--text-color); }
     transition: all 0.2s ease;
 }
 
-/* ⚠️ @extend 대신, .hover-lift가 적용되던 모든 선택자를 모아서 직접 정의 */
+/* hover-lift가 적용되는 모든 선택자를 모아서 직접 정의 */
 .hover-lift:hover, 
 .favorites-toggle-btn:hover:not(.active),
 .clear-favorites-text-btn:hover,
 .length-badge:hover,
-.grade-badge:hover {
+.grade-badge:hover,
+.recent-view-btn:hover { /* 최근 본 한자 버튼 추가 */
     transform: translateY(-2px) scale(1.05);
     box-shadow: 0 4px 12px var(--shadow-color);
     filter: brightness(1.1);
@@ -136,7 +179,8 @@ h1 { color: var(--text-color); }
 .favorites-toggle-btn:active,
 .clear-favorites-text-btn:active,
 .length-badge:active,
-.grade-badge:active {
+.grade-badge:active,
+.recent-view-btn:active {
     transform: translateY(0) scale(1.02);
 }
 
@@ -178,7 +222,7 @@ h1 { color: var(--text-color); }
 #searchInput:focus {
     outline: none;
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 40%, transparent);
 }
 
 .clear-search-btn {
@@ -244,7 +288,7 @@ h1 { color: var(--text-color); }
 }
 
 .favorites-toggle-btn {
-    /* @extend .hover-lift; 제거, transform은 hover-lift에서 정의 */
+    /* @extend .hover-lift; 제거 */
     padding: 10px 20px;
     font-size: 1rem;
     font-weight: 600;
@@ -258,23 +302,24 @@ h1 { color: var(--text-color); }
 }
 
 .favorites-toggle-btn:hover:not(.active) {
-    background: #fff3e0;
-    border-color: #ff9800;
-    color: #e65100;
+    /* 하드코딩된 색상 변수 사용 */
+    background: var(--fav-toggle-hover-bg);
+    border-color: var(--fav-toggle-hover-border);
+    color: var(--fav-toggle-hover-text);
     box-shadow: 0 4px 8px rgba(255, 152, 0, 0.2);
-    /* hover-lift의 transform을 사용함 */
     filter: none;
 }
 
 .favorites-toggle-btn.active {
-    background: #ff9800;
+    /* 하드코딩된 색상 변수 사용 */
+    background: var(--fav-toggle-active-bg);
     color: white;
-    border-color: #ff9800;
+    border-color: var(--fav-toggle-active-bg);
     box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
 }
 
 .clear-favorites-text-btn {
-    /* @extend .hover-lift; 제거, transform은 hover-lift에서 정의 */
+    /* @extend .hover-lift; 제거 */
     padding: 8px 15px;
     font-size: 0.9rem;
     font-weight: 600;
@@ -289,23 +334,24 @@ h1 { color: var(--text-color); }
 }
 
 .clear-favorites-text-btn:hover {
-    background: #ffebee;
-    border-color: #ff5722;
-    color: #ff5722;
-    /* hover-lift의 transform을 사용함 */
+    /* 하드코딩된 색상 변수 사용 */
+    background: var(--clear-btn-hover-bg);
+    border-color: var(--clear-btn-hover-border);
+    color: var(--clear-btn-hover-text);
     filter: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .clear-favorites-text-btn:active {
-    background: #ff5722;
+    background: var(--clear-btn-hover-border);
     color: white;
     transform: translateY(0);
 }
 
 /* 다크모드 보정 */
 body.dark-mode .favorites-toggle-btn:hover:not(.active) {
-    background: #fff3e0;
+    /* 다크모드에서 호버 시 주황색 대신 card-bg 유지 (변수에서 이미 정의됨) */
+    background: var(--fav-toggle-hover-bg);
 }
 body.dark-mode .clear-favorites-text-btn {
     background: var(--hover-bg);
@@ -313,9 +359,10 @@ body.dark-mode .clear-favorites-text-btn {
     border-color: var(--border-color);
 }
 body.dark-mode .clear-favorites-text-btn:hover {
-    background: var(--btn-hover-bg);
-    border-color: #ff5722;
-    color: #ff5722;
+    /* 다크모드 클리어 버튼 호버 재정의 (변수 사용) */
+    background: var(--clear-btn-hover-bg);
+    border-color: var(--clear-btn-hover-border);
+    color: var(--clear-btn-hover-text);
 }
 
 /* =========================================
@@ -401,7 +448,11 @@ body.dark-mode .chosung-filter-section {
 .table-container { box-shadow: 0 2px 10px var(--shadow-color); }
 table { background: var(--card-bg); }
 thead { background: #4a5568; color: white; }
-body.dark-mode thead { background: var(--bg-color); }
+/* 다크모드 thead 색상 수정: 배경색과 구분되도록 진한 색 지정 */
+body.dark-mode thead { 
+    background: #2b2b2b; /* 카드 배경보다 진한 색상 */ 
+    color: var(--text-color); 
+}
 
 td {
     border-bottom: 1px solid var(--light-border);
@@ -417,7 +468,7 @@ body.dark-mode .blog-link { color: var(--link-color); }
    8. 배지 스타일 (장단음, 급수)
    ========================================= */
 .length-badge {
-    /* @extend .hover-lift; 제거, transform은 hover-lift에서 정의 */
+    /* @extend .hover-lift; 제거 */
     padding: 4px 10px;
     border-radius: 12px;
     cursor: pointer;
@@ -450,7 +501,7 @@ body.dark-mode .blog-link { color: var(--link-color); }
 
 /* 급수 배지 - 변수를 사용한 구조화 */
 .grade-badge {
-    /* @extend .hover-lift; 제거, transform은 hover-lift에서 정의 */
+    /* @extend .hover-lift; 제거 */
     padding: 4px 12px;
     border-radius: 12px;
     min-width: 60px;
@@ -505,7 +556,7 @@ body.dark-mode .grade-badge { box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); }
    9. 즐겨찾기 별 버튼
    ========================================= */
 .favorite-star {
-    /* @extend .hover-lift; 제거, transform은 hover-lift에서 정의 */
+    /* @extend .hover-lift; 제거 */
     background: none;
     border: none;
     font-size: 1.3rem;
@@ -642,7 +693,8 @@ body.dark-mode .recent-item:hover { background: var(--hover-bg); }
 }
 
 .clear-recent-btn:hover {
-    background: #ffebee;
+    /* 하드코딩된 색상 변수 사용 */
+    background: var(--clear-btn-hover-bg); 
     color: var(--recent-delete-hover);
     border-color: #ffcdd2;
 }
@@ -652,9 +704,10 @@ body.dark-mode .clear-recent-btn {
     border-color: var(--border-color);
 }
 body.dark-mode .clear-recent-btn:hover {
-    background: var(--btn-hover-bg);
+    /* 다크모드 클리어 버튼 호버 재정의 (변수 사용) */
+    background: var(--clear-btn-hover-bg);
     color: var(--recent-delete-hover);
-    border-color: #ff5722;
+    border-color: var(--clear-btn-hover-border);
 }
 
 .empty-msg { color: var(--disabled-color); }
@@ -678,14 +731,15 @@ body.dark-mode .clear-recent-btn:hover {
     }
     .favorites-toggle-btn:hover:not(.active) {
         /* 모바일에서 노란색 호버 배경색을 다시 적용 */
-        background: #fff3e0 !important;
-        border-color: #ff9800 !important;
-        color: #e65100 !important;
+        background: var(--fav-toggle-hover-bg) !important; /* 변수 사용 */
+        border-color: var(--fav-toggle-hover-border) !important; /* 변수 사용 */
+        color: var(--fav-toggle-hover-text) !important; /* 변수 사용 */
     }
 
-    /* 나머지 모바일 스타일은 유지됨 */
-    .container .dark-mode-toggle { /* ... */ }
-    /* ... (모바일 레이아웃 및 크기 조정 스타일 유지) ... */
+    /* .container .dark-mode-toggle { } */ /* 빈 규칙 제거 */
+    /* .table-container::after { } */ /* 빈 규칙 제거 */
     
-    .table-container::after { /* 스크롤 힌트 유지 */ }
+    /* 나머지 모바일 레이아웃 및 크기 조정 스타일 유지 */
 }
+
+/* --- END OF FILE style.css --- */
