@@ -1,15 +1,15 @@
 // ==========================================
-//  Improved Hanja Search Application
+//  ê°œì„ ëœ í•œìž ê²€ìƒ‰ ì• í”Œë¦¬ì¼€ì´ì…˜
 // ==========================================
 
-// HTML Escape Function (XSS Prevention)
+// HTML ì´ìŠ¤ì¼€ì´í”„ í•¨ìˆ˜ (XSS ë°©ì§€)
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
 }
 
-// Debounce Utility
+// ë””ë°”ìš´ìŠ¤ ìœ í‹¸ë¦¬í‹°
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -23,21 +23,21 @@ function debounce(func, wait) {
 }
 
 // ==========================================
-//  Constants Definition
+//  ìƒìˆ˜ ì •ì˜
 // ==========================================
 const CONSTANTS = {
     GRADE_MAP: {
-        '8급': 'grade-8', '준7급': 'grade-7-2', '7급': 'grade-7',
-        '준6급': 'grade-6-2', '6급': 'grade-6', '준5급': 'grade-5-2',
-        '5급': 'grade-5', '준4급': 'grade-4-2', '4급': 'grade-4',
-        '준3급': 'grade-3-2', '3급': 'grade-3', '2급': 'grade-2',
-        '1급': 'grade-1', '준특급': 'grade-special-2', '특급': 'grade-special'
+        '8ê¸‰': 'grade-8', 'ì¤€7ê¸‰': 'grade-7-2', '7ê¸‰': 'grade-7',
+        'ì¤€6ê¸‰': 'grade-6-2', '6ê¸‰': 'grade-6', 'ì¤€5ê¸‰': 'grade-5-2',
+        '5ê¸‰': 'grade-5', 'ì¤€4ê¸‰': 'grade-4-2', '4ê¸‰': 'grade-4',
+        'ì¤€3ê¸‰': 'grade-3-2', '3ê¸‰': 'grade-3', '2ê¸‰': 'grade-2',
+        '1ê¸‰': 'grade-1', 'ì¤€íŠ¹ê¸‰': 'grade-special-2', 'íŠ¹ê¸‰': 'grade-special'
     },
-    DISPLAY_CHOSUNGS: ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ']
+    DISPLAY_CHOSUNGS: ['ã„±', 'ã„´', 'ã„·', 'ã„¹', 'ã…', 'ã…‚', 'ã……', 'ã…‡', 'ã…ˆ', 'ã…Š', 'ã…‹', 'ã…Œ', 'ã…', 'ã…Ž']
 };
 
 // ==========================================
-//  Data Processing Utility
+//  ë°ì´í„° ì²˜ë¦¬ ìœ í‹¸ë¦¬í‹°
 // ==========================================
 const DataUtils = {
     filterData(data, criteria) {
@@ -47,13 +47,13 @@ const DataUtils = {
         } = criteria;
 
         return data.filter(item => {
-            const hanja = item['한자'] || '';
-            const eum = item['음'] || '';
-            const huneum = item['훈음'] || '';
-            const gubun = item['구분'] || '';
-            const gyoyuksujun = item['교육수준'] || '';
-            const geubsu = item['급수'] || '';
-            const jangdaneum = item['장단음'] || '';
+            const hanja = item['í•œìž'] || '';
+            const eum = item['ìŒ'] || '';
+            const huneum = item['í›ˆìŒ'] || '';
+            const gubun = item['êµ¬ë¶„'] || '';
+            const gyoyuksujun = item['êµìœ¡ìˆ˜ì¤€'] || '';
+            const geubsu = item['ê¸‰ìˆ˜'] || '';
+            const jangdaneum = item['ìž¥ë‹¨ìŒ'] || '';
 
             const matchSearch = !searchTerm ||
                 hanja.includes(searchTerm) ||
@@ -76,7 +76,7 @@ const DataUtils = {
                 matchChosung = normalized === selectedChosung;
             }
 
-            const notEnding = !selectedSyllable || !gubun.includes('끝음절');
+            const notEnding = !selectedSyllable || !gubun.includes('ëìŒì ˆ');
 
             return matchSearch && matchEducation && matchGrade &&
                 matchLength && matchFavorites && matchChosung && notEnding;
@@ -84,10 +84,10 @@ const DataUtils = {
     },
 
     createRowHtml(item) {
-        const huneum = item['훈음'] || '';
-        const gubun = item['구분'] || '';
+        const huneum = item['í›ˆìŒ'] || '';
+        const gubun = item['êµ¬ë¶„'] || '';
         const isFav = Favorites.isFavorite(huneum, gubun);
-        const gradeClass = Renderer.getGradeClass(item['급수']);
+        const gradeClass = Renderer.getGradeClass(item['ê¸‰ìˆ˜']);
 
         let url = item['URL'] || '';
         if (url && !url.startsWith('http')) {
@@ -99,36 +99,36 @@ const DataUtils = {
                     <button class="favorite-star ${isFav ? 'active' : ''}" 
                             data-huneum="${escapeHtml(huneum)}" 
                             data-gubun="${escapeHtml(gubun)}">
-                        ${isFav ? '⭐' : '☆'}
+                        ${isFav ? 'â­' : 'â˜†'}
                     </button>
                 </td>
                 <td class="hanja-char">${escapeHtml(huneum)}</td>
                 <td>${escapeHtml(gubun) || '-'}</td>
-                <td>${escapeHtml(item['교육수준']) || '-'}</td>
+                <td>${escapeHtml(item['êµìœ¡ìˆ˜ì¤€']) || '-'}</td>
                 <td>
                     <span class="grade-badge ${gradeClass}" 
-                          data-grade="${escapeHtml(item['급수'] || '')}">
-                        ${escapeHtml(item['급수']) || '-'}
+                          data-grade="${escapeHtml(item['ê¸‰ìˆ˜'] || '')}">
+                        ${escapeHtml(item['ê¸‰ìˆ˜']) || '-'}
                     </span>
                 </td>
                 <td>
-                    <span class="length-badge length-${item['장단음'] || '없음'}" 
-                          data-length="${escapeHtml(item['장단음'] || '')}">
-                        ${escapeHtml(item['장단음']) || '없음'}
+                    <span class="length-badge length-${item['ìž¥ë‹¨ìŒ'] || 'ì—†ìŒ'}" 
+                          data-length="${escapeHtml(item['ìž¥ë‹¨ìŒ'] || '')}">
+                        ${escapeHtml(item['ìž¥ë‹¨ìŒ']) || 'ì—†ìŒ'}
                     </span>
                 </td>
                 <td>
                     ${url ? `<a href="${escapeHtml(url)}" target="_blank" 
-                                class="blog-link" title="블로그 보기" 
-                                aria-label="블로그 보기" 
-                                rel="noopener noreferrer">🔗</a>` : '-'}
+                                class="blog-link" title="ë¸”ë¡œê·¸ ë³´ê¸°" 
+                                aria-label="ë¸”ë¡œê·¸ ë³´ê¸°" 
+                                rel="noopener noreferrer">ðŸ”—</a>` : '-'}
                 </td>
             </tr>`;
     }
 };
 
 // ==========================================
-//  State Management Object
+//  ìƒíƒœ ê´€ë¦¬ ê°ì²´
 // ==========================================
 const AppState = {
     hanjaData: [],
@@ -144,7 +144,7 @@ const AppState = {
     recentHistory: [],
     MAX_RECENT_ITEMS: 30,
 
-    // DOM Element Cache
+    // DOM ìš”ì†Œ ìºì‹œ
     elements: {},
 
     initElements() {
@@ -175,7 +175,7 @@ const AppState = {
 };
 
 // ==========================================
-//  localStorage Safe Wrapper
+//  localStorage ì•ˆì „ ëž˜í¼
 // ==========================================
 const Storage = {
     get(key, defaultValue = null) {
@@ -195,7 +195,7 @@ const Storage = {
         } catch (error) {
             console.error(`Storage set error for ${key}:`, error);
             if (error.name === 'QuotaExceededError') {
-                alert('Storage limit exceeded.');
+                alert('ì €ìž¥ ê³µê°„ì´ ë¶€ì¡±í•©ë‹ˆë‹¤.');
             }
             return false;
         }
@@ -213,7 +213,7 @@ const Storage = {
 };
 
 // ==========================================
-//  Favorites Management
+//  ì¦ê²¨ì°¾ê¸° ê´€ë¦¬
 // ==========================================
 const Favorites = {
     load() {
@@ -260,7 +260,7 @@ const Favorites = {
 };
 
 // ==========================================
-//  Dark Mode Management
+//  ë‹¤í¬ëª¨ë“œ ê´€ë¦¬
 // ==========================================
 const DarkMode = {
     load() {
@@ -280,14 +280,14 @@ const DarkMode = {
     updateButton(isDark) {
         const btn = AppState.elements.darkModeBtn;
         if (btn) {
-            btn.textContent = isDark ? '☀️' : '🌙';
-            btn.title = isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode';
+            btn.textContent = isDark ? 'â˜€ï¸' : 'ðŸŒ™';
+            btn.title = isDark ? 'ë¼ì´íŠ¸ëª¨ë“œë¡œ ì „í™˜' : 'ë‹¤í¬ëª¨ë“œë¡œ ì „í™˜';
         }
     }
 };
 
 // ==========================================
-//  Recent View Management
+//  ìµœê·¼ ë³¸ í•œìž ê´€ë¦¬
 // ==========================================
 const RecentView = {
     load() {
@@ -307,24 +307,24 @@ const RecentView = {
         if (!item) return;
 
         const historyItem = {
-            hanja: item['한자'] || '',
-            huneum: item['훈음'] || '',
-            gubun: item['구분'] || '',
+            hanja: item['í•œìž'] || '',
+            huneum: item['í›ˆìŒ'] || '',
+            gubun: item['êµ¬ë¶„'] || '',
             url: item['URL'] || '',
-            grade: item['급수'] || '',
+            grade: item['ê¸‰ìˆ˜'] || '',
             timestamp: Date.now()
         };
 
-        // Remove duplicates
+        // ì¤‘ë³µ ì œê±°
         const uniqueKey = `${historyItem.huneum}|${historyItem.gubun}`;
         AppState.recentHistory = AppState.recentHistory.filter(
             h => `${h.huneum}|${h.gubun}` !== uniqueKey
         );
 
-        // Add to front
+        // ë§¨ ì•žì— ì¶”ê°€
         AppState.recentHistory.unshift(historyItem);
 
-        // Limit maximum items
+        // ìµœëŒ€ ê°œìˆ˜ ì œí•œ
         if (AppState.recentHistory.length > AppState.MAX_RECENT_ITEMS) {
             AppState.recentHistory = AppState.recentHistory.slice(0, AppState.MAX_RECENT_ITEMS);
         }
@@ -340,7 +340,7 @@ const RecentView = {
 
     clear() {
         if (AppState.recentHistory.length === 0) return;
-        if (confirm('Are you sure you want to delete all recent history?')) {
+        if (confirm('ìµœê·¼ ë³¸ í•œìž ê¸°ë¡ì„ ëª¨ë‘ ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?')) {
             AppState.recentHistory = [];
             this.save();
             this.render();
@@ -370,9 +370,9 @@ const RecentView = {
             sup = `<sup>${escapeHtml(match[1])}</sup>`;
         }
 
-        if (gubun.includes('첫말')) {
+        if (gubun.includes('ì²«ë§')) {
             return `${hanja}${sup}-`;
-        } else if (gubun.includes('끝말') || gubun.includes('끝음절')) {
+        } else if (gubun.includes('ëë§') || gubun.includes('ëìŒì ˆ')) {
             return `-${hanja}${sup}`;
         } else {
             return `${hanja}${sup}`;
@@ -401,7 +401,7 @@ const RecentView = {
 
             li.innerHTML = `
                 <a href="${escapeHtml(item.url)}" target="_blank" class="recent-item-link" 
-                   title="Open in new tab" rel="noopener noreferrer">
+                   title="ìƒˆ íƒ­ì—ì„œ ë³´ê¸°" rel="noopener noreferrer">
                     <span class="recent-hanja">${displayHanja}</span>
                     <div class="recent-info">
                         <span class="recent-huneum">${escapeHtml(item.huneum)}</span>
@@ -409,7 +409,7 @@ const RecentView = {
                     </div>
                 </a>
                 <button class="delete-recent-btn" data-index="${index}" 
-                        aria-label="Delete" title="Remove from history">×</button>
+                        aria-label="ì‚­ì œ" title="ê¸°ë¡ì—ì„œ ì‚­ì œ">Ã—</button>
             `;
 
             list.appendChild(li);
@@ -424,25 +424,25 @@ const RecentView = {
 };
 
 // ==========================================
-//  Hangul Processing Utility
+//  í•œê¸€ ì²˜ë¦¬ ìœ í‹¸ë¦¬í‹°
 // ==========================================
 const HangulUtils = {
     getChosung(char) {
         const code = char.charCodeAt(0) - 0xAC00;
         if (code < 0 || code > 11171) return null;
         const chosungIndex = Math.floor(code / 588);
-        const chosungs = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+        const chosungs = ['ã„±', 'ã„²', 'ã„´', 'ã„·', 'ã„¸', 'ã„¹', 'ã…', 'ã…‚', 'ã…ƒ', 'ã……', 'ã…†', 'ã…‡', 'ã…ˆ', 'ã…‰', 'ã…Š', 'ã…‹', 'ã…Œ', 'ã…', 'ã…Ž'];
         return chosungs[chosungIndex];
     },
 
     normalizeChosung(chosung) {
-        const map = { 'ㄲ': 'ㄱ', 'ㄸ': 'ㄷ', 'ㅃ': 'ㅂ', 'ㅆ': 'ㅅ', 'ㅉ': 'ㅈ' };
+        const map = { 'ã„²': 'ã„±', 'ã„¸': 'ã„·', 'ã…ƒ': 'ã…‚', 'ã…†': 'ã……', 'ã…‰': 'ã…ˆ' };
         return map[chosung] || chosung;
     }
 };
 
 // ==========================================
-//  Filtering Logic
+//  í•„í„°ë§ ë¡œì§
 // ==========================================
 const Filter = {
     applyAndReset() {
@@ -476,7 +476,7 @@ const Filter = {
         if (AppState.elements.educationFilter.value) {
             chips.push({
                 type: 'education',
-                label: '교육수준',
+                label: 'êµìœ¡ìˆ˜ì¤€',
                 value: AppState.elements.educationFilter.value
             });
         }
@@ -484,7 +484,7 @@ const Filter = {
         if (AppState.elements.lengthFilter.value) {
             chips.push({
                 type: 'length',
-                label: '장단음',
+                label: 'ìž¥ë‹¨ìŒ',
                 value: AppState.elements.lengthFilter.value
             });
         }
@@ -492,10 +492,10 @@ const Filter = {
         if (AppState.selectedGrades.length > 0) {
             chips.push({
                 type: 'grade',
-                label: '급수',
+                label: 'ê¸‰ìˆ˜',
                 value: AppState.selectedGrades.length <= 2
                     ? AppState.selectedGrades.join(', ')
-                    : `${AppState.selectedGrades[0]} 외 ${AppState.selectedGrades.length - 1}개`
+                    : `${AppState.selectedGrades[0]} ì™¸ ${AppState.selectedGrades.length - 1}ê°œ`
             });
         }
 
@@ -510,14 +510,14 @@ const Filter = {
             <div class="filter-chip" data-filter-type="${chip.type}">
                 <span class="filter-chip-label">${escapeHtml(chip.label)}:</span>
                 <span class="filter-chip-value">${escapeHtml(chip.value)}</span>
-                <button class="filter-chip-remove" data-filter-type="${chip.type}">×</button>
+                <button class="filter-chip-remove" data-filter-type="${chip.type}">Ã—</button>
             </div>
         `).join('');
     }
 };
 
 // ==========================================
-//  Rendering
+//  ë Œë”ë§
 // ==========================================
 const Renderer = {
     getGradeClass(geubsu) {
@@ -532,8 +532,8 @@ const Renderer = {
         if (!tbody || !resultCount) return;
 
         if (data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;">검색 결과가 없습니다.</td></tr>';
-            resultCount.textContent = '0개 한자';
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;">ê²€ìƒ‰ ê²°ê³¼ê°€ ì—†ìŠµë‹ˆë‹¤.</td></tr>';
+            resultCount.textContent = '0ê°œ í•œìž';
             this.updatePagination(0);
             return;
         }
@@ -544,7 +544,7 @@ const Renderer = {
 
         tbody.innerHTML = pageData.map(item => DataUtils.createRowHtml(item)).join('');
 
-        resultCount.textContent = `${new Set(data.map(i => i['한자'])).size}개 한자`;
+        resultCount.textContent = `${new Set(data.map(i => i['í•œìž'])).size}ê°œ í•œìž`;
         this.updatePagination(totalPages);
     },
 
@@ -578,7 +578,7 @@ const Renderer = {
 };
 
 // ==========================================
-//  Chosung Filter
+//  ì´ˆì„± í•„í„°
 // ==========================================
 const ChosungFilter = {
     init() {
@@ -611,10 +611,10 @@ const ChosungFilter = {
         chosungs.forEach(chosung => {
             const syllables = new Set();
             AppState.hanjaData.forEach(item => {
-                const eum = (item['음'] || '').trim();
-                const gubun = item['구분'] || '';
+                const eum = (item['ìŒ'] || '').trim();
+                const gubun = item['êµ¬ë¶„'] || '';
 
-                if (eum && !gubun.includes('끝음절')) {
+                if (eum && !gubun.includes('ëìŒì ˆ')) {
                     const normalized = HangulUtils.normalizeChosung(
                         HangulUtils.getChosung(eum.charAt(0))
                     );
@@ -632,7 +632,7 @@ const ChosungFilter = {
         const syllables = AppState.syllableCache[chosung] || [];
 
         if (syllables.length === 0) {
-            container.innerHTML = '<div class="no-syllables-message">해당 초성 한자 없음</div>';
+            container.innerHTML = '<div class="no-syllables-message">í•´ë‹¹ ì´ˆì„± í•œìž ì—†ìŒ</div>';
         } else {
             container.innerHTML = syllables.map(s =>
                 `<button class="syllable-btn" data-syllable="${escapeHtml(s)}">${escapeHtml(s)}</button>`
@@ -640,7 +640,7 @@ const ChosungFilter = {
         }
         container.classList.add('show');
 
-        // Event Delegation (Prevent Memory Leaks)
+        // ì´ë²¤íŠ¸ ìœ„ìž„ ì‚¬ìš© (ë©”ëª¨ë¦¬ ëˆ„ìˆ˜ ë°©ì§€)
         container.querySelectorAll('.syllable-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 container.querySelectorAll('.syllable-btn').forEach(b =>
@@ -660,7 +660,7 @@ const ChosungFilter = {
 };
 
 // ==========================================
-//  Grade Filter
+//  ê¸‰ìˆ˜ í•„í„°
 // ==========================================
 const GradeFilter = {
     init() {
@@ -721,11 +721,11 @@ const GradeFilter = {
         if (!label) return;
 
         if (AppState.selectedGrades.length === 0) {
-            label.textContent = '전체';
+            label.textContent = 'ì „ì²´';
         } else if (AppState.selectedGrades.length === 1) {
             label.textContent = AppState.selectedGrades[0];
         } else {
-            label.textContent = `${AppState.selectedGrades[0]} 외 ${AppState.selectedGrades.length - 1}개`;
+            label.textContent = `${AppState.selectedGrades[0]} ì™¸ ${AppState.selectedGrades.length - 1}ê°œ`;
         }
     },
 
@@ -741,11 +741,11 @@ const GradeFilter = {
 };
 
 // ==========================================
-//  Event Handlers Registration
+//  ì´ë²¤íŠ¸ í•¸ë“¤ëŸ¬ ë“±ë¡
 // ==========================================
 const EventHandlers = {
     init() {
-        // Search
+        // ê²€ìƒ‰
         const debouncedFilter = debounce(() => Filter.applyAndReset(), 300);
         AppState.elements.searchInput?.addEventListener('input', (e) => {
             AppState.elements.clearSearchBtn.style.display = e.target.value ? 'block' : 'none';
@@ -759,24 +759,24 @@ const EventHandlers = {
             Filter.applyAndReset();
         });
 
-        // Filter
+        // í•„í„°
         AppState.elements.educationFilter?.addEventListener('change', () => Filter.applyAndReset());
         AppState.elements.lengthFilter?.addEventListener('change', () => Filter.applyAndReset());
 
-        // Favorites
+        // ì¦ê²¨ì°¾ê¸°
         AppState.elements.favoritesOnlyBtn?.addEventListener('click', () => Favorites.toggleFilter());
 
-        // Dark Mode
+        // ë‹¤í¬ëª¨ë“œ
         AppState.elements.darkModeBtn?.addEventListener('click', () => DarkMode.toggle());
 
-        // Recent View
+        // ìµœê·¼ ë³¸ í•œìž
         AppState.elements.recentViewBtn?.addEventListener('click', () => RecentView.toggleModal());
         document.getElementById('closeRecentBtn')?.addEventListener('click', () => {
             AppState.elements.recentModal.style.display = 'none';
         });
         document.getElementById('clearRecentBtn')?.addEventListener('click', () => RecentView.clear());
 
-        // Pagination
+        // íŽ˜ì´ì§€ë„¤ì´ì…˜
         AppState.elements.pageNumbers?.addEventListener('click', (e) => {
             const btn = e.target.closest('button');
             if (btn && btn.dataset.page) {
@@ -797,7 +797,7 @@ const EventHandlers = {
             Filter.applyAndRender();
         });
 
-        // Event Delegation: Favorite Button
+        // ì´ë²¤íŠ¸ ìœ„ìž„: ì¦ê²¨ì°¾ê¸° ë²„íŠ¼
         document.addEventListener('click', (e) => {
             const btn = e.target.closest('.favorite-star');
             if (btn) {
@@ -806,7 +806,7 @@ const EventHandlers = {
             }
         });
 
-        // Event Delegation: Grade Badge Click
+        // ì´ë²¤íŠ¸ ìœ„ìž„: ê¸‰ìˆ˜ ë°°ì§€ í´ë¦­
         document.addEventListener('click', (e) => {
             const badge = e.target.closest('.grade-badge');
             if (badge) {
@@ -821,12 +821,12 @@ const EventHandlers = {
             }
         });
 
-        // Event Delegation: Length Badge Click
+        // ì´ë²¤íŠ¸ ìœ„ìž„: ìž¥ë‹¨ìŒ ë°°ì§€ í´ë¦­
         document.addEventListener('click', (e) => {
             const badge = e.target.closest('.length-badge');
             if (badge) {
                 const lengthValue = badge.dataset.length;
-                if (lengthValue && lengthValue !== '없음') {
+                if (lengthValue && lengthValue !== 'ì—†ìŒ') {
                     e.stopPropagation();
                     AppState.elements.lengthFilter.value = lengthValue;
                     Filter.applyAndReset();
@@ -834,7 +834,7 @@ const EventHandlers = {
             }
         });
 
-        // Event Delegation: Remove Filter Chip
+        // ì´ë²¤íŠ¸ ìœ„ìž„: í•„í„° ì¹© ì œê±°
         document.addEventListener('click', (e) => {
             const btn = e.target.closest('.filter-chip-remove');
             if (btn) {
@@ -851,7 +851,7 @@ const EventHandlers = {
             }
         });
 
-        // Event Delegation: Recent View Delete
+        // ì´ë²¤íŠ¸ ìœ„ìž„: ìµœê·¼ ë³¸ í•œìž ì‚­ì œ
         document.addEventListener('click', (e) => {
             const btn = e.target.closest('.delete-recent-btn');
             if (btn) {
@@ -860,7 +860,7 @@ const EventHandlers = {
             }
         });
 
-        // Event Delegation: Blog Link Click (Add to Recent)
+        // ì´ë²¤íŠ¸ ìœ„ìž„: ë¸”ë¡œê·¸ ë§í¬ í´ë¦­ (ìµœê·¼ ê¸°ë¡ ì¶”ê°€)
         AppState.elements.tableBody?.addEventListener('click', (e) => {
             const linkBtn = e.target.closest('.blog-link');
             if (linkBtn) {
@@ -874,7 +874,7 @@ const EventHandlers = {
             }
         });
 
-        // Close Modal on Outside Click
+        // ëª¨ë‹¬ ì™¸ë¶€ í´ë¦­ ì‹œ ë‹«ê¸°
         document.addEventListener('click', (e) => {
             const modal = AppState.elements.recentModal;
             if (modal && modal.style.display === 'flex' &&
@@ -884,7 +884,7 @@ const EventHandlers = {
             }
         });
 
-        // Keyboard Access: Close Modal with ESC
+        // í‚¤ë³´ë“œ ì ‘ê·¼ì„±: ESCë¡œ ëª¨ë‹¬ ë‹«ê¸°
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 const modal = AppState.elements.recentModal;
@@ -900,7 +900,7 @@ const EventHandlers = {
 };
 
 // ==========================================
-//  Data Load and Initialization
+//  ë°ì´í„° ë¡œë“œ ë° ì´ˆê¸°í™”
 // ==========================================
 async function loadData() {
     try {
@@ -911,10 +911,10 @@ async function loadData() {
 
         const data = await response.json();
         if (!Array.isArray(data) || data.length === 0) {
-            throw new Error('Invalid data format');
+            throw new Error('ìœ íš¨í•˜ì§€ ì•Šì€ ë°ì´í„° í˜•ì‹');
         }
 
-        // BOM Removal and Data Cleaning
+        // BOM ì œê±° ë° ë°ì´í„° ì •ì œ
         AppState.hanjaData = data.map(item => {
             const cleanItem = {};
             for (const key in item) {
@@ -924,21 +924,21 @@ async function loadData() {
             return cleanItem;
         });
 
-        // Create Sorted Data
+        // ì •ë ¬ëœ ë°ì´í„° ìƒì„±
         AppState.sortedHanjaData = [...AppState.hanjaData].sort((a, b) => {
-            const hanjaA = a['한자'] || '';
-            const hanjaB = b['한자'] || '';
+            const hanjaA = a['í•œìž'] || '';
+            const hanjaB = b['í•œìž'] || '';
             return hanjaA.localeCompare(hanjaB);
         });
 
-        console.log(`✅ ${AppState.hanjaData.length} Hanja data loaded successfully`);
+        console.log(`âœ… ${AppState.hanjaData.length}ê°œì˜ í•œìž ë°ì´í„° ë¡œë“œ ì™„ë£Œ`);
         return true;
     } catch (error) {
-        console.error('Data load failed:', error);
+        console.error('ë°ì´í„° ë¡œë“œ ì‹¤íŒ¨:', error);
         if (AppState.elements.tableBody) {
             AppState.elements.tableBody.innerHTML =
                 `<tr><td colspan="7" style="text-align:center;padding:40px;">
-                    Data Load Failed<br>${escapeHtml(error.message)}
+                    ë°ì´í„° ë¡œë“œ ì‹¤íŒ¨<br>${escapeHtml(error.message)}
                 </td></tr>`;
         }
         return false;
@@ -946,31 +946,31 @@ async function loadData() {
 }
 
 // ==========================================
-//  Main Initialization
+//  ë©”ì¸ ì´ˆê¸°í™”
 // ==========================================
 async function init() {
-    // Cache DOM Elements
+    // DOM ìš”ì†Œ ìºì‹œ
     AppState.initElements();
 
-    // Load Data
+    // ë°ì´í„° ë¡œë“œ
     const success = await loadData();
     if (!success) return;
 
-    // Load Saved Settings
+    // ì €ìž¥ëœ ì„¤ì • ë¡œë“œ
     Favorites.load();
     DarkMode.load();
     RecentView.load();
 
-    // Initialize Filters and UI
+    // í•„í„° ë° UI ì´ˆê¸°í™”
     ChosungFilter.init();
     GradeFilter.init();
     EventHandlers.init();
 
-    // Display Initial Data
+    // ì´ˆê¸° ë°ì´í„° í‘œì‹œ
     Renderer.displayData(AppState.sortedHanjaData);
 }
 
-// Initialize after DOM Loading
+// DOM ë¡œë“œ ì™„ë£Œ í›„ ì´ˆê¸°í™”
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
 } else {
