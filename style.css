@@ -13,19 +13,14 @@
     --bg-body: #f5f7fa;
     --bg-container: #ffffff;
     --bg-element: #ffffff;
-    /* Inputs, Cards, Buttons */
     --bg-intro: rgba(255, 255, 255, 0.95);
     --bg-hover-soft: #f8f9ff;
-    /* Table rows, Dropdown items */
     --bg-hover-hard: #e9ecef;
-    /* Button hovers */
     --bg-filter-chip: #f8f9ff;
 
     --text-primary: #333333;
     --text-secondary: #666666;
-    /* Subtitles, Labels */
     --text-tertiary: #999999;
-    /* Placeholders, Icons */
     --text-link: #1976d2;
 
     --border-default: #dddddd;
@@ -50,9 +45,7 @@
 
     /* Red (Delete/Clear) */
     --accent-delete: #666666;
-    /* Default icon color */
     --accent-delete-hover: #d32f2f;
-    /* Hover color */
     --accent-delete-bg: #ffebee;
 
     /* Teal (Recent View) */
@@ -130,7 +123,6 @@ body.dark-mode {
 
     /* Accents adjusted for Dark Mode */
     --accent-blue-bg: #3a3a3a;
-    /* Darker bg for buttons */
     --accent-teal-dark: #80cbc4;
     --accent-teal-bg: #252525;
     --accent-delete: #aaa;
@@ -155,7 +147,7 @@ html {
     scroll-behavior: smooth;
 }
 
-/* 스크린 리더 전용 (화면에는 숨김) */
+/* 스크린 리더 전용 */
 .sr-only {
     position: absolute;
     width: 1px;
@@ -204,22 +196,7 @@ h1 {
     font-size: 1.1rem;
 }
 
-.intro-section {
-    background: var(--bg-intro);
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 12px var(--shadow-default);
-}
-
-.intro-section p {
-    margin: 0;
-    color: var(--text-primary);
-    font-size: 1rem;
-    line-height: 1.6;
-    text-align: center;
-}
-
+/* 검색 섹션 */
 .search-section {
     position: sticky;
     top: 0;
@@ -231,14 +208,12 @@ h1 {
     transition: background 0.3s ease;
 }
 
-/* 검색창과 필터를 하나의 그리드로 */
 .search-filter-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
 }
 
-/* 검색 입력 래퍼 (X 버튼 포함) */
 .search-input-wrapper {
     grid-column: 1 / -1;
     position: relative;
@@ -255,7 +230,6 @@ h1 {
     transition: all 0.3s;
 }
 
-/* 검색 지우기 버튼 */
 .clear-search-btn {
     position: absolute;
     right: 10px;
@@ -289,7 +263,6 @@ h1 {
     display: block;
     margin-bottom: 5px;
     color: var(--text-secondary);
-    /* #555 -> secondary */
     font-weight: 600;
     font-size: 0.9rem;
 }
@@ -311,7 +284,7 @@ h1 {
     border-color: var(--border-focus);
 }
 
-/* 즐겨찾기 필터 버튼 영역 */
+/* 즐겨찾기 필터 */
 .favorites-filter {
     grid-column: 1 / -1;
     display: flex;
@@ -354,18 +327,14 @@ h1 {
     font-weight: 700;
 }
 
-/* 초성 필터 섹션 */
+/* 초성 필터 */
 .chosung-filter-section {
     margin-bottom: 20px;
     padding: 20px;
     background: linear-gradient(135deg, var(--bg-body) 0%, var(--border-default) 100%);
-    /* Adjusted gradient */
     border-radius: 12px;
 }
 
-/* Dark mode specific for gradient adjustment - using variable override directly might be tricky for gradient.
-   Let's keep the override for gradient if variables don't work perfectly, or simplified:
-*/
 body.dark-mode .chosung-filter-section {
     background: linear-gradient(135deg, var(--bg-container) 0%, var(--bg-element) 100%);
 }
@@ -429,7 +398,6 @@ body.dark-mode .chosung-filter-section {
     background: var(--bg-hover-soft);
     color: var(--text-primary);
     border: 1px solid var(--border-default);
-    /* #e0e0e0 -> border-default/light */
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -465,6 +433,18 @@ body.dark-mode .chosung-filter-section {
     font-weight: 600;
 }
 
+/* 로딩 메시지 스타일 추가 */
+.loading-msg {
+    text-align: center;
+    padding: 30px;
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    background: var(--bg-hover-soft);
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
 .table-container {
     overflow-x: auto;
     border-radius: 10px;
@@ -481,11 +461,9 @@ table {
 
 thead {
     background: #4a5568;
-    /* Keeping this specific dark grey/blue as it looks good. */
     color: white;
 }
 
-/* In dark mode, maybe darker header? */
 body.dark-mode thead {
     background: #1a1a1a;
 }
@@ -497,36 +475,13 @@ th {
     font-size: 0.9rem;
 }
 
-th:nth-child(1) {
-    width: 6%;
-}
-
-th:nth-child(2) {
-    width: 30%;
-}
-
-th:nth-child(3) {
-    width: 13%;
-}
-
-th:nth-child(4) {
-    width: 13%;
-}
-
-th:nth-child(5) {
-    width: 18%;
-}
-
-th:nth-child(6) {
-    width: 12%;
-}
-
-th:nth-child(7) {
-    width: 8%;
-    opacity: 0;
-}
-
-/* Hide layout placeholder text if any */
+th:nth-child(1) { width: 6%; }
+th:nth-child(2) { width: 30%; }
+th:nth-child(3) { width: 13%; }
+th:nth-child(4) { width: 13%; }
+th:nth-child(5) { width: 18%; }
+th:nth-child(6) { width: 12%; }
+th:nth-child(7) { width: 8%; opacity: 0; }
 
 td {
     padding: 10px 8px;
@@ -569,7 +524,7 @@ body.dark-mode .blog-link {
     filter: brightness(1.3);
 }
 
-/* 장단음 배지 스타일 */
+/* 장단음 배지 */
 .length-badge {
     display: inline-block;
     padding: 4px 10px;
@@ -719,7 +674,7 @@ footer a {
     text-decoration: underline;
 }
 
-/* 다크모드 토글 버튼 */
+/* 다크모드 토글 */
 .dark-mode-toggle {
     grid-column: 1 / -1;
     display: flex;
@@ -753,7 +708,7 @@ footer a {
 }
 
 /* ============================
-   Grade Badges (Uses Vars)
+   Grade Badges
    ============================ */
 .grade-badge {
     display: inline-block;
@@ -779,89 +734,22 @@ footer a {
     transform: translateY(0) scale(1.02);
 }
 
-.grade-8 {
-    background: var(--grade-8-bg);
-    color: var(--grade-8-text);
-    border-color: var(--grade-8-border);
-}
+.grade-8 { background: var(--grade-8-bg); color: var(--grade-8-text); border-color: var(--grade-8-border); }
+.grade-7-2 { background: var(--grade-7-2-bg); color: var(--grade-7-2-text); }
+.grade-7 { background: var(--grade-7-bg); color: var(--grade-7-text); }
+.grade-6-2 { background: var(--grade-6-2-bg); color: var(--grade-6-2-text); }
+.grade-6 { background: var(--grade-6-bg); color: var(--grade-6-text); }
+.grade-5-2 { background: var(--grade-5-2-bg); color: var(--grade-5-2-text); }
+.grade-5 { background: var(--grade-5-bg); color: var(--grade-5-text); }
+.grade-4-2 { background: var(--grade-4-2-bg); color: var(--grade-4-2-text); }
+.grade-4 { background: var(--grade-4-bg); color: var(--grade-4-text); }
+.grade-3-2 { background: var(--grade-3-2-bg); color: var(--grade-3-2-text); }
+.grade-3 { background: var(--grade-3-bg); color: var(--grade-3-text); border: 2px solid var(--grade-3-border); font-weight: 700; }
+.grade-special-2 { background: var(--grade-sp2-bg); color: var(--grade-sp2-text); border: 2px solid var(--grade-sp2-border); font-weight: 700; box-shadow: 0 2px 8px rgba(100, 181, 246, 0.3); }
+.grade-special { background: linear-gradient(135deg, var(--grade-sp-bg-grad-start) 0%, var(--grade-sp-bg-grad-end) 100%); color: var(--grade-sp-text); border: 2px solid var(--grade-sp-border); font-weight: 700; box-shadow: 0 3px 10px rgba(255, 215, 0, 0.4); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
+.grade-default { background: var(--length-none-bg); color: var(--length-none-text); border: 1px solid var(--length-none-border); }
 
-.grade-7-2 {
-    background: var(--grade-7-2-bg);
-    color: var(--grade-7-2-text);
-}
-
-.grade-7 {
-    background: var(--grade-7-bg);
-    color: var(--grade-7-text);
-}
-
-.grade-6-2 {
-    background: var(--grade-6-2-bg);
-    color: var(--grade-6-2-text);
-}
-
-.grade-6 {
-    background: var(--grade-6-bg);
-    color: var(--grade-6-text);
-}
-
-.grade-5-2 {
-    background: var(--grade-5-2-bg);
-    color: var(--grade-5-2-text);
-}
-
-.grade-5 {
-    background: var(--grade-5-bg);
-    color: var(--grade-5-text);
-}
-
-.grade-4-2 {
-    background: var(--grade-4-2-bg);
-    color: var(--grade-4-2-text);
-}
-
-.grade-4 {
-    background: var(--grade-4-bg);
-    color: var(--grade-4-text);
-}
-
-.grade-3-2 {
-    background: var(--grade-3-2-bg);
-    color: var(--grade-3-2-text);
-}
-
-.grade-3 {
-    background: var(--grade-3-bg);
-    color: var(--grade-3-text);
-    border: 2px solid var(--grade-3-border);
-    font-weight: 700;
-}
-
-.grade-special-2 {
-    background: var(--grade-sp2-bg);
-    color: var(--grade-sp2-text);
-    border: 2px solid var(--grade-sp2-border);
-    font-weight: 700;
-    box-shadow: 0 2px 8px rgba(100, 181, 246, 0.3);
-}
-
-.grade-special {
-    background: linear-gradient(135deg, var(--grade-sp-bg-grad-start) 0%, var(--grade-sp-bg-grad-end) 100%);
-    color: var(--grade-sp-text);
-    border: 2px solid var(--grade-sp-border);
-    font-weight: 700;
-    box-shadow: 0 3px 10px rgba(255, 215, 0, 0.4);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.grade-default {
-    background: var(--length-none-bg);
-    color: var(--length-none-text);
-    border: 1px solid var(--length-none-border);
-}
-
-
-/* ===== Active Filter Chips ===== */
+/* Active Filter Chips */
 .active-filters {
     display: flex;
     flex-wrap: wrap;
@@ -919,9 +807,6 @@ footer a {
 }
 
 .filter-chip-remove:hover {
-    background: var(--accent-orange);
-    /* Using orange for consistency or red? */
-    /* Original was #ff5722. Let's use delete hover */
     background: var(--accent-delete-hover);
     color: white;
     transform: scale(1.1);
@@ -931,7 +816,7 @@ footer a {
     transform: scale(0.95);
 }
 
-/* ===== Custom Dropdown ===== */
+/* Custom Dropdown */
 .custom-dropdown {
     position: relative;
     width: 100%;
@@ -1075,12 +960,10 @@ footer a {
 
 .dropdown-apply-btn:hover {
     background: var(--border-focus);
-    /* slightly different but ok */
 }
 
 .dropdown-reset-btn {
     background: var(--length-none-bg);
-    /* #f5f5f5 */
     color: var(--text-secondary);
 }
 
@@ -1088,7 +971,7 @@ footer a {
     background: var(--border-default);
 }
 
-/* ===== Recent History Styles ===== */
+/* Recent History */
 .recent-view-btn {
     padding: 10px 20px;
     font-size: 1rem;
@@ -1129,15 +1012,8 @@ footer a {
 }
 
 @keyframes slideUp {
-    from {
-        transform: translateY(20px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 .recent-header {
@@ -1168,7 +1044,6 @@ body.dark-mode .recent-header {
     overflow-y: auto;
     padding: 0;
     background: var(--bg-hover-soft);
-    /* #f9f9f9 */
 }
 
 .recent-item {
@@ -1211,7 +1086,6 @@ body.dark-mode .recent-header {
 .recent-detail {
     font-size: 0.8rem;
     color: var(--text-tertiary);
-    /* #888 */
 }
 
 .delete-recent-btn {
@@ -1258,9 +1132,7 @@ body.dark-mode .recent-header {
     color: var(--text-tertiary);
 }
 
-/* ============================
-   Media Queries
-   ============================ */
+/* Media Queries */
 @media (max-width: 768px) {
     .container .dark-mode-toggle {
         position: absolute;
@@ -1354,45 +1226,19 @@ body.dark-mode .recent-header {
         min-width: 600px;
     }
 
-    th,
-    td {
+    th, td {
         padding: 8px 6px;
         white-space: nowrap;
     }
 
-    th:nth-child(1) {
-        width: 40px;
-    }
-
-    th:nth-child(2) {
-        width: auto;
-        min-width: 120px;
-    }
-
-    th:nth-child(3) {
-        width: 80px;
-    }
-
-    th:nth-child(4) {
-        width: 70px;
-    }
-
-    th:nth-child(5) {
-        width: 60px;
-    }
-
-    th:nth-child(6) {
-        width: 60px;
-    }
-
-    th:nth-child(7) {
-        width: 60px;
-        text-align: center;
-    }
-
-    td:nth-child(7) {
-        text-align: center;
-    }
+    th:nth-child(1) { width: 40px; }
+    th:nth-child(2) { width: auto; min-width: 120px; }
+    th:nth-child(3) { width: 80px; }
+    th:nth-child(4) { width: 70px; }
+    th:nth-child(5) { width: 60px; }
+    th:nth-child(6) { width: 60px; }
+    th:nth-child(7) { width: 60px; text-align: center; }
+    td:nth-child(7) { text-align: center; }
 
     .hanja-char {
         font-size: 0.85rem;
