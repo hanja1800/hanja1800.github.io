@@ -111,8 +111,12 @@ class HanjaApp {
                 return hA.localeCompare(hB);
             });
 
-            // [수정됨] Map 생성 (키를 '한자|훈음' 조합으로 변경하여 중복 방지)
-            this.state.dataMap = new Map(cleanData.map(item => [`${item['한자']}|${item['훈음']}`, item]));
+            // [수정됨] Map Key 생성 로직 변경: 한자 + 훈음 + 구분
+            // '佳|아름다울 가|첫말' vs '佳|아름다울 가|끝말' 로 구분됨
+            this.state.dataMap = new Map(cleanData.map(item => [
+                `${item['한자']}|${item['훈음']}|${item['구분']}`, 
+                item
+            ]));
 
             this.buildSyllableCache();
             this.updateUI();
@@ -522,8 +526,9 @@ class HanjaApp {
             let url = item['URL'] || '';
             if (url && !url.startsWith('http')) url = '';
 
-            // [수정됨] 고유 키(한자+훈음) 생성 및 data-id 속성 적용
-            const uniqueId = `${hanja}|${huneum}`;
+            // [수정됨] 고유 키 생성: 한자 + 훈음 + 구분
+            // '佳|아름다울 가|첫말' 처럼 생성됨
+            const uniqueId = `${hanja}|${huneum}|${gubun}`;
 
             return `<tr>
                 <td><button class="favorite-star ${isFav ? 'active' : ''}" data-huneum="${huneum}" data-gubun="${gubun}">${isFav ? '⭐' : '☆'}</button></td>
@@ -643,10 +648,7 @@ class HanjaApp {
         // Blog Link (Recent History)
         const link = e.target.closest('.blog-link');
         if (link) {
-            // setTimeout을 사용하여 링크 이동(브라우저 기본 동작)이 UI 스레드에 의해 지연되지 않도록 함
-            // 데이터 조회 방식을 URL 매칭에서 Map Key 조회로 변경하여 안정성 확보
-            
-            // [수정됨] data-hanja 대신 data-id(고유키) 사용
+            // [수정됨] data-id(고유키) 사용
             const targetId = link.dataset.id;
             
             setTimeout(() => {
@@ -706,128 +708,3 @@ class HanjaApp {
     addToRecent(item) {
         const historyItem = {
             hanja: item['한자'] || '',
-            huneum: item['훈음'] || '',
-            gubun: item['구분'] || '',
-            url: item['URL'] || '',
-            grade: item['급수'] || '',
-            timestamp: Date.now()
-        };
-
-        const uniqueKey = `${historyItem.huneum}|${historyItem.gubun}`;
-        this.state.recentHistory = this.state.recentHistory.filter(h => `${h.huneum}|${h.gubun}` !== uniqueKey);
-        this.state.recentHistory.unshift(historyItem);
-
-        if (this.state.recentHistory.length > this.MAX_RECENT_ITEMS) {
-            this.state.recentHistory.pop();
-        }
-
-        this.saveRecentHistory();
-        this.updateCounts();
-
-        if (this.dom.recentModal.style.display === 'flex') {
-            this.renderRecentList();
-        }
-    }
-
-    saveRecentHistory() {
-        try {
-            localStorage.setItem('hanja-recent-view', JSON.stringify(this.state.recentHistory));
-        } catch (e) { console.error('History save error', e); }
-    }
-
-    deleteRecentItem(index) {
-        this.state.recentHistory.splice(index, 1);
-        this.saveRecentHistory();
-        this.updateCounts();
-        this.renderRecentList();
-    }
-
-    clearRecentHistory() {
-        if (confirm('모든 기록을 삭제하시겠습니까?')) {
-            this.state.recentHistory = [];
-            this.saveRecentHistory();
-            this.updateCounts();
-            this.renderRecentList();
-        }
-    }
-
-    renderRecentList() {
-        const list = this.dom.recentList;
-        list.innerHTML = '';
-
-        if (this.state.recentHistory.length === 0) {
-            this.dom.emptyRecentMsg.style.display = 'block';
-            return;
-        }
-        this.dom.emptyRecentMsg.style.display = 'none';
-
-        this.state.recentHistory.forEach((item, index) => {
-            const li = document.createElement('li');
-            li.className = 'recent-item';
-            const displayHanja = this.formatRecentHanja(item);
-
-            li.innerHTML = `
-                <a href="${item.url}" target="_blank" class="recent-item-link">
-                    <span class="recent-hanja">${displayHanja}</span>
-                    <div class="recent-info">
-                        <span class="recent-huneum">${item.huneum}</span>
-                        <span class="recent-detail">${item.grade} | ${item.gubun}</span>
-                    </div>
-                </a>
-                <button class="delete-recent-btn" data-index="${index}">×</button>
-            `;
-            list.appendChild(li);
-        });
-    }
-
-    formatRecentHanja(item) {
-        const hanja = item.hanja;
-        const gubun = item.gubun || '';
-        const huneum = item.huneum || '';
-        let sup = '';
-        const match = huneum.match(/\s-\s(\d+)$/);
-        if (match) sup = `<sup>${match[1]}</sup>`;
-
-        if (gubun.includes('첫말')) return `${hanja}${sup}-`;
-        if (gubun.includes('끝말') || gubun.includes('끝음절')) return `-${hanja}${sup}`;
-        return `${hanja}${sup}`;
-    }
-
-    toggleRecentModal() {
-        const modal = this.dom.recentModal;
-        if (modal.style.display === 'none' || !modal.style.display) {
-            this.renderRecentList();
-            modal.style.display = 'flex';
-        } else {
-            modal.style.display = 'none';
-        }
-    }
-
-    // ==========================================
-    // Misc
-    // ==========================================
-
-    updateCounts() {
-        if (this.dom.favoritesCount) this.dom.favoritesCount.textContent = this.state.favorites.size;
-        if (this.dom.recentViewCount) this.dom.recentViewCount.textContent = this.state.recentHistory.length;
-    }
-
-    toggleDarkMode() {
-        const isDark = document.body.classList.toggle('dark-mode');
-        localStorage.setItem('darkMode', isDark);
-        this.updateDarkModeButton(isDark);
-    }
-
-    updateDarkModeButton(isDark) {
-        if (this.dom.darkModeBtn) {
-            this.dom.darkModeBtn.textContent = isDark ? '☀️' : '🌙';
-            this.dom.darkModeBtn.title = isDark ? '라이트모드' : '다크모드';
-        }
-    }
-}
-
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    const app = new HanjaApp();
-    app.init();
-});
