@@ -260,7 +260,13 @@
         <div id="activeFilters" class="active-filters" style="display: none;">
             <!-- 필터 칩이 동적으로 추가됩니다 -->
         </div>
+
         <div class="table-container">
+            <!-- 로딩 메시지 추가 -->
+            <div id="loadingMsg" class="loading-msg" style="display: none;">
+                데이터를 불러오는 중입니다...
+            </div>
+
             <table id="hanjaTable">
                 <caption class="sr-only">교육용 한자 1800자 목록 - 훈음, 구분, 교육수준, 급수, 장단음 정보 포함</caption>
                 <thead>
@@ -291,15 +297,9 @@
         <p>데이터 출처: <a href="https://korean-pronunciation.blogspot.com/" target="_blank">우리말의 장단음을 공부하는 블로그</a></p>
     </footer>
 
+    <!-- Script 위치 조정 및 Defer -->
     <script src="script.js" defer></script>
-    <script type="text/javascript" src="//wcs.pstatic.net/wcslog.js"></script>
-    <script type="text/javascript">
-        if (!wcs_add) var wcs_add = {};
-        wcs_add["wa"] = "171d90d407a7ca0";
-        if (window.wcs) {
-            wcs_do();
-        }
-    </script>
+    
     <!-- 최근 본 한자 모달 위젯 -->
     <div id="recentModal" class="recent-modal" style="display: none;">
         <div class="recent-header">
@@ -318,7 +318,8 @@
             <button id="clearRecentBtn" class="clear-recent-btn">기록 전체 삭제</button>
         </div>
     </div>
-    <!-- 네이버 애널리틱스 추적 코드 시작 -->
+
+    <!-- 네이버 애널리틱스 추적 코드 (중복 제거 및 하단 통합) -->
     <script type="text/javascript" src="//wcs.pstatic.net/wcslog.js"></script>
     <script type="text/javascript">
         if (!wcs_add) var wcs_add = {};
@@ -327,7 +328,6 @@
             wcs_do();
         }
     </script>
-    <!-- 네이버 애널리틱스 추적 코드 끝 -->
 </body>
 
 </html>
