@@ -111,8 +111,8 @@ class HanjaApp {
                 return hA.localeCompare(hB);
             });
 
-            // Map 생성 (빠른 조회를 위해)
-            this.state.dataMap = new Map(cleanData.map(item => [item['한자'], item]));
+            // [수정됨] Map 생성 (키를 '한자|훈음' 조합으로 변경하여 중복 방지)
+            this.state.dataMap = new Map(cleanData.map(item => [`${item['한자']}|${item['훈음']}`, item]));
 
             this.buildSyllableCache();
             this.updateUI();
@@ -522,6 +522,9 @@ class HanjaApp {
             let url = item['URL'] || '';
             if (url && !url.startsWith('http')) url = '';
 
+            // [수정됨] 고유 키(한자+훈음) 생성 및 data-id 속성 적용
+            const uniqueId = `${hanja}|${huneum}`;
+
             return `<tr>
                 <td><button class="favorite-star ${isFav ? 'active' : ''}" data-huneum="${huneum}" data-gubun="${gubun}">${isFav ? '⭐' : '☆'}</button></td>
                 <td class="hanja-char">${huneum}</td>
@@ -529,7 +532,7 @@ class HanjaApp {
                 <td>${item['교육수준'] || '-'}</td>
                 <td><span class="grade-badge ${gradeClass}" data-action="filter-grade" data-grade="${item['급수']}">${item['급수'] || '-'}</span></td>
                 <td><span class="length-badge length-${item['장단음'] || '없음'}" data-action="filter-length" data-length="${item['장단음']}">${item['장단음'] || '없음'}</span></td>
-                <td>${url ? `<a href="${url}" target="_blank" class="blog-link" data-hanja="${hanja}" title="블로그 보기" aria-label="블로그 보기">🔗</a>` : '-'}</td>
+                <td>${url ? `<a href="${url}" target="_blank" class="blog-link" data-id="${uniqueId}" title="블로그 보기" aria-label="블로그 보기">🔗</a>` : '-'}</td>
             </tr>`;
         }).join('');
 
@@ -641,11 +644,13 @@ class HanjaApp {
         const link = e.target.closest('.blog-link');
         if (link) {
             // setTimeout을 사용하여 링크 이동(브라우저 기본 동작)이 UI 스레드에 의해 지연되지 않도록 함
-            // 하지만 데이터 조회 방식을 URL 매칭에서 Map Key(한자) 조회로 변경하여 안정성 확보
-            const targetHanja = link.dataset.hanja; // HTML에 심어둔 키값 가져오기
+            // 데이터 조회 방식을 URL 매칭에서 Map Key 조회로 변경하여 안정성 확보
+            
+            // [수정됨] data-hanja 대신 data-id(고유키) 사용
+            const targetId = link.dataset.id;
             
             setTimeout(() => {
-                const item = this.state.dataMap.get(targetHanja); // Map에서 즉시 조회 (O(1))
+                const item = this.state.dataMap.get(targetId); // Map에서 고유 키로 조회
                 if (item) this.addToRecent(item);
             }, 0);
         }
