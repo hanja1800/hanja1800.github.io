@@ -176,7 +176,7 @@ body {
     border-radius: 20px;
     padding: 40px;
     box-shadow: 0 20px 60px var(--shadow-strong);
-    position: relative;
+    position: relative; /* 중요: 이것이 절대 위치의 기준점이 됩니다 */
     transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -449,6 +449,21 @@ body.dark-mode .chosung-filter-section {
     overflow-x: auto;
     border-radius: 10px;
     box-shadow: 0 2px 10px var(--shadow-default);
+    /* 모바일 가로 스크롤바 스타일링 */
+}
+
+.table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: var(--bg-hover-soft);
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: var(--border-dark);
+    border-radius: 4px;
 }
 
 table {
@@ -674,15 +689,15 @@ footer a {
     text-decoration: underline;
 }
 
-/* 다크모드 토글 */
+/* [수정됨] 다크모드 토글 - 절대 위치 고정 */
 .dark-mode-toggle {
-    grid-column: 1 / -1;
-    display: flex;
-    justify-content: flex-end;
-    margin-top: -60px;
-    padding-right: 10px;
-    position: relative;
-    z-index: 20;
+    position: absolute; /* .container를 기준으로 위치 고정 */
+    top: 30px;          /* 위에서 30px 띄움 */
+    right: 30px;        /* 오른쪽에서 30px 띄움 */
+    z-index: 100;       /* 항상 맨 위에 표시 */
+    margin: 0;
+    padding: 0;
+    display: block;
 }
 
 .dark-mode-btn {
@@ -1132,15 +1147,12 @@ body.dark-mode .recent-header {
     color: var(--text-tertiary);
 }
 
-/* Media Queries */
+/* Media Queries (모바일 설정 수정됨) */
 @media (max-width: 768px) {
-    .container .dark-mode-toggle {
-        position: absolute;
-        top: -100px;
-        right: 5px;
-        margin-top: 0;
-        padding-right: 0;
-        z-index: 30;
+    /* 모바일에서 다크모드 버튼 위치 조정 */
+    .dark-mode-toggle {
+        top: 20px;   /* 위 여백 20px */
+        right: 15px; /* 오른쪽 여백 15px */
     }
 
     .dark-mode-btn {
@@ -1150,7 +1162,7 @@ body.dark-mode .recent-header {
     }
 
     header {
-        padding-right: 50px;
+        padding-right: 50px; /* 버튼과 제목이 겹치지 않게 우측 여백 확보 */
     }
 
     .favorites-toggle-btn {
@@ -1164,7 +1176,7 @@ body.dark-mode .recent-header {
     }
 
     .search-section {
-        position: relative;
+        position: relative; /* 고정 위치 해제, 원래 흐름대로 */
         top: auto;
     }
 
