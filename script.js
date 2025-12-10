@@ -3,7 +3,7 @@
  * Refactored for efficiency and maintainability
  */
 
-// 급수별 CSS 클래스 매핑 (하드코딩 제거)
+// 급수별 CSS 클래스 매핑
 const GRADE_CLASS_MAP = {
     '8급': 'grade-8', '준7급': 'grade-7-2', '7급': 'grade-7',
     '준6급': 'grade-6-2', '6급': 'grade-6', '준5급': 'grade-5-2',
@@ -18,7 +18,7 @@ class HanjaApp {
         this.state = {
             data: [],
             sortedData: [],
-            dataMap: new Map(), // 빠른 조회를 위한 Map 추가
+            dataMap: new Map(), // ID 조회를 위한 Map
             currentPage: 1,
             itemsPerPage: 20,
             filters: {
@@ -93,30 +93,40 @@ class HanjaApp {
             const rawData = await response.json();
             if (!Array.isArray(rawData) || rawData.length === 0) throw new Error('Invalid data format');
 
-            // Clean BOM and sanitize
+            // 1. 데이터 정제 및 고유 ID 생성 (가장 안전한 방식)
             const cleanData = rawData.map(item => {
                 const cleanItem = {};
+                // BOM 제거 및 키 복사
                 for (const key in item) {
                     const cleanKey = key.replace(/^\ufeff/, '');
                     cleanItem[cleanKey] = item[key];
                 }
+                
+                // 데이터 무결성을 위한 기본값 처리
+                const hanja = cleanItem['한자'] || '';
+                const huneum = cleanItem['훈음'] || '';
+                const gubun = cleanItem['구분'] || '';
+
+                // 고유 ID 미리 생성 (특수문자 제거하여 안전하게 만듦)
+                // 예: 佳_아름다울 가_첫말
+                cleanItem._id = `${hanja}_${huneum}_${gubun}`.replace(/["']/g, ""); 
+                
                 return cleanItem;
             });
 
-            // Initial Sort by Hanja
+            // 2. 소리(음) 기준 정렬
             this.state.data = cleanData;
             this.state.sortedData = [...cleanData].sort((a, b) => {
-                const hA = a['한자'] || '';
-                const hB = b['한자'] || '';
-                return hA.localeCompare(hB);
+                const soundA = a['음'] || '';
+                const soundB = b['음'] || '';
+                if (soundA === soundB) {
+                     return (a['한자'] || '').localeCompare(b['한자'] || '');
+                }
+                return soundA.localeCompare(soundB, 'ko');
             });
 
-            // [수정됨] Map Key 생성 로직 변경: 한자 + 훈음 + 구분
-            // '佳|아름다울 가|첫말' vs '佳|아름다울 가|끝말' 로 구분됨
-            this.state.dataMap = new Map(cleanData.map(item => [
-                `${item['한자']}|${item['훈음']}|${item['구분']}`, 
-                item
-            ]));
+            // 3. Map 생성 (위에서 만든 _id 사용)
+            this.state.dataMap = new Map(cleanData.map(item => [item._id, item]));
 
             this.buildSyllableCache();
             this.updateUI();
@@ -133,19 +143,16 @@ class HanjaApp {
     }
 
     loadSettings() {
-        // Load Favorites
         try {
             const favs = localStorage.getItem('hanja-favorites');
             if (favs) this.state.favorites = new Set(JSON.parse(favs));
         } catch (e) { console.error('Favorites load error:', e); }
 
-        // Load Recent History
         try {
             const hist = localStorage.getItem('hanja-recent-view');
             if (hist) this.state.recentHistory = JSON.parse(hist);
         } catch (e) { console.error('History load error:', e); }
 
-        // Load Dark Mode
         const isDark = localStorage.getItem('darkMode') === 'true';
         if (isDark) {
             document.body.classList.add('dark-mode');
@@ -163,12 +170,8 @@ class HanjaApp {
         const d = this.dom;
 
         // Search
-        if (d.searchInput) {
-            d.searchInput.addEventListener('input', (e) => this.handleSearchInput(e));
-        }
-        if (d.clearSearchBtn) {
-            d.clearSearchBtn.addEventListener('click', () => this.clearSearch());
-        }
+        if (d.searchInput) d.searchInput.addEventListener('input', (e) => this.handleSearchInput(e));
+        if (d.clearSearchBtn) d.clearSearchBtn.addEventListener('click', () => this.clearSearch());
 
         // Basic Filters
         if (d.educationFilter) {
@@ -184,7 +187,7 @@ class HanjaApp {
             });
         }
 
-        // Grade Filter (Custom Dropdown)
+        // Grade Filter
         if (d.gradeFilterBtn) {
             d.gradeFilterBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -192,12 +195,10 @@ class HanjaApp {
             });
         }
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             if (d.gradeDropdown && !d.gradeDropdown.contains(e.target)) {
                 d.gradeDropdown.classList.remove('open');
             }
-            // Recent Modal outside click
             if (d.recentModal && d.recentModal.style.display === 'flex' &&
                 !d.recentModal.contains(e.target) && !d.recentViewBtn.contains(e.target)) {
                 d.recentModal.style.display = 'none';
@@ -236,15 +237,13 @@ class HanjaApp {
             });
         }
 
-        // Chosung Buttons
+        // Chosung
         d.chosungButtons.forEach(btn => {
             btn.addEventListener('click', () => this.handleChosungClick(btn));
         });
 
-        // Event Delegation
-        if (d.tableBody) {
-            d.tableBody.addEventListener('click', (e) => this.handleTableClick(e));
-        }
+        // Table & Syllable
+        if (d.tableBody) d.tableBody.addEventListener('click', (e) => this.handleTableClick(e));
         if (d.syllableContainer) {
             d.syllableContainer.addEventListener('click', (e) => {
                 if (e.target.classList.contains('syllable-btn')) {
@@ -271,7 +270,7 @@ class HanjaApp {
             });
         }
 
-        // Recent History
+        // Recent & Dark Mode
         if (d.recentViewBtn) d.recentViewBtn.addEventListener('click', () => this.toggleRecentModal());
         if (d.closeRecentBtn) d.closeRecentBtn.addEventListener('click', () => d.recentModal.style.display = 'none');
         if (d.clearRecentBtn) d.clearRecentBtn.addEventListener('click', () => this.clearRecentHistory());
@@ -284,11 +283,7 @@ class HanjaApp {
                 }
             });
         }
-
-        // Dark Mode
-        if (d.darkModeBtn) {
-            d.darkModeBtn.addEventListener('click', () => this.toggleDarkMode());
-        }
+        if (d.darkModeBtn) d.darkModeBtn.addEventListener('click', () => this.toggleDarkMode());
     }
 
     // ==========================================
@@ -299,7 +294,6 @@ class HanjaApp {
         const val = e.target.value;
         this.dom.clearSearchBtn.style.display = val ? 'block' : 'none';
         this.state.filters.search = val.toLowerCase();
-
         clearTimeout(this.searchTimeout);
         this.searchTimeout = setTimeout(() => this.resetPageAndFilter(), 300);
     }
@@ -315,11 +309,9 @@ class HanjaApp {
     handleChosungClick(btn) {
         this.dom.chosungButtons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-
         const chosung = btn.dataset.chosung;
         this.state.filters.chosung = chosung;
         this.state.filters.syllable = '';
-
         this.generateSyllableButtons(chosung);
         this.resetPageAndFilter();
     }
@@ -330,7 +322,6 @@ class HanjaApp {
             this.dom.syllableContainer.innerHTML = '';
             return;
         }
-
         const syllables = this.state.syllableCache[chosung] || [];
         if (syllables.length === 0) {
             this.dom.syllableContainer.innerHTML = '<div class="no-syllables-message">해당 초성 한자 없음</div>';
@@ -345,10 +336,8 @@ class HanjaApp {
     handleSyllableClick(btn) {
         const syllable = btn.dataset.syllable;
         const current = this.state.filters.syllable;
-
         const buttons = this.dom.syllableContainer.querySelectorAll('.syllable-btn');
         buttons.forEach(b => b.classList.remove('active'));
-
         if (current === syllable) {
             this.state.filters.syllable = '';
         } else {
@@ -362,7 +351,6 @@ class HanjaApp {
         const val = checkbox.value;
         const isAll = checkbox.dataset.grade === 'all';
         let grades = this.state.filters.grades;
-
         if (isAll) {
             grades = [];
         } else {
@@ -379,7 +367,6 @@ class HanjaApp {
     updateGradeCheckboxes() {
         const checkboxes = this.dom.gradeDropdownMenu.querySelectorAll('input[type="checkbox"]');
         const grades = this.state.filters.grades;
-
         checkboxes.forEach(cb => {
             if (cb.dataset.grade === 'all') {
                 cb.checked = grades.length === 0;
@@ -392,7 +379,6 @@ class HanjaApp {
     updateGradeButtonLabel() {
         const grades = this.state.filters.grades;
         const label = this.dom.gradeFilterBtn.querySelector('.dropdown-label');
-
         if (grades.length === 0) label.textContent = '전체';
         else if (grades.length === 1) label.textContent = grades[0];
         else label.textContent = `${grades[0]} 외 ${grades.length - 1}개`;
@@ -425,22 +411,13 @@ class HanjaApp {
             const geubsu = item['급수'] || '';
             const jangdaneum = item['장단음'] || '';
 
-            // 1. Text Search
-            const matchSearch = !search ||
-                hanja.includes(search) ||
-                eum.includes(search) ||
-                huneum.includes(search);
-
-            // 2. Dropdown Filters
+            const matchSearch = !search || hanja.includes(search) || eum.includes(search) || huneum.includes(search);
             const matchEdu = !education || gyoyuksujun === education;
             const matchGrade = grades.length === 0 || grades.includes(geubsu);
             const matchLength = !length || jangdaneum === length;
-
-            // 3. Favorites
             const isFav = this.isFavorite(huneum, gubun);
             const matchFav = !favoritesOnly || isFav;
 
-            // 4. Chosung/Syllable
             let matchChosung = true;
             if (syllable) {
                 matchChosung = eum === syllable;
@@ -448,9 +425,7 @@ class HanjaApp {
                 matchChosung = this.normalizeChosung(this.getChosung(eum.charAt(0))) === chosung;
             }
 
-            // 5. Filter out Ending syllables if not searching specifically
             const notEnding = !syllable || !gubun.includes('끝음절');
-
             return matchSearch && matchEdu && matchGrade && matchLength && matchFav && matchChosung && notEnding;
         });
     }
@@ -517,18 +492,16 @@ class HanjaApp {
         const pageData = data.slice(start, start + itemsPerPage);
 
         this.dom.tableBody.innerHTML = pageData.map(item => {
-            const hanja = item['한자'] || '';
             const huneum = item['훈음'] || '';
             const gubun = item['구분'] || '';
             const isFav = this.isFavorite(huneum, gubun);
             const gradeClass = this.getGradeClass(item['급수']);
-
+            
             let url = item['URL'] || '';
             if (url && !url.startsWith('http')) url = '';
 
-            // [수정됨] 고유 키 생성: 한자 + 훈음 + 구분
-            // '佳|아름다울 가|첫말' 처럼 생성됨
-            const uniqueId = `${hanja}|${huneum}|${gubun}`;
+            // loadData에서 미리 만든 안전한 ID 사용
+            const uniqueId = item._id;
 
             return `<tr>
                 <td><button class="favorite-star ${isFav ? 'active' : ''}" data-huneum="${huneum}" data-gubun="${gubun}">${isFav ? '⭐' : '☆'}</button></td>
@@ -548,20 +521,16 @@ class HanjaApp {
     renderPagination(totalPages) {
         const { prevBtn, nextBtn, pageNumbers } = this.dom;
         const { currentPage } = this.state;
-
         if (totalPages === 0) {
             pageNumbers.innerHTML = '';
             prevBtn.disabled = nextBtn.disabled = true;
             return;
         }
-
         prevBtn.disabled = currentPage === 1;
         nextBtn.disabled = currentPage === totalPages;
-
         const maxVisible = 10;
         const startPage = Math.floor((currentPage - 1) / maxVisible) * maxVisible + 1;
         const endPage = Math.min(startPage + maxVisible - 1, totalPages);
-
         let html = '';
         for (let i = startPage; i <= endPage; i++) {
             html += `<button class="${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
@@ -573,7 +542,6 @@ class HanjaApp {
         const { education, length, grades } = this.state.filters;
         const container = this.dom.activeFilters;
         const chips = [];
-
         if (education) chips.push({ type: 'education', label: '교육수준', value: education });
         if (length) chips.push({ type: 'length', label: '장단음', value: length });
         if (grades.length > 0) {
@@ -583,13 +551,11 @@ class HanjaApp {
                 value: grades.length <= 2 ? grades.join(', ') : `${grades[0]} 외 ${grades.length - 1}개`
             });
         }
-
         if (chips.length === 0) {
             container.style.display = 'none';
             container.innerHTML = '';
             return;
         }
-
         container.style.display = 'flex';
         container.innerHTML = chips.map(chip =>
             `<div class="filter-chip" data-filter-type="${chip.type}">
@@ -600,25 +566,19 @@ class HanjaApp {
         ).join('');
     }
 
-    getGradeClass(geubsu) {
-        // 상수의 매핑 테이블 활용
-        return GRADE_CLASS_MAP[geubsu] || 'grade-default';
-    }
+    getGradeClass(geubsu) { return GRADE_CLASS_MAP[geubsu] || 'grade-default'; }
 
     // ==========================================
     // Interaction Handlers
     // ==========================================
 
     handleTableClick(e) {
-        // Favorite Star
         const star = e.target.closest('.favorite-star');
         if (star) {
             e.stopPropagation();
             this.toggleFavorite(star.dataset.huneum, star.dataset.gubun);
             return;
         }
-
-        // Grade Badge Filter
         const gradeBadge = e.target.closest('.grade-badge[data-action="filter-grade"]');
         if (gradeBadge) {
             const val = gradeBadge.dataset.grade;
@@ -631,8 +591,6 @@ class HanjaApp {
             }
             return;
         }
-
-        // Length Badge Filter
         const lengthBadge = e.target.closest('.length-badge[data-action="filter-length"]');
         if (lengthBadge) {
             const val = lengthBadge.dataset.length;
@@ -644,15 +602,12 @@ class HanjaApp {
             }
             return;
         }
-
-        // Blog Link (Recent History)
         const link = e.target.closest('.blog-link');
         if (link) {
-            // [수정됨] data-id(고유키) 사용
+            // 안전하게 생성된 ID로 조회
             const targetId = link.dataset.id;
-            
             setTimeout(() => {
-                const item = this.state.dataMap.get(targetId); // Map에서 고유 키로 조회
+                const item = this.state.dataMap.get(targetId);
                 if (item) this.addToRecent(item);
             }, 0);
         }
@@ -681,7 +636,6 @@ class HanjaApp {
         }
         this.saveFavorites();
         this.updateCounts();
-
         if (this.state.filters.favoritesOnly) {
             this.resetPageAndFilter();
         } else {
@@ -689,16 +643,11 @@ class HanjaApp {
         }
     }
 
-    isFavorite(huneum, gubun) {
-        return this.state.favorites.has(`${huneum}|${gubun}`);
-    }
+    isFavorite(huneum, gubun) { return this.state.favorites.has(`${huneum}|${gubun}`); }
 
     saveFavorites() {
-        try {
-            localStorage.setItem('hanja-favorites', JSON.stringify([...this.state.favorites]));
-        } catch (e) {
-            console.error('Save failed', e);
-        }
+        try { localStorage.setItem('hanja-favorites', JSON.stringify([...this.state.favorites])); }
+        catch (e) { console.error('Save failed', e); }
     }
 
     // ==========================================
@@ -708,3 +657,115 @@ class HanjaApp {
     addToRecent(item) {
         const historyItem = {
             hanja: item['한자'] || '',
+            huneum: item['훈음'] || '',
+            gubun: item['구분'] || '',
+            url: item['URL'] || '',
+            grade: item['급수'] || '',
+            timestamp: Date.now(),
+            _id: item._id // ID도 함께 저장
+        };
+        const uniqueKey = `${historyItem.huneum}|${historyItem.gubun}`;
+        this.state.recentHistory = this.state.recentHistory.filter(h => `${h.huneum}|${h.gubun}` !== uniqueKey);
+        this.state.recentHistory.unshift(historyItem);
+        if (this.state.recentHistory.length > this.MAX_RECENT_ITEMS) {
+            this.state.recentHistory.pop();
+        }
+        this.saveRecentHistory();
+        this.updateCounts();
+        if (this.dom.recentModal.style.display === 'flex') {
+            this.renderRecentList();
+        }
+    }
+
+    saveRecentHistory() {
+        try { localStorage.setItem('hanja-recent-view', JSON.stringify(this.state.recentHistory)); }
+        catch (e) { console.error('History save error', e); }
+    }
+
+    deleteRecentItem(index) {
+        this.state.recentHistory.splice(index, 1);
+        this.saveRecentHistory();
+        this.updateCounts();
+        this.renderRecentList();
+    }
+
+    clearRecentHistory() {
+        if (confirm('모든 기록을 삭제하시겠습니까?')) {
+            this.state.recentHistory = [];
+            this.saveRecentHistory();
+            this.updateCounts();
+            this.renderRecentList();
+        }
+    }
+
+    renderRecentList() {
+        const list = this.dom.recentList;
+        list.innerHTML = '';
+        if (this.state.recentHistory.length === 0) {
+            this.dom.emptyRecentMsg.style.display = 'block';
+            return;
+        }
+        this.dom.emptyRecentMsg.style.display = 'none';
+        this.state.recentHistory.forEach((item, index) => {
+            const li = document.createElement('li');
+            li.className = 'recent-item';
+            const displayHanja = this.formatRecentHanja(item);
+            li.innerHTML = `
+                <a href="${item.url}" target="_blank" class="recent-item-link">
+                    <span class="recent-hanja">${displayHanja}</span>
+                    <div class="recent-info">
+                        <span class="recent-huneum">${item.huneum}</span>
+                        <span class="recent-detail">${item.grade} | ${item.gubun}</span>
+                    </div>
+                </a>
+                <button class="delete-recent-btn" data-index="${index}">×</button>
+            `;
+            list.appendChild(li);
+        });
+    }
+
+    formatRecentHanja(item) {
+        const hanja = item.hanja;
+        const gubun = item.gubun || '';
+        const huneum = item.huneum || '';
+        let sup = '';
+        const match = huneum.match(/\s-\s(\d+)$/);
+        if (match) sup = `<sup>${match[1]}</sup>`;
+        if (gubun.includes('첫말')) return `${hanja}${sup}-`;
+        if (gubun.includes('끝말') || gubun.includes('끝음절')) return `-${hanja}${sup}`;
+        return `${hanja}${sup}`;
+    }
+
+    toggleRecentModal() {
+        const modal = this.dom.recentModal;
+        if (modal.style.display === 'none' || !modal.style.display) {
+            this.renderRecentList();
+            modal.style.display = 'flex';
+        } else {
+            modal.style.display = 'none';
+        }
+    }
+
+    updateCounts() {
+        if (this.dom.favoritesCount) this.dom.favoritesCount.textContent = this.state.favorites.size;
+        if (this.dom.recentViewCount) this.dom.recentViewCount.textContent = this.state.recentHistory.length;
+    }
+
+    toggleDarkMode() {
+        const isDark = document.body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', isDark);
+        this.updateDarkModeButton(isDark);
+    }
+
+    updateDarkModeButton(isDark) {
+        if (this.dom.darkModeBtn) {
+            this.dom.darkModeBtn.textContent = isDark ? '☀️' : '🌙';
+            this.dom.darkModeBtn.title = isDark ? '라이트모드' : '다크모드';
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const app = new HanjaApp();
+    app.init();
+});
