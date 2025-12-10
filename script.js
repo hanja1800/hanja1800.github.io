@@ -1,7 +1,16 @@
 /**
  * HanjaApp - Educational Hanja Search Application
- * Refactored for modularity and maintainability
+ * Refactored for efficiency and maintainability
  */
+
+// 급수별 CSS 클래스 매핑 (하드코딩 제거)
+const GRADE_CLASS_MAP = {
+    '8급': 'grade-8', '준7급': 'grade-7-2', '7급': 'grade-7',
+    '준6급': 'grade-6-2', '6급': 'grade-6', '준5급': 'grade-5-2',
+    '5급': 'grade-5', '준4급': 'grade-4-2', '4급': 'grade-4',
+    '준3급': 'grade-3-2', '3급': 'grade-3', '2급': 'grade-2',
+    '1급': 'grade-1', '준특급': 'grade-special-2', '특급': 'grade-special'
+};
 
 class HanjaApp {
     constructor() {
@@ -9,6 +18,7 @@ class HanjaApp {
         this.state = {
             data: [],
             sortedData: [],
+            dataMap: new Map(), // 빠른 조회를 위한 Map 추가
             currentPage: 1,
             itemsPerPage: 20,
             filters: {
@@ -31,6 +41,7 @@ class HanjaApp {
 
         // Cache DOM Elements
         this.dom = {
+            loadingMsg: document.getElementById('loadingMsg'),
             searchInput: document.getElementById('searchInput'),
             clearSearchBtn: document.getElementById('clearSearchBtn'),
             educationFilter: document.getElementById('educationFilter'),
@@ -73,6 +84,8 @@ class HanjaApp {
     // ==========================================
 
     async loadData() {
+        if (this.dom.loadingMsg) this.dom.loadingMsg.style.display = 'block';
+
         try {
             const response = await fetch('data.json');
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -98,6 +111,9 @@ class HanjaApp {
                 return hA.localeCompare(hB);
             });
 
+            // Map 생성 (빠른 조회를 위해)
+            this.state.dataMap = new Map(cleanData.map(item => [item['한자'], item]));
+
             this.buildSyllableCache();
             this.updateUI();
             console.log(`✅ Loaded ${this.state.data.length} Hanja entries`);
@@ -107,6 +123,8 @@ class HanjaApp {
             if (this.dom.tableBody) {
                 this.dom.tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:40px;">데이터 로드 실패<br>${error.message}</td></tr>`;
             }
+        } finally {
+            if (this.dom.loadingMsg) this.dom.loadingMsg.style.display = 'none';
         }
     }
 
@@ -175,7 +193,6 @@ class HanjaApp {
             if (d.gradeDropdown && !d.gradeDropdown.contains(e.target)) {
                 d.gradeDropdown.classList.remove('open');
             }
-
             // Recent Modal outside click
             if (d.recentModal && d.recentModal.style.display === 'flex' &&
                 !d.recentModal.contains(e.target) && !d.recentViewBtn.contains(e.target)) {
@@ -184,11 +201,9 @@ class HanjaApp {
         });
 
         if (d.gradeDropdownMenu) {
-            // Checkbox changes
             d.gradeDropdownMenu.addEventListener('change', (e) => {
                 if (e.target.type === 'checkbox') this.handleGradeCheckboxChange(e.target);
             });
-            // Stop propagation inside menu
             d.gradeDropdownMenu.addEventListener('click', (e) => e.stopPropagation());
         }
 
@@ -222,13 +237,10 @@ class HanjaApp {
             btn.addEventListener('click', () => this.handleChosungClick(btn));
         });
 
-        // Event Delegation for Dynamic Elements
-        // 1. Table Body (Stars, Badges, Links)
+        // Event Delegation
         if (d.tableBody) {
             d.tableBody.addEventListener('click', (e) => this.handleTableClick(e));
         }
-
-        // 2. Syllable Buttons (Delegation)
         if (d.syllableContainer) {
             d.syllableContainer.addEventListener('click', (e) => {
                 if (e.target.classList.contains('syllable-btn')) {
@@ -236,8 +248,6 @@ class HanjaApp {
                 }
             });
         }
-
-        // 3. Active Filters (Remove)
         if (d.activeFilters) {
             d.activeFilters.addEventListener('click', (e) => {
                 const btn = e.target.closest('.filter-chip-remove');
@@ -286,7 +296,6 @@ class HanjaApp {
         this.dom.clearSearchBtn.style.display = val ? 'block' : 'none';
         this.state.filters.search = val.toLowerCase();
 
-        // Debounce filter
         clearTimeout(this.searchTimeout);
         this.searchTimeout = setTimeout(() => this.resetPageAndFilter(), 300);
     }
@@ -305,7 +314,7 @@ class HanjaApp {
 
         const chosung = btn.dataset.chosung;
         this.state.filters.chosung = chosung;
-        this.state.filters.syllable = ''; // Reset syllable when chosung changes
+        this.state.filters.syllable = '';
 
         this.generateSyllableButtons(chosung);
         this.resetPageAndFilter();
@@ -404,7 +413,6 @@ class HanjaApp {
         const { search, education, grades, length, favoritesOnly, chosung, syllable } = this.state.filters;
 
         return this.state.sortedData.filter(item => {
-            // Null safety
             const hanja = item['한자'] || '';
             const eum = item['음'] || '';
             const huneum = item['훈음'] || '';
@@ -436,7 +444,7 @@ class HanjaApp {
                 matchChosung = this.normalizeChosung(this.getChosung(eum.charAt(0))) === chosung;
             }
 
-            // 5. Filter out Ending syllables if not searching for them specificially
+            // 5. Filter out Ending syllables if not searching specifically
             const notEnding = !syllable || !gubun.includes('끝음절');
 
             return matchSearch && matchEdu && matchGrade && matchLength && matchFav && matchChosung && notEnding;
@@ -505,6 +513,7 @@ class HanjaApp {
         const pageData = data.slice(start, start + itemsPerPage);
 
         this.dom.tableBody.innerHTML = pageData.map(item => {
+            const hanja = item['한자'] || '';
             const huneum = item['훈음'] || '';
             const gubun = item['구분'] || '';
             const isFav = this.isFavorite(huneum, gubun);
@@ -520,7 +529,7 @@ class HanjaApp {
                 <td>${item['교육수준'] || '-'}</td>
                 <td><span class="grade-badge ${gradeClass}" data-action="filter-grade" data-grade="${item['급수']}">${item['급수'] || '-'}</span></td>
                 <td><span class="length-badge length-${item['장단음'] || '없음'}" data-action="filter-length" data-length="${item['장단음']}">${item['장단음'] || '없음'}</span></td>
-                <td>${url ? `<a href="${url}" target="_blank" class="blog-link" title="블로그 보기" aria-label="블로그 보기">🔗</a>` : '-'}</td>
+                <td>${url ? `<a href="${url}" target="_blank" class="blog-link" data-hanja="${hanja}" title="블로그 보기" aria-label="블로그 보기">🔗</a>` : '-'}</td>
             </tr>`;
         }).join('');
 
@@ -584,19 +593,12 @@ class HanjaApp {
     }
 
     getGradeClass(geubsu) {
-        if (!geubsu || geubsu === '-') return 'grade-default';
-        const gradeMap = {
-            '8급': 'grade-8', '준7급': 'grade-7-2', '7급': 'grade-7',
-            '준6급': 'grade-6-2', '6급': 'grade-6', '준5급': 'grade-5-2',
-            '5급': 'grade-5', '준4급': 'grade-4-2', '4급': 'grade-4',
-            '준3급': 'grade-3-2', '3급': 'grade-3', '2급': 'grade-2',
-            '1급': 'grade-1', '준특급': 'grade-special-2', '특급': 'grade-special'
-        };
-        return gradeMap[geubsu] || 'grade-default';
+        // 상수의 매핑 테이블 활용
+        return GRADE_CLASS_MAP[geubsu] || 'grade-default';
     }
 
     // ==========================================
-    // Interaction Handlers (Delegated)
+    // Interaction Handlers
     // ==========================================
 
     handleTableClick(e) {
@@ -638,11 +640,12 @@ class HanjaApp {
         // Blog Link (Recent History)
         const link = e.target.closest('.blog-link');
         if (link) {
-            const url = link.getAttribute('href');
-            // We need to find the full item data. 
-            // Since we don't have item ID, we match by URL or Huneum in the current sorted list.
+            // setTimeout을 사용하여 링크 이동(브라우저 기본 동작)이 UI 스레드에 의해 지연되지 않도록 함
+            // 하지만 데이터 조회 방식을 URL 매칭에서 Map Key(한자) 조회로 변경하여 안정성 확보
+            const targetHanja = link.dataset.hanja; // HTML에 심어둔 키값 가져오기
+            
             setTimeout(() => {
-                const item = this.state.data.find(d => d['URL'] === url);
+                const item = this.state.dataMap.get(targetHanja); // Map에서 즉시 조회 (O(1))
                 if (item) this.addToRecent(item);
             }, 0);
         }
@@ -672,11 +675,9 @@ class HanjaApp {
         this.saveFavorites();
         this.updateCounts();
 
-        // If viewing favorites only, refresh
         if (this.state.filters.favoritesOnly) {
             this.resetPageAndFilter();
         } else {
-            // Just refresh current view to update star icons
             this.updateUI();
         }
     }
@@ -690,7 +691,6 @@ class HanjaApp {
             localStorage.setItem('hanja-favorites', JSON.stringify([...this.state.favorites]));
         } catch (e) {
             console.error('Save failed', e);
-            if (e.name === 'QuotaExceededError') alert('저장 공간 부족');
         }
     }
 
@@ -719,7 +719,6 @@ class HanjaApp {
         this.saveRecentHistory();
         this.updateCounts();
 
-        // Live update modal if open
         if (this.dom.recentModal.style.display === 'flex') {
             this.renderRecentList();
         }
