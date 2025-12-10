@@ -37,8 +37,11 @@ function saveFavorites() {
     try {
         const favArray = Array.from(favorites);
         localStorage.setItem('hanja-favorites', JSON.stringify(favArray));
-    } catch (error) {
-        console.error('즐겨찾기 저장 실패:', error);
+    } catch (e) {
+        console.error('즐겨찾기 저장 실패:', e);
+        if (e.name === 'QuotaExceededError') {
+            alert('저장 공간이 부족하여 즐겨찾기를 추가할 수 없습니다.');
+        }
     }
 }
 
@@ -124,9 +127,9 @@ function normalizeChosung(chosung) {
     return map[chosung] || chosung;
 }
 
-function getField(item, fieldName) {
-    return item[fieldName] || item[`\ufeff${fieldName}`] || '';
-}
+
+
+
 
 function getGradeClass(geubsu) {
     if (!geubsu || geubsu === '-') return 'grade-default';
@@ -147,21 +150,32 @@ fetch('data.json').then(response => {
 }).then(data => {
     if (!Array.isArray(data) || data.length === 0) throw new Error('데이터 오류');
 
-    hanjaData = data;
+    // 1. 데이터 정제 (BOM 제거)
+    hanjaData = data.map(item => {
+        const cleanItem = {};
+        for (const key in item) {
+            const cleanKey = key.replace(/^\ufeff/, '');
+            cleanItem[cleanKey] = item[key];
+        }
+        return cleanItem;
+    });
+
+    // ▼▼▼ [누락된 부분 복구] 정렬된 데이터 생성 ▼▼▼
     sortedHanjaData = [...hanjaData].sort((a, b) => {
-        const hanjaA = getField(a, '한자');
-        const hanjaB = getField(b, '한자');
+        const hanjaA = a['한자'];
+        const hanjaB = b['한자'];
         if (hanjaA !== hanjaB) return hanjaA.localeCompare(hanjaB);
         return 0;
     });
+    // ▲▲▲ 여기까지 ▲▲▲
 
     loadFavorites();
     loadDarkMode();
+    initRecentView(); // <--- ★ 여기 추가해 주세요 ★
     buildSyllableCache();
     displayData(sortedHanjaData);
     initChosungFilter();
     initFavoritesButton();
-    initClearFavoritesButton();
     initDarkModeButton();
 
     console.log(`✅ ${hanjaData.length} 개의 한자 데이터 로드 완료`);
@@ -243,46 +257,6 @@ clearSearchBtn.addEventListener('click', () => {
 educationFilter.addEventListener('change', filterDataAndReset);
 lengthFilter.addEventListener('change', filterDataAndReset);
 
-// 모든 필터 초기화 함수
-function resetAllFilters() {
-    // 1. 검색어 초기화
-    searchInput.value = '';
-    clearSearchBtn.style.display = 'none';
-
-    // 2. 교육수준 필터 초기화
-    educationFilter.value = '';
-
-    // 3. 급수 필터 초기화 (모든 체크박스 해제)
-    selectedGrades = [];
-    updateGradeCheckboxes();
-    updateGradeButtonLabel();
-
-    // 4. 장단음 필터 초기화
-    lengthFilter.value = '';
-
-    // 5. 초성/음절 필터 초기화
-    selectedChosung = null;
-    selectedSyllable = null;
-    document.querySelectorAll('.chosung-btn').forEach(btn => btn.classList.remove('active'));
-    const syllableButtons = document.getElementById('syllableButtons');
-    if (syllableButtons) {
-        syllableButtons.innerHTML = '';
-        syllableButtons.classList.remove('show');
-    }
-
-    // 6. 즐겨찾기 필터 해제
-    if (showOnlyFavorites) {
-        showOnlyFavorites = false;
-        const favBtn = document.getElementById('favoritesOnlyBtn');
-        if (favBtn) favBtn.classList.remove('active');
-    }
-
-    // 7. 데이터 다시 필터링
-    filterDataAndReset();
-}
-
-// 모든 필터 초기화 버튼 이벤트
-document.getElementById('resetAllFiltersBtn').addEventListener('click', resetAllFilters);
 
 function buildSyllableCache() {
     syllableCache = {};
@@ -290,8 +264,9 @@ function buildSyllableCache() {
     chosungs.forEach(chosung => {
         const syllables = new Set();
         hanjaData.forEach(item => {
-            const eum = getField(item, '음').trim();
-            const gubun = getField(item, '구분');
+            // [▼ 이렇게 수정하세요]
+            const eum = (item['음'] || '').trim();  // 괄호로 감싸고 || '' 추가
+            const gubun = item['구분'] || '';       // || '' 추가
             if (eum && !gubun.includes('끝음절')) {
                 const normalized = normalizeChosung(getChosung(eum.charAt(0)));
                 if (normalized === chosung) syllables.add(eum);
@@ -353,13 +328,14 @@ function filterData() {
     const length = lengthFilter.value;
 
     const filtered = sortedHanjaData.filter(item => {
-        const hanja = getField(item, '한자');
-        const eum = getField(item, '음');
-        const huneum = getField(item, '훈음');
-        const gubun = getField(item, '구분');
-        const gyoyuksujun = getField(item, '교육수준');
-        const geubsu = getField(item, '급수');
-        const jangdaneum = getField(item, '장단음');
+        // [▼ 이렇게 수정하세요] (전부 다 || '' 붙이기)
+        const hanja = item['한자'] || '';
+        const eum = item['음'] || '';
+        const huneum = item['훈음'] || '';
+        const gubun = item['구분'] || '';
+        const gyoyuksujun = item['교육수준'] || '';
+        const geubsu = item['급수'] || '';
+        const jangdaneum = item['장단음'] || '';
 
         const matchSearch = !searchTerm || hanja.includes(searchTerm) || eum.includes(searchTerm) || huneum.includes(searchTerm);
         const matchEducation = !education || gyoyuksujun === education;
@@ -403,24 +379,30 @@ function displayData(data) {
     const pageData = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     tbody.innerHTML = pageData.map(item => {
-        const huneum = getField(item, '훈음');
-        const gubun = getField(item, '구분');
+        // [▼ 이렇게 수정하세요]
+        const huneum = item['훈음'] || '';
+        const gubun = item['구분'] || '';
         const isFav = isFavorite(huneum, gubun);
-        const gradeClass = getGradeClass(getField(item, '급수'));
-        const url = getField(item, 'URL');
+        const gradeClass = getGradeClass(item['급수']);
+        // ▼ 수정된 코드 (추천)
+        let url = item['URL'] || '';
+        // url이 있고(참이고), 동시에 'http'로 시작하지 않으면(이상한 데이터면) 빈 값으로 만들어버림
+        if (url && !url.startsWith('http')) {
+           url = ''; 
+        }
 
         return `<tr>
             <td><button class="favorite-star ${isFav ? 'active' : ''}" data-huneum="${huneum}" data-gubun="${gubun}">${isFav ? '⭐' : '☆'}</button></td>
             <td class="hanja-char">${huneum}</td>
             <td>${gubun || '-'}</td>
-            <td>${getField(item, '교육수준') || '-'}</td>
-            <td><span class="grade-badge ${gradeClass}" data-grade="${getField(item, '급수')}">${getField(item, '급수') || '-'}</span></td>
-            <td><span class="length-badge length-${getField(item, '장단음') || '없음'}" data-length="${getField(item, '장단음')}">${getField(item, '장단음') || '없음'}</span></td>
-            <td>${url ? `<a href="${url}" target="_blank" class="blog-link">블로그 보기</a>` : '-'}</td>
+            <td>${item['교육수준'] || '-'}</td>
+            <td><span class="grade-badge ${gradeClass}" data-grade="${item['급수']}">${item['급수'] || '-'}</span></td>
+            <td><span class="length-badge length-${item['장단음'] || '없음'}" data-length="${item['장단음']}">${item['장단음'] || '없음'}</span></td>
+            <td>${url ? `<a href="${url}" target="_blank" class="blog-link" title="블로그 보기" aria-label="블로그 보기">🔗</a>` : '-'}</td>
         </tr>`;
     }).join('');
 
-    resultCount.textContent = `${new Set(data.map(i => getField(i, '한자'))).size}개 한자`;
+    resultCount.textContent = `${new Set(data.map(i => i['한자'])).size}개 한자`;
     updatePagination(totalPages);
 }
 
@@ -462,20 +444,7 @@ function initFavoritesButton() {
     if (btn) btn.addEventListener('click', toggleFavoritesFilter);
 }
 
-function initClearFavoritesButton() {
-    const btn = document.getElementById('clearFavoritesBtn');
-    if (btn) {
-        btn.addEventListener('click', () => {
-            if (favorites.size === 0) return alert('삭제할 즐겨찾기가 없습니다.');
-            if (confirm('모든 즐겨찾기를 삭제하시겠습니까?')) {
-                favorites.clear();
-                saveFavorites();
-                updateFavoritesCount();
-                filterData();
-            }
-        });
-    }
-}
+
 
 // ===== 오류가 났던 부분 수정 (updateActiveFiltersDisplay) =====
 function updateActiveFiltersDisplay() {
@@ -578,3 +547,210 @@ document.getElementById('gradeResetBtn').addEventListener('click', () => {
 
 gradeFilterBtn.addEventListener('click', toggleGradeDropdown);
 updateGradeButtonLabel();
+// ==========================================
+//  📖 최근 본 한자 (History) 관리 기능
+// ==========================================
+
+let recentHistory = [];
+const MAX_RECENT_ITEMS = 30; // 저장할 최대 개수
+
+function initRecentView() {
+    loadRecentHistory();
+    
+    // 버튼 이벤트 연결
+    const recentBtn = document.getElementById('recentViewBtn');
+    const closeBtn = document.getElementById('closeRecentBtn');
+    const clearBtn = document.getElementById('clearRecentBtn');
+    const modal = document.getElementById('recentModal');
+
+    if (recentBtn) recentBtn.addEventListener('click', toggleRecentModal);
+    if (closeBtn) closeBtn.addEventListener('click', () => modal.style.display = 'none');
+    if (clearBtn) clearBtn.addEventListener('click', clearRecentHistory);
+    
+    // [수정됨] 테이블 내 링크 클릭 이벤트 위임
+    document.getElementById('tableBody').addEventListener('click', function(e) {
+        const linkBtn = e.target.closest('.blog-link'); // 클릭한 링크 요소(<a> 태그)
+        
+        if (linkBtn) {
+            // 1. 클릭한 링크의 주소(href)를 가져옵니다. (이건 절대 변하지 않는 값!)
+            const targetUrl = linkBtn.getAttribute('href');
+            
+            setTimeout(() => {
+                // 2. 훈음 글자 대신 'URL'이 같은지 확인해서 데이터를 찾습니다.
+                const item = sortedHanjaData.find(d => d['URL'] === targetUrl);
+                
+                if (item) {
+                    addToRecent(item);
+                } else {
+                    console.log('데이터를 찾을 수 없습니다:', targetUrl); // 디버깅용
+                }
+            }, 0);
+        }
+    });
+
+    // 영역 밖 클릭 시 모달 닫기
+    document.addEventListener('click', function(e) {
+        if (modal && modal.style.display === 'flex' && 
+            !modal.contains(e.target) && 
+            !recentBtn.contains(e.target)) {
+            modal.style.display = 'none';
+        }
+    });
+}
+
+function loadRecentHistory() {
+    try {
+        const saved = localStorage.getItem('hanja-recent-view');
+        if (saved) {
+            recentHistory = JSON.parse(saved);
+        }
+    } catch (e) {
+        console.error('History load error', e);
+        recentHistory = [];
+    }
+    updateRecentCount();
+}
+
+function saveRecentHistory() {
+    try {
+        localStorage.setItem('hanja-recent-view', JSON.stringify(recentHistory));
+        updateRecentCount();
+        
+        // 모달이 열려있다면 리스트 즉시 갱신
+        if (document.getElementById('recentModal') && document.getElementById('recentModal').style.display === 'flex') {
+            renderRecentList();
+        }
+    } catch (e) {
+        // 저장 실패 시 (용량 초과 등)
+        console.error('로컬 스토리지 저장 실패:', e);
+        
+        // 만약 용량이 꽉 찼다면 가장 오래된(마지막) 항목을 하나 더 지우고 재시도하는 로직을 넣을 수도 있습니다.
+        if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+            alert('저장 공간이 부족하여 최근 본 한자를 저장할 수 없습니다.');
+            // 선택 사항: 오래된 항목 강제 삭제 후 재시도 로직
+            // recentHistory.pop(); 
+            // saveRecentHistory();
+        }
+    }
+}
+
+function updateRecentCount() {
+    const countSpan = document.getElementById('recentViewCount');
+    if (countSpan) {
+        countSpan.textContent = recentHistory.length;
+    }
+}
+
+// [수정된 코드] addToRecent 함수
+function addToRecent(item) {
+    // 필요한 정보만 객체로 저장
+    const historyItem = {
+        hanja: item['한자'] || '',
+        huneum: item['훈음'] || '',
+        gubun: item['구분'] || '',
+        url: item['URL'] || '',
+        grade: item['급수'] || '',
+        timestamp: Date.now()
+    };
+    
+    // [개선됨] 중복 제거 로직 강화 (훈음 + 구분 조합으로 비교)
+    // 즐겨찾기와 동일한 방식으로 완벽하게 고유성을 보장합니다.
+    const uniqueKey = `${historyItem.huneum}|${historyItem.gubun}`;
+    recentHistory = recentHistory.filter(h => `${h.huneum}|${h.gubun}` !== uniqueKey);
+    
+    // 맨 앞에 추가
+    recentHistory.unshift(historyItem);
+    
+    // 최대 개수 제한
+    if (recentHistory.length > MAX_RECENT_ITEMS) {
+        recentHistory = recentHistory.slice(0, MAX_RECENT_ITEMS);
+    }
+    
+    saveRecentHistory();
+}
+
+// [핵심] 한자 포맷팅 함수 (윗첨자 + 붙임표 처리)
+function formatRecentHanja(item) {
+    const hanja = item.hanja;
+    const gubun = item.gubun || '';
+    const huneum = item.huneum || '';
+    
+    // 1. 윗첨자 숫자 추출 (예: "式 법 식 - 2" -> "2")
+    let sup = '';
+    const match = huneum.match(/\s-\s(\d+)$/); // " - 숫자" 패턴 찾기
+    
+    if (match) {
+        sup = `<sup>${match[1]}</sup>`;
+    }
+    
+    // 2. 붙임표(-) 위치 결정
+    if (gubun.includes('첫말')) {
+        return `${hanja}${sup}-`;  // 예: 式²-
+    } else if (gubun.includes('끝말') || gubun.includes('끝음절')) {
+        return `-${hanja}${sup}`;  // 예: -式²
+    } else {
+        return `${hanja}${sup}`;   // 예: 式²
+    }
+}
+
+function renderRecentList() {
+    const list = document.getElementById('recentList');
+    const emptyMsg = document.getElementById('emptyRecentMsg');
+    
+    list.innerHTML = '';
+    
+    if (recentHistory.length === 0) {
+        emptyMsg.style.display = 'block';
+        return;
+    }
+    
+    emptyMsg.style.display = 'none';
+    
+    recentHistory.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.className = 'recent-item';
+        const displayHanja = formatRecentHanja(item);
+        
+        li.innerHTML = `
+            <a href="${item.url}" target="_blank" class="recent-item-link" title="새 탭에서 보기">
+                <span class="recent-hanja">${displayHanja}</span>
+                <div class="recent-info">
+                    <span class="recent-huneum">${item.huneum}</span>
+                    <span class="recent-detail">${item.grade} | ${item.gubun}</span>
+                </div>
+            </a>
+            <!-- onclick에 event 매개변수 추가 -->
+            <button class="delete-recent-btn" onclick="deleteRecentItem(${index}, event)" aria-label="삭제" title="기록에서 삭제">×</button>
+        `;
+        list.appendChild(li);
+    });
+}
+
+// HTML 문자열 onclick에서 호출하기 위해 window 객체에 등록
+window.deleteRecentItem = function(index, event) {
+    // 이벤트 전파 방지 추가 (모달 닫힘 방지)
+    if (event) {
+        event.stopPropagation();
+    }
+    recentHistory.splice(index, 1);
+    saveRecentHistory();
+};
+
+function clearRecentHistory() {
+    if (recentHistory.length === 0) return;
+    if (confirm('최근 본 한자 기록을 모두 삭제하시겠습니까?')) {
+        recentHistory = [];
+        saveRecentHistory();
+        renderRecentList();
+    }
+}
+
+function toggleRecentModal() {
+    const modal = document.getElementById('recentModal');
+    if (modal.style.display === 'none' || !modal.style.display) {
+        renderRecentList();
+        modal.style.display = 'flex';
+    } else {
+        modal.style.display = 'none';
+    }
+}
