@@ -496,7 +496,7 @@ th:nth-child(3) { width: 13%; }
 th:nth-child(4) { width: 13%; }
 th:nth-child(5) { width: 18%; }
 th:nth-child(6) { width: 12%; }
-th:nth-child(7) { width: 8%; opacity: 0; }
+th:nth-child(7) { width: 8%; }
 
 td {
     padding: 10px 8px;
@@ -1289,3 +1289,4 @@ body.dark-mode .recent-header {
         margin-left: 5px;
     }
 }
+
