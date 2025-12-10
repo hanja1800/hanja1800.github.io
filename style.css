@@ -1,18 +1,18 @@
-/* Global Reset */
+/* ì „ì—­ ë¦¬ì…‹ */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Smooth Scrolling */
+/* ìŠ¤ë¬´ìŠ¤ ìŠ¤í¬ë¡¤ */
 html {
     scroll-behavior: smooth;
 }
 
-/* Color and Variable Definitions */
+/* ìƒ‰ìƒ ë° ë³€ìˆ˜ ì •ì˜ */
 :root {
-    /* Theme Colors (Light Mode Defaults) */
+    /* í…Œë§ˆ ìƒ‰ìƒ (Light Mode Defaults) */
     --bg-body: #f5f7fa;
     --bg-container: #ffffff;
     --bg-section: #ffffff;
@@ -33,7 +33,7 @@ html {
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.3);
 
-    /* Grade-specific Colors */
+    /* ê¸‰ìˆ˜ë³„ ìƒ‰ìƒ */
     --grade-8-bg: #E3F2FD;
     --grade-8-text: #01579B;
     --grade-8-border: #BBDEFB;
@@ -69,7 +69,7 @@ html {
     --grade-default-border: #e0e0e0;
 }
 
-/* Dark Mode Variable Redefinitions */
+/* ë‹¤í¬ëª¨ë“œ ë³€ìˆ˜ ìž¬ì •ì˜ */
 body.dark-mode {
     --bg-body: #1a1a1a;
     --bg-container: #2d2d2d;
@@ -87,14 +87,14 @@ body.dark-mode {
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.8);
 
-    /* Dark Mode Grade Colors Adjustment */
+    /* ê¸‰ìˆ˜ ìƒ‰ìƒ ë‹¤í¬ëª¨ë“œ ì¡°ì • */
     --grade-8-bg: #BBDEFB;
     --grade-7-2-bg: #90CAF9;
     --grade-7-bg: #64B5F6;
     --grade-sp-bg: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%);
 }
 
-/* Screen Reader Only */
+/* ìŠ¤í¬ë¦° ë¦¬ë” ì „ìš© */
 .sr-only {
     position: absolute;
     width: 1px;
@@ -247,13 +247,14 @@ h1 {
     border-color: var(--border-focus);
 }
 
-/* Favorites Filter */
+/* ì¦ê²¨ì°¾ê¸° í•„í„° */
 .favorites-filter {
     grid-column: 1 / -1;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
+    /* Add gap for spacing */
     margin-top: 10px;
     position: relative;
     z-index: 20;
@@ -283,7 +284,7 @@ h1 {
 
 body.dark-mode .favorites-toggle-btn:hover {
     background: #3a3a3a;
-    /* Dark mode hover adjustment */
+    /* ë‹¤í¬ëª¨ë“œ í˜¸ë²„ ë³´ì • */
     color: #ff9800;
 }
 
@@ -294,7 +295,7 @@ body.dark-mode .favorites-toggle-btn:hover {
     box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
 }
 
-/* Recent View Button */
+/* ìµœê·¼ ë³¸ í•œìž ë²„íŠ¼ */
 .recent-view-btn {
     padding: 10px 20px;
     font-size: 1rem;
@@ -321,7 +322,7 @@ body.dark-mode .recent-view-btn:hover {
     color: #80cbc4;
 }
 
-/* Chosung (Initial Consonant) Filter */
+/* ì´ˆì„± í•„í„° */
 .chosung-filter-section {
     margin-bottom: 20px;
     padding: 20px;
@@ -424,7 +425,7 @@ table {
 
 thead {
     background: #4a5568;
-    /* Darken header for contrast */
+    /* í—¤ë”ëŠ” ì¢€ ë” ì§„í•˜ê²Œ ê³ ì • */
     color: white;
 }
 
@@ -503,7 +504,7 @@ body.dark-mode .blog-link {
     filter: brightness(1.3);
 }
 
-/* Badge Common Styles */
+/* ë°°ì§€ ê³µí†µ ìŠ¤íƒ€ì¼ */
 .grade-badge,
 .length-badge {
     display: inline-block;
@@ -515,20 +516,20 @@ body.dark-mode .blog-link {
     text-align: center;
 }
 
-/* Vowel Length Styles */
-.length-장음 {
+/* ìž¥ë‹¨ìŒ ìŠ¤íƒ€ì¼ */
+.length-ìž¥ìŒ {
     background: #e3f2fd;
     color: #1976d2;
     border: 1px solid #90caf9;
 }
 
-.length-단음 {
+.length-ë‹¨ìŒ {
     background: #fff3e0;
     color: #f57c00;
     border: 1px solid #ffb74d;
 }
 
-.length-없음 {
+.length-ì—†ìŒ {
     background: #f5f5f5;
     color: #9e9e9e;
     border: 1px solid #e0e0e0;
@@ -542,7 +543,7 @@ body.dark-mode .blog-link {
     transform: translateY(-2px);
 }
 
-/* Grade Badge Styles (Using Variables) */
+/* ê¸‰ìˆ˜ ë°°ì§€ ìŠ¤íƒ€ì¼ (Variables ì‚¬ìš©) */
 .grade-badge {
     min-width: 60px;
     cursor: pointer;
@@ -631,7 +632,7 @@ body.dark-mode .blog-link {
     border-color: var(--grade-default-border);
 }
 
-/* Favorite Star */
+/* ì¦ê²¨ì°¾ê¸° ë³„ */
 .favorite-star {
     background: none;
     border: none;
@@ -650,7 +651,7 @@ body.dark-mode .blog-link {
     transform: scale(1.2);
 }
 
-/* Pagination */
+/* íŽ˜ì´ì§€ë„¤ì´ì…˜ */
 .pagination {
     display: flex;
     justify-content: center;
@@ -692,7 +693,7 @@ body.dark-mode .blog-link {
     cursor: not-allowed;
 }
 
-/* Dark Mode Button in Container */
+/* ë‹¤í¬ëª¨ë“œ ë²„íŠ¼ in container */
 .dark-mode-toggle {
     grid-column: 1 / -1;
     display: flex;
@@ -864,7 +865,7 @@ body.dark-mode .blog-link {
     cursor: pointer;
 }
 
-/* Recent View Modal */
+/* ìµœê·¼ ë³¸ í•œìž ëª¨ë‹¬ */
 .recent-modal {
     position: fixed;
     bottom: 80px;
@@ -956,7 +957,7 @@ body.dark-mode .blog-link {
     text-align: center;
 }
 
-/* Mobile Responsiveness */
+/* ëª¨ë°”ì¼ ë°˜ì‘í˜• */
 @media (max-width: 768px) {
     .container .dark-mode-toggle {
         top: -100px;
@@ -987,7 +988,7 @@ body.dark-mode .blog-link {
     }
 
     .table-container::after {
-        content: '← Scroll Left/Right →';
+        content: 'â† ì¢Œìš°ë¡œ ìŠ¤í¬ë¡¤ â†’';
         position: sticky;
         bottom: 0;
         left: 0;
