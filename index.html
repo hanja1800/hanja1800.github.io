@@ -12,7 +12,6 @@
     <meta name="keywords" content="교육용 한자, 한자 검색, 기초한자, 한문교육, 중학교 한자, 고등학교 한자, 한자 급수, 장단음, 표준국어대사전">
     <meta name="author" content="FSChronicles">
     <meta name="robots" content="index, follow">
-    <link rel="icon" href="icon.png">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://hanja1800.github.io/">
@@ -217,14 +216,11 @@
                     <button id="favoritesOnlyBtn" class="favorites-toggle-btn" aria-label="즐겨찾기만 보기">
                         ⭐ 즐겨찾기만 보기 (<span id="favoritesCount">0</span>)
                     </button>
-                    <button id="clearFavoritesBtn" class="clear-favorites-text-btn" aria-label="즐겨찾기 전체 삭제">
-                        전체 삭제
-                    </button>
+                    <button id="recentViewBtn" class="recent-view-btn" aria-label="최근 본 한자">
+                        📖 최근 본 한자 (<span id="recentViewCount">0</span>)
+                    </button> 
                 </div>
                 <div class="dark-mode-toggle">
-                    <button id="resetAllFiltersBtn" class="reset-all-btn" title="모든 필터 초기화" aria-label="모든 필터 초기화">
-                        🔄 필터 초기화
-                    </button>
                     <button id="darkModeBtn" class="dark-mode-btn" title="다크모드 전환" aria-label="다크모드 전환">
                         🌙
                     </button>
@@ -304,8 +300,33 @@
             wcs_do();
         }
     </script>
+    <!-- 최근 본 한자 모달 위젯 -->
+    <div id="recentModal" class="recent-modal" style="display: none;">
+        <div class="recent-header">
+            <h3>📖 최근 살펴본 단어</h3>
+            <button id="closeRecentBtn" class="close-recent-btn" aria-label="닫기">×</button>
+        </div>
+        <div class="recent-content">
+            <ul id="recentList">
+                <!-- 자바스크립트로 리스트가 생성됩니다 -->
+            </ul>
+            <div id="emptyRecentMsg" class="empty-msg" style="display: none;">
+                최근 본 기록이 없습니다.
+            </div>
+        </div>
+        <div class="recent-footer">
+            <button id="clearRecentBtn" class="clear-recent-btn">기록 전체 삭제</button>
+        </div>
+        </div>
+    <!-- 네이버 애널리틱스 추적 코드 시작 -->
+    <script type="text/javascript" src="//wcs.pstatic.net/wcslog.js"></script>
+    <script type="text/javascript">
+    if(!wcs_add) var wcs_add = {};
+    wcs_add["wa"] = "58d0b976a4cbcc";
+    if(window.wcs) {
+      wcs_do();
+}
+</script>
+<!-- 네이버 애널리틱스 추적 코드 끝 -->
 </body>
-
-
-
 </html>
