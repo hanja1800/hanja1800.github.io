@@ -5,81 +5,55 @@
     <!-- 기본 설정 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>교육용 한자 검색 - 중·고등 한문교육용 기초한자 1800자 데이터베이스</title>
 
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="중학교·고등학교 한문교육용 기초한자 1,800자 검색 도구. 교육수준, 급수, 장단음별 필터링 지원">
-    <meta name="keywords" content="교육용 한자, 한자 검색, 기초한자, 한문교육, 중학교 한자, 고등학교 한자, 한자 급수, 장단음, 표준국어대사전">
-    <meta name="author" content="FSChronicles">
+    <!-- Title: 군더더기 없이 핵심 대상과 기능만 명시 -->
+    <title>기초한자 1800자 장단음 데이터베이스</title>
+
+    <!-- Description: 데이터의 범위와 기준을 건조하게 서술 -->
+    <meta name="description" content="중·고등학교 한문교육용 기초한자 1,800자의 장단음 구분 및 표준 발음 데이터. 표준국어대사전 기준 장음/단음 분류 및 급수 정보 수록.">
+
+    <!-- Keywords: 사실 기반의 명사 나열 -->
+    <meta name="keywords" content="한자 장단음, 기초한자 1800자, 표준 발음, 장음, 단음, 한자 급수, 데이터베이스">
+
+    <!-- Author: '블로그'라는 명칭보다는 데이터 관리 주체로 표기 -->
+    <meta name="author" content="우리말의 장단음을 공부하는 블로그">
     <meta name="robots" content="index, follow">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://hanja1800.github.io/">
 
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph: SNS 공유 시 미리보기 (홍보성 멘트 제거) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hanja1800.github.io/">
-    <meta property="og:title" content="교육용 한자 검색 - 기초한자 1800자">
-    <meta property="og:description" content="중학교·고등학교 한문교육용 기초한자 1,800자 검색 도구. 교육수준, 급수, 장단음별 검색 가능">
+    <meta property="og:title" content="기초한자 1800자 장단음 DB">
+    <meta property="og:description" content="표준국어대사전 기준 교육용 한자 1,800자의 장단음 분류 및 발음 정보.">
     <meta property="og:image"
         content="https://raw.githubusercontent.com/fsChronicles/koreanvowel/refs/heads/main/blogger-logo.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary">
     <meta property="twitter:url" content="https://hanja1800.github.io/">
-    <meta property="twitter:title" content="교육용 한자 검색 - 기초한자 1800자">
-    <meta property="twitter:description" content="중학교·고등학교 한문교육용 기초한자 1,800자 검색 도구">
+    <meta property="twitter:title" content="기초한자 1800자 장단음 DB">
+    <meta property="twitter:description" content="교육용 한자 1,800자 장단음 분류 데이터.">
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "교육용 한자 검색",
-      "description": "중학교·고등학교 한문교육용 기초한자 1,800자를 검색하고 필터링할 수 있는 도구입니다.",
+      "@type": "Dataset",
+      "name": "기초한자 1800자 장단음 데이터",
+      "description": "중학교·고등학교 한문교육용 기초한자 1,800자의 장단음 구분 및 표준 발음 데이터셋.",
       "url": "https://hanja1800.github.io/",
-      "applicationCategory": "EducationalApplication",
-      "applicationSubCategory": "Hanja Dictionary",
-      "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "KRW"
+      "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creator": {
+        "@type": "Organization",
+        "name": "우리말의 장단음을 공부하는 블로그"
       },
       "inLanguage": "ko"
     }
     </script>
 
-    <!-- Dataset Schema -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Dataset",
-      "name": "중·고등 교육용 기초한자 1800자 데이터셋",
-      "description": "대한민국 교육부 지정 중학교·고등학교 한문교육용 기초한자 1,800자 데이터. 교육수준, 급수, 장단음, 훈음 정보 포함.",
-      "url": "https://hanja1800.github.io/",
-      "license": "https://creativecommons.org/publicdomain/zero/1.0/",
-      "creator": {
-        "@type": "Person",
-        "name": "FSChronicles"
-      },
-      "distribution": [{
-        "@type": "DataDownload",
-        "encodingFormat": "application/json",
-        "contentUrl": "https://hanja1800.github.io/data.json"
-      }],
-      "keywords": [
-        "한자", "교육용 한자", "기초한자", "한문교육", "중학교", "고등학교", "급수", "장단음"
-      ],
-      "inLanguage": "ko",
-      "temporalCoverage": "2024",
-      "spatialCoverage": {
-        "@type": "Place",
-        "name": "대한민국"
-      }
-    }
-    </script>
-
+    <!-- 스타일시트 (캐시 갱신) -->
     <link rel="stylesheet" href="style.css">
 
     <!-- Google Analytics -->
@@ -88,21 +62,20 @@
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-
         gtag('config', 'G-CTVJXS66Y4');
     </script>
 </head>
 
 <body>
     <div class="container">
-    <div class="dark-mode-toggle">
-                    <button id="darkModeBtn" class="dark-mode-btn" title="다크모드 전환" aria-label="다크모드 전환">
-                        🌙
-                    </button>
-                </div>
+        <div class="dark-mode-toggle">
+            <button id="darkModeBtn" class="dark-mode-btn" title="다크모드 전환" aria-label="다크모드 전환">
+                🌙
+            </button>
+        </div>
         <header>
-            <h1>📚 교육용 한자 검색</h1>
-            <p class="subtitle">중학교·고등학교 한문교육용 기초한자 1800자</p>
+            <h1>📚 교육용 한자 장단음 검색</h1>
+            <p class="subtitle">중학교·고등학교 한문교육용 기초한자 장단음</p>
         </header>
         <h2 class="sr-only">검색 및 필터</h2>
         <div class="search-section">
@@ -225,7 +198,7 @@
                         📖 최근 본 한자 (<span id="recentViewCount">0</span>)
                     </button>
                 </div>
-                
+
             </div>
         </div>
 
@@ -300,7 +273,7 @@
 
     <!-- Script 위치 조정 및 Defer -->
     <script src="script.js" defer></script>
-    
+
     <!-- 최근 본 한자 모달 위젯 -->
     <div id="recentModal" class="recent-modal" style="display: none;">
         <div class="recent-header">
@@ -332,4 +305,3 @@
 </body>
 
 </html>
-
