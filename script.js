@@ -357,7 +357,7 @@ class HanjaApp {
 
             // FIXED: Normalize search to handle Compatibility Jamo (e.g. 令 U+F968 vs 令 U+4EE4)
             const normalizedSearch = search.normalize('NFKC');
-            const normalizedHanja = (item.hanja || '').normalize('NFKC');
+            const normalizedHanja = item.hanja || '';
 
             const matchSearch = !search ||
                 normalizedHanja.includes(normalizedSearch) ||
