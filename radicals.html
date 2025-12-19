@@ -54,6 +54,15 @@
         gtag('js', new Date());
         gtag('config', 'G-CTVJXS66Y4');
 
+        // FORCE CLEANUP: Unregister any existing Service Workers
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                for (let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+
         // Auto-Update Checker
         (async function checkVersion() {
             try {
