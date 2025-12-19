@@ -357,7 +357,13 @@ function handleTableClick(e) {
         e.stopPropagation(); // Just in case
         const id = parseInt(favBtn.getAttribute('data-id'));
         favoritesManager.toggle(id);
-        displayTable(); // Refresh UI to show new star state
+
+        // If in Favorites Mode, we need to refresh the list to remove un-favorited items
+        if (favoritesOnly) {
+            applyFilters();
+        } else {
+            displayTable(); // Just refresh UI to show new star state
+        }
         return;
     }
 
