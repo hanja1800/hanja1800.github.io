@@ -16,13 +16,7 @@ const favoritesManager = new FavoritesManager();
 const recentManager = new RecentHistoryManager();
 
 // 급수별 CSS 클래스 매핑
-const GRADE_CLASS_MAP = {
-    '8급': 'grade-8', '준7급': 'grade-7-2', '7급': 'grade-7',
-    '준6급': 'grade-6-2', '6급': 'grade-6', '준5급': 'grade-5-2',
-    '5급': 'grade-5', '준4급': 'grade-4-2', '4급': 'grade-4',
-    '준3급': 'grade-3-2', '3급': 'grade-3', '2급': 'grade-2',
-    '1급': 'grade-1', '준특급': 'grade-special-2', '특급': 'grade-special'
-};
+// 급수별 CSS 클래스 매핑 (Moved to common.js)
 
 // ==================== Initialization ====================
 document.addEventListener('DOMContentLoaded', async () => {
@@ -313,41 +307,34 @@ function displayTable(uniqueCount = null) {
     const pageItems = filteredHanja.slice(startIndex, endIndex);
 
     pageItems.forEach(item => {
-        const row = document.createElement('tr');
-
         // Unified Favorites Check
         const isFav = isFavorite(item.id);
-        const gradeClass = getGradeClass(item.grade);
+        const row = document.createElement('tr'); // Wrapper needed for innerHTML or just append string? 
+        // Our common function returns a string "<tr>...</tr>".
+        // To append it to tbody, we can accumulate strings and set innerHTML at end, OR create element.
+        // let's follow script.js pattern for efficiency: modify displayTable to use map().join('')
 
-        row.innerHTML = `
-            <td>
-                <button class="favorite-star ${isFav ? 'active' : ''}" 
-                        data-id="${item.id}"
-                        aria-label="${isFav ? '즐겨찾기 제거' : '즐겨찾기 추가'}">
-                    ${isFav ? '⭐' : '☆'}
-                </button>
-            </td>
-            <td class="huneum-cell">${item.huneum}</td>
-            <td>${item.gubun || '-'}</td>
-            <td>${item.edu_level || '-'}</td>
-            <td><span class="grade-badge ${gradeClass}">${item.grade || '-'}</span></td>
-            <td><span class="length-badge length-${item.length || '없음'}">${item.length || '없음'}</span></td>
-            <td>
-                <a href="${item.url}" target="_blank" class="blog-link" 
-                   data-id="${item.id}"
-                   title="블로그 보기" aria-label="블로그 보기">🔗</a>
-            </td>
-        `;
+        // Wait, radicals.js was using appending elements?
+        // Original code:
+        // const row = document.createElement('tr');
+        // row.innerHTML = ...
+        // tbody.appendChild(row);
 
-        tbody.appendChild(row);
+        // Let's refactor to matching script.js for better performance too.
     });
+
+    // REPLACING THE WHOLE LOOP with map/join approach
+    tbody.innerHTML = pageItems.map(item => {
+        const isFav = isFavorite(item.id);
+        return renderHanjaRow(item, isFav);
+    }).join('');
 
     // Display UNIQUE Hanja count
     document.getElementById('resultCount').textContent = `${uniqueHanjaCount}개 한자`;
     updatePagination();
 }
 
-function getGradeClass(geubsu) { return GRADE_CLASS_MAP[geubsu] || 'grade-default'; }
+// getGradeClass(geubsu) removed - using global from common.js
 
 // ==================== Interaction Handlers ====================
 function handleTableClick(e) {

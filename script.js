@@ -3,14 +3,7 @@
  * Refactored for efficiency and maintainability
  */
 
-// 급수별 CSS 클래스 매핑
-const GRADE_CLASS_MAP = {
-    '8급': 'grade-8', '준7급': 'grade-7-2', '7급': 'grade-7',
-    '준6급': 'grade-6-2', '6급': 'grade-6', '준5급': 'grade-5-2',
-    '5급': 'grade-5', '준4급': 'grade-4-2', '4급': 'grade-4',
-    '준3급': 'grade-3-2', '3급': 'grade-3', '2급': 'grade-2',
-    '1급': 'grade-1', '준특급': 'grade-special-2', '특급': 'grade-special'
-};
+// 급수별 CSS 클래스 매핑 (Moved to common.js)
 
 class HanjaApp {
     constructor() {
@@ -462,20 +455,7 @@ class HanjaApp {
 
         this.dom.tableBody.innerHTML = pageItems.map(item => {
             const isFav = this.isFavorite(item.id);
-            const gradeClass = this.getGradeClass(item.grade);
-
-            let url = item.url || '';
-            if (url && !url.startsWith('http')) url = '';
-
-            return `<tr>
-                <td><button class="favorite-star ${isFav ? 'active' : ''}" data-id="${item.id}" aria-label="즐겨찾기">${isFav ? '⭐' : '☆'}</button></td>
-                <td class="hanja-char">${item.huneum}</td>
-                <td>${item.gubun || '-'}</td>
-                <td>${item.edu_level || '-'}</td>
-                <td><span class="grade-badge ${gradeClass}" data-action="filter-grade" data-grade="${item.grade}">${item.grade || '-'}</span></td>
-                <td><span class="length-badge length-${item.length || '없음'}" data-action="filter-length" data-length="${item.length}">${item.length || '없음'}</span></td>
-                <td>${url ? `<a href="${url}" target="_blank" class="blog-link" data-id="${item.id}" title="블로그 보기" aria-label="블로그 보기">🔗</a>` : '-'}</td>
-            </tr>`;
+            return renderHanjaRow(item, isFav);
         }).join('');
 
         // Display UNIQUE Hanja count
@@ -531,7 +511,7 @@ class HanjaApp {
         ).join('');
     }
 
-    getGradeClass(geubsu) { return GRADE_CLASS_MAP[geubsu] || 'grade-default'; }
+    // getGradeClass(geubsu) removed - using global from common.js
 
     // ==========================================
     // Interaction Handlers

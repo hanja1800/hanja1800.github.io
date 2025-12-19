@@ -4,6 +4,18 @@
  */
 
 // ==========================================
+// UI & Formatting Constants
+// ==========================================
+// 급수별 CSS 클래스 매핑
+const GRADE_CLASS_MAP = {
+    '8급': 'grade-8', '준7급': 'grade-7-2', '7급': 'grade-7',
+    '준6급': 'grade-6-2', '6급': 'grade-6', '준5급': 'grade-5-2',
+    '5급': 'grade-5', '준4급': 'grade-4-2', '4급': 'grade-4',
+    '준3급': 'grade-3-2', '3급': 'grade-3', '2급': 'grade-2',
+    '1급': 'grade-1', '준특급': 'grade-special-2', '특급': 'grade-special'
+};
+
+// ==========================================
 // Storage Manager
 // ==========================================
 const StorageManager = {
@@ -292,4 +304,45 @@ class RecentHistoryManager {
     isValidModal() {
         return this.modal && this.list;
     }
+}
+
+// ==========================================
+// Shared Rendering Helpers
+// ==========================================
+
+function getGradeClass(geubsu) {
+    return GRADE_CLASS_MAP[geubsu] || 'grade-default';
+}
+
+/**
+ * Renders a single table row for a Hanja item.
+ * @param {Object} item - The Hanja data object.
+ * @param {boolean} isFav - Whether the item is favorited.
+ * @returns {string} HTML string for the tr element.
+ */
+function renderHanjaRow(item, isFav) {
+    const gradeClass = getGradeClass(item.grade);
+
+    let url = item.url || '';
+    if (url && !url.startsWith('http')) url = '';
+
+    return `
+        <tr>
+            <td>
+                <button class="favorite-star ${isFav ? 'active' : ''}" 
+                        data-id="${item.id}"
+                        aria-label="${isFav ? '즐겨찾기 제거' : '즐겨찾기 추가'}">
+                    ${isFav ? '⭐' : '☆'}
+                </button>
+            </td>
+            <td class="huneum-cell hanja-char">${item.huneum}</td>
+            <td>${item.gubun || '-'}</td>
+            <td>${item.edu_level || '-'}</td>
+            <td><span class="grade-badge ${gradeClass}" data-action="filter-grade" data-grade="${item.grade}">${item.grade || '-'}</span></td>
+            <td><span class="length-badge length-${item.length || '없음'}" data-action="filter-length" data-length="${item.length}">${item.length || '없음'}</span></td>
+            <td>
+                ${url ? `<a href="${url}" target="_blank" class="blog-link" data-id="${item.id}" title="블로그 보기" aria-label="블로그 보기">🔗</a>` : '-'}
+            </td>
+        </tr>
+    `;
 }
