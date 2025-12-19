@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <!-- 기본 설정 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 캐시 제어 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Expires" content="0">
+
+    <title>교육용 기초한자 1800자 검색</title>
+
+    <meta name="description" content="한문교육용 기초한자 1,800자 검색. 한자의 훈음, 급수, 교육수준 정보 제공. 장단음 및 표준 발음 정보 포함.">
+
+    <meta name="keywords" content="한자, 기초한자, 교육용 한자, 한자 검색, 한자어, 훈음, 급수, 장단음, 표준 발음">
+
+    <meta name="author" content="우리말의 장단음을 공부하는 블로그">
+    <meta name="robots" content="index, follow">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://hanja1800.github.io/">
+
+    <!-- Open Graph: SNS 공유 시 미리보기 -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hanja1800.github.io/">
+    <meta property="og:title" content="교육용 기초한자 1,800자 검색">
+    <meta property="og:description" content="한문교육용 기초한자 1,800자의 훈음, 급수, 교육수준 검색. 장단음 및 발음 정보 포함.">
+    <meta property="og:image"
+        content="https://raw.githubusercontent.com/fsChronicles/koreanvowel/refs/heads/main/blogger-logo.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://hanja1800.github.io/">
+    <meta property="twitter:title" content="교육용 기초한자 1,800자 검색">
+    <meta property="twitter:description" content="한문교육용 기초한자 1,800자 검색. 훈음, 급수, 장단음 정보 제공.">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Dataset",
+      "name": "교육용 기초한자 1,800자 데이터",
+      "description": "중학교·고등학교 한문교육용 기초한자 1,800자의 훈음, 급수, 교육수준, 장단음 정보를 제공하는 검색 서비스.",
+      "url": "https://hanja1800.github.io/",
+      "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "creator": {
+        "@type": "Organization",
+        "name": "우리말의 장단음을 공부하는 블로그"
+      },
+      "inLanguage": "ko"
+    }
+    </script>
+
+    <!-- Font: Noto Sans KR & Noto Serif KR -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- 스타일시트 (캐시 갱신) -->
+    <link rel="stylesheet" href="style.css?v=20251213">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CTVJXS66Y4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-CTVJXS66Y4');
+
+        // Auto-Update Checker
+        (async function checkVersion() {
+            try {
+                const response = await fetch('version.json?t=' + Date.now());
+                if (!response.ok) return;
+                const data = await response.json();
+                const latestVersion = data.version;
+                const currentVersion = localStorage.getItem('appVersion');
+
+                if (currentVersion !== latestVersion) {
+                    console.log('New version found:', latestVersion, 'Old:', currentVersion);
+                    localStorage.setItem('appVersion', latestVersion);
+
+                    if (currentVersion) {
+                        alert('새로운 업데이트가 있습니다. 페이지를 새로고침합니다.');
+                        location.reload(true);
+                    }
+                }
+            } catch (e) {
+                console.error('Version check failed:', e);
+            }
+        })();
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="dark-mode-toggle">
+            <button id="darkModeBtn" class="dark-mode-btn" title="다크모드 전환" aria-label="다크모드 전환">
+                🌙
+            </button>
+        </div>
+        <header>
+            <h1>📚 교육용 기초한자 1,800자 검색</h1>
+            <nav class="page-nav">
+                <a href="radicals.html" class="nav-link">🔍 부수별 검색 →</a>
+            </nav>
+            <!-- <p class="subtitle">한문교육용 기초한자 장단음</p> -->
+        </header>
+        <h2 class="sr-only">검색 및 필터</h2>
+        <div class="search-section">
+            <div class="search-filter-grid">
+                <div class="search-input-wrapper">
+                    <input type="text" id="searchInput" placeholder="한자, 음으로 검색..." autocomplete="off" autofocus
+                        aria-label="한자 검색">
+                    <button id="clearSearchBtn" class="clear-search-btn" aria-label="검색어 삭제">×</button>
+                </div>
+
+                <div class="filter-group">
+                    <label for="educationFilter">교육수준</label>
+                    <select id="educationFilter" aria-label="교육수준 필터">
+                        <option value="">전체</option>
+                        <option value="중학교">중학교</option>
+                        <option value="고등학교">고등학교</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="gradeFilterBtn">급수</label>
+                    <div class="custom-dropdown" id="gradeDropdown">
+                        <button type="button" id="gradeFilterBtn" class="dropdown-button" aria-label="급수 필터">
+                            <span class="dropdown-label">전체</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </button>
+                        <div class="dropdown-menu" id="gradeDropdownMenu">
+                            <div class="dropdown-search">
+                                <input type="text" placeholder="검색..." class="dropdown-search-input"
+                                    id="gradeSearchInput">
+                            </div>
+                            <div class="checkbox-list">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="" data-grade="all" checked>
+                                    <span>전체</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="8급" data-grade="8급">
+                                    <span>8급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="준7급" data-grade="준7급">
+                                    <span>준7급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="7급" data-grade="7급">
+                                    <span>7급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="준6급" data-grade="준6급">
+                                    <span>준6급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="6급" data-grade="6급">
+                                    <span>6급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="준5급" data-grade="준5급">
+                                    <span>준5급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="5급" data-grade="5급">
+                                    <span>5급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="준4급" data-grade="준4급">
+                                    <span>준4급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="4급" data-grade="4급">
+                                    <span>4급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="준3급" data-grade="준3급">
+                                    <span>준3급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="3급" data-grade="3급">
+                                    <span>3급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="2급" data-grade="2급">
+                                    <span>2급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="1급" data-grade="1급">
+                                    <span>1급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="준특급" data-grade="준특급">
+                                    <span>준특급</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="특급" data-grade="특급">
+                                    <span>특급</span>
+                                </label>
+                            </div>
+                            <div class="dropdown-footer">
+                                <button type="button" class="dropdown-apply-btn" id="gradeApplyBtn">적용</button>
+                                <button type="button" class="dropdown-reset-btn" id="gradeResetBtn">초기화</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label for="lengthFilter">장단음</label>
+                    <select id="lengthFilter" aria-label="장단음 필터">
+                        <option value="">전체</option>
+                        <option value="단음">단음</option>
+                        <option value="장음">장음</option>
+                    </select>
+                </div>
+
+                <div class="favorites-filter">
+                    <button id="favoritesOnlyBtn" class="favorites-toggle-btn" aria-label="즐겨찾기만 보기">
+                        ⭐ 즐겨찾기만 보기 (<span id="favoritesCount">0</span>)
+                    </button>
+                    <button id="recentViewBtn" class="recent-view-btn" aria-label="최근 본 한자">
+                        📖 최근 본 한자 (<span id="recentViewCount">0</span>)
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 초성 필터 -->
+        <h2 class="sr-only">초성 필터</h2>
+        <div class="chosung-filter-section">
+            <div class="chosung-buttons" id="chosungButtons">
+                <button class="chosung-btn active" data-chosung="">전체</button>
+                <button class="chosung-btn" data-chosung="ㄱ">ㄱ</button>
+                <button class="chosung-btn" data-chosung="ㄴ">ㄴ</button>
+                <button class="chosung-btn" data-chosung="ㄷ">ㄷ</button>
+                <button class="chosung-btn" data-chosung="ㄹ">ㄹ</button>
+                <button class="chosung-btn" data-chosung="ㅁ">ㅁ</button>
+                <button class="chosung-btn" data-chosung="ㅂ">ㅂ</button>
+                <button class="chosung-btn" data-chosung="ㅅ">ㅅ</button>
+                <button class="chosung-btn" data-chosung="ㅇ">ㅇ</button>
+                <button class="chosung-btn" data-chosung="ㅈ">ㅈ</button>
+                <button class="chosung-btn" data-chosung="ㅊ">ㅊ</button>
+                <button class="chosung-btn" data-chosung="ㅋ">ㅋ</button>
+                <button class="chosung-btn" data-chosung="ㅌ">ㅌ</button>
+                <button class="chosung-btn" data-chosung="ㅍ">ㅍ</button>
+                <button class="chosung-btn" data-chosung="ㅎ">ㅎ</button>
+            </div>
+
+            <!-- 음절 필터 (초성 선택 시 표시됨) -->
+            <div class="syllable-buttons" id="syllableButtons"></div>
+        </div>
+        <h2 class="sr-only">검색 결과</h2>
+        <div class="result-info">
+            <span id="resultCount">1800개 한자</span>
+        </div>
+        <!-- 활성 필터 칩 표시 -->
+        <div id="activeFilters" class="active-filters" style="display: none;">
+            <!-- 필터 칩이 동적으로 추가됩니다 -->
+        </div>
+
+        <div class="table-container">
+            <!-- 로딩 메시지 추가 -->
+            <div id="loadingMsg" class="loading-msg" style="display: none;">
+                데이터를 불러오는 중입니다...
+            </div>
+
+            <table id="hanjaTable">
+                <caption class="sr-only">교육용 한자 1800자 목록 - 훈음, 구분, 교육수준, 급수, 장단음 정보 포함</caption>
+                <thead>
+                    <tr>
+                        <th scope="col"><span class="sr-only">즐겨찾기</span>⭐</th>
+                        <th scope="col">훈음</th>
+                        <th scope="col">구분</th>
+                        <th scope="col">교육수준</th>
+                        <th scope="col">급수</th>
+                        <th scope="col">장단음</th>
+                        <th scope="col">링크</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- 데이터가 여기에 동적으로 추가됩니다 -->
+                </tbody>
+            </table>
+
+            <div class="pagination">
+                <button id="prevBtn" aria-label="이전 페이지">‹</button>
+                <div id="pageNumbers" class="page-numbers"></div>
+                <button id="nextBtn" aria-label="다음 페이지">›</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>데이터 출처: <a href="https://korean-pronunciation.blogspot.com/" target="_blank">우리말의 장단음을 공부하는 블로그</a></p>
+    </footer>
+
+    <!-- Script 위치 조정 및 Defer -->
+    <script src="common.js" defer></script>
+    <script src="script.js?v=20251219_final" defer></script>
+
+    <!-- 최근 본 한자 모달 위젯 -->
+    <div id="recentModal" class="recent-modal" style="display: none;">
+        <div class="recent-header">
+            <h3>📖 최근 본 한자</h3>
+            <button id="closeRecentBtn" class="close-recent-btn" aria-label="닫기">×</button>
+        </div>
+        <div class="recent-content">
+            <ul id="recentList">
+                <!-- 자바스크립트로 리스트가 생성됩니다 -->
+            </ul>
+            <div id="emptyRecentMsg" class="empty-msg" style="display: none;">
+                최근 본 기록이 없습니다.
+            </div>
+        </div>
+        <div class="recent-footer">
+            <button id="clearRecentBtn" class="clear-recent-btn">기록 전체 삭제</button>
+        </div>
+    </div>
+
+    <!-- 네이버 애널리틱스 추적 코드 (중복 제거 및 하단 통합) -->
+    <script type="text/javascript" src="//wcs.pstatic.net/wcslog.js"></script>
+    <script type="text/javascript">
+        if (!wcs_add) var wcs_add = {};
+        wcs_add["wa"] = "58d0b976a4cbcc";
+        if (window.wcs) {
+            wcs_do();
+        }
+    </script>
+</body>
+
+</html>
