@@ -15,6 +15,15 @@ const darkModeManager = new DarkModeManager();
 const favoritesManager = new FavoritesManager();
 const recentManager = new RecentHistoryManager();
 
+// 급수별 CSS 클래스 매핑
+const GRADE_CLASS_MAP = {
+    '8급': 'grade-8', '준7급': 'grade-7-2', '7급': 'grade-7',
+    '준6급': 'grade-6-2', '6급': 'grade-6', '준5급': 'grade-5-2',
+    '5급': 'grade-5', '준4급': 'grade-4-2', '4급': 'grade-4',
+    '준3급': 'grade-3-2', '3급': 'grade-3', '2급': 'grade-2',
+    '1급': 'grade-1', '준특급': 'grade-special-2', '특급': 'grade-special'
+};
+
 // ==================== Initialization ====================
 document.addEventListener('DOMContentLoaded', async () => {
     await loadRadicalsData();
@@ -308,6 +317,7 @@ function displayTable(uniqueCount = null) {
 
         // Unified Favorites Check
         const isFav = isFavorite(item.id);
+        const gradeClass = getGradeClass(item.grade);
 
         row.innerHTML = `
             <td>
@@ -320,8 +330,8 @@ function displayTable(uniqueCount = null) {
             <td class="huneum-cell">${item.huneum}</td>
             <td>${item.gubun || '-'}</td>
             <td>${item.edu_level || '-'}</td>
-            <td>${item.grade || '-'}</td>
-            <td>${item.length || '-'}</td>
+            <td><span class="grade-badge ${gradeClass}">${item.grade || '-'}</span></td>
+            <td><span class="length-badge length-${item.length || '없음'}">${item.length || '없음'}</span></td>
             <td>
                 <a href="${item.url}" target="_blank" class="blog-link" 
                    data-id="${item.id}"
@@ -336,6 +346,8 @@ function displayTable(uniqueCount = null) {
     document.getElementById('resultCount').textContent = `${uniqueHanjaCount}개 한자`;
     updatePagination();
 }
+
+function getGradeClass(geubsu) { return GRADE_CLASS_MAP[geubsu] || 'grade-default'; }
 
 // ==================== Interaction Handlers ====================
 function handleTableClick(e) {
