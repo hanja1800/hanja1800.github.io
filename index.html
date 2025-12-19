@@ -96,8 +96,10 @@
                     localStorage.setItem('appVersion', latestVersion);
 
                     if (currentVersion) {
-                        // Silent update
-                        location.reload(true);
+                        // Polite update
+                        if (confirm('새로운 버전이 업데이트되었습니다. 원활한 사용을 위해 페이지를 새로고침 하시겠습니까?')) {
+                            location.reload(true);
+                        }
                     }
                 }
             } catch (e) {
