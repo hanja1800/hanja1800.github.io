@@ -23,7 +23,34 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // ==================== Data Loading ====================
+// ==================== Data Loading ====================
 async function loadRadicalsData() {
+    try {
+        // 1. FAST LOAD: Fetch Pre-calculated Metadata for Instant UI
+        const metaResponse = await fetch('radicals_metadata.json');
+        const metadata = await metaResponse.json();
+
+        radicalsList = metadata.radicals;
+        console.log('⚡ Fast Loaded metadata:', radicalsList.length, 'radicals');
+
+        // Render UI immediately
+        displayStrokes();
+
+        // 2. BACKGROUND LOAD: Fetch detailed data for logic
+        // Don't await this if we want truly non-blocking? 
+        // Actually, we must await it before search/filtering works fully, 
+        // but the INITIAL render is done.
+        // Let's run it asynchronously.
+        fetchFullData();
+
+    } catch (error) {
+        console.error('Error loading metadata:', error);
+        // Fallback to old full load if metadata fails
+        fetchFullData();
+    }
+}
+
+async function fetchFullData() {
     try {
         const response = await fetch('data.json');
         allData = await response.json();
@@ -38,14 +65,19 @@ async function loadRadicalsData() {
             return soundA.localeCompare(soundB, 'ko');
         });
 
-        processRadicals();
-        console.log('Loaded data:', allData.length, 'entries', 'Radicals:', radicalsList.length);
+        console.log('✅ Full data loaded in background:', allData.length);
+
+        // If we didn't have metadata (fallback case), we process manually
+        if (radicalsList.length === 0) {
+            processRadicals();
+            displayStrokes();
+        }
     } catch (error) {
-        console.error('Error loading data:', error);
-        alert('데이터를 불러오는데 실패했습니다.');
+        console.error('Error loading full data:', error);
     }
 }
 
+// Deprecated: Only used as fallback
 function processRadicals() {
     const radMap = new Map();
 
@@ -67,10 +99,10 @@ function processRadicals() {
     // Convert map to array and sort by stroke then by radical (Unicode order)
     radicalsList = Array.from(radMap.values()).sort((a, b) => {
         if (a.획수 !== b.획수) return a.획수 - b.획수;
-        // Use Unicode code point comparison for traditional Kangxi order roughly
         return a.부수.codePointAt(0) - b.부수.codePointAt(0);
     });
 }
+
 
 // ==================== Radicals Display ====================
 function displayStrokes() {
