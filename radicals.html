@@ -46,6 +46,10 @@
     <!-- 스타일시트 (기존 스타일 재사용) -->
     <link rel="stylesheet" href="style.css?v=20251213">
 
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#fdcb6e">
+
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CTVJXS66Y4"></script>
     <script>
@@ -54,12 +58,16 @@
         gtag('js', new Date());
         gtag('config', 'G-CTVJXS66Y4');
 
-        // FORCE CLEANUP: Unregister any existing Service Workers
+        // Register Service Worker for PWA
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function (registrations) {
-                for (let registration of registrations) {
-                    registration.unregister();
-                }
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function (registration) {
+                        console.log('ServiceWorker registered:', registration.scope);
+                    })
+                    .catch(function (error) {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
             });
         }
 
