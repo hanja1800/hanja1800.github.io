@@ -6893,7 +6893,7 @@
   "edu_level": "고등학교",
   "grade": "준3급",
   "length": "단음",
-  "url": "https://korean-pronunciation.blogspot.com/2024/09/urgent-gin.html",
+  "url": "https://korean-pronunciation.blogspot.com/2024/09/essential-gin-1.html",
   "radical": "糸",
   "radical_name": "실 사 | 가는실 멱",
   "radical_strokes": 6,
@@ -6901,6 +6901,21 @@
  },
  {
   "id": 461,
+  "hanja": "緊",
+  "huneum": "緊 긴할 긴",
+  "sound": "긴",
+  "gubun": "첫말",
+  "edu_level": "고등학교",
+  "grade": "준3급",
+  "length": "단음",
+  "url": "https://korean-pronunciation.blogspot.com/2024/09/essential-gin-2.html",
+  "radical": "糸",
+  "radical_name": "실 사 | 가는실 멱",
+  "radical_strokes": 6,
+  "radical_count": 48
+ },
+ {
+  "id": 462,
   "hanja": "樂",
   "huneum": "樂 즐길 낙(락)",
   "sound": "낙",
@@ -6915,7 +6930,7 @@
   "radical_count": 64
  },
  {
-  "id": 462,
+  "id": 463,
   "hanja": "落",
   "huneum": "落 떨어질 낙(락) - 1",
   "sound": "낙",
@@ -6930,7 +6945,7 @@
   "radical_count": 41
  },
  {
-  "id": 463,
+  "id": 464,
   "hanja": "落",
   "huneum": "落 떨어질 낙(락) - 2",
   "sound": "낙",
@@ -6945,7 +6960,7 @@
   "radical_count": 41
  },
  {
-  "id": 464,
+  "id": 465,
   "hanja": "難",
   "huneum": "難 어려울 난 - 1",
   "sound": "난",
@@ -6960,7 +6975,7 @@
   "radical_count": 9
  },
  {
-  "id": 465,
+  "id": 466,
   "hanja": "難",
   "huneum": "難 어려울 난 - 2",
   "sound": "난",
@@ -6975,7 +6990,7 @@
   "radical_count": 9
  },
  {
-  "id": 466,
+  "id": 467,
   "hanja": "暖",
   "huneum": "暖 따뜻할 난:",
   "sound": "난",
@@ -6990,7 +7005,7 @@
   "radical_count": 35
  },
  {
-  "id": 467,
+  "id": 468,
   "hanja": "卵",
   "huneum": "卵 알 난:(란:)",
   "sound": "난",
@@ -7005,7 +7020,7 @@
   "radical_count": 8
  },
  {
-  "id": 468,
+  "id": 469,
   "hanja": "南",
   "huneum": "南 남녘 남",
   "sound": "남",
@@ -7020,7 +7035,7 @@
   "radical_count": 10
  },
  {
-  "id": 469,
+  "id": 470,
   "hanja": "男",
   "huneum": "男 사내 남",
   "sound": "남",
@@ -7035,7 +7050,7 @@
   "radical_count": 17
  },
  {
-  "id": 470,
+  "id": 471,
   "hanja": "郞",
   "huneum": "郞 사내 낭(랑)",
   "sound": "낭",
@@ -7050,7 +7065,7 @@
   "radical_count": 13
  },
  {
-  "id": 471,
+  "id": 472,
   "hanja": "浪",
   "huneum": "浪 물결 낭:(랑:)",
   "sound": "낭",
@@ -7065,7 +7080,7 @@
   "radical_count": 91
  },
  {
-  "id": 472,
+  "id": 473,
   "hanja": "來",
   "huneum": "來 올 내(래)",
   "sound": "내",
@@ -7080,7 +7095,7 @@
   "radical_count": 88
  },
  {
-  "id": 473,
+  "id": 474,
   "hanja": "來",
   "huneum": "來 올 내:(래:)",
   "sound": "내",
@@ -7095,7 +7110,7 @@
   "radical_count": 88
  },
  {
-  "id": 474,
+  "id": 475,
   "hanja": "內",
   "huneum": "內 안 내: - 1",
   "sound": "내",
@@ -7110,7 +7125,7 @@
   "radical_count": 4
  },
  {
-  "id": 475,
+  "id": 476,
   "hanja": "內",
   "huneum": "內 안 내: - 2",
   "sound": "내",
@@ -7125,7 +7140,7 @@
   "radical_count": 4
  },
  {
-  "id": 476,
+  "id": 477,
   "hanja": "內",
   "huneum": "內 안 내: - 3",
   "sound": "내",
@@ -7140,7 +7155,7 @@
   "radical_count": 4
  },
  {
-  "id": 477,
+  "id": 478,
   "hanja": "內",
   "huneum": "內 안 내: - 4",
   "sound": "내",
@@ -7155,7 +7170,7 @@
   "radical_count": 4
  },
  {
-  "id": 478,
+  "id": 479,
   "hanja": "乃",
   "huneum": "乃 이에 내:",
   "sound": "내",
@@ -7170,7 +7185,7 @@
   "radical_count": 5
  },
  {
-  "id": 479,
+  "id": 480,
   "hanja": "冷",
   "huneum": "冷 찰 냉:(랭:) - 1",
   "sound": "냉",
@@ -7185,7 +7200,7 @@
   "radical_count": 4
  },
  {
-  "id": 480,
+  "id": 481,
   "hanja": "冷",
   "huneum": "冷 찰 냉:(랭:) - 2",
   "sound": "냉",
@@ -7200,7 +7215,7 @@
   "radical_count": 4
  },
  {
-  "id": 481,
+  "id": 482,
   "hanja": "冷",
   "huneum": "冷 찰 냉:(랭:) - 3",
   "sound": "냉",
@@ -7215,7 +7230,7 @@
   "radical_count": 4
  },
  {
-  "id": 482,
+  "id": 483,
   "hanja": "冷",
   "huneum": "冷 찰 냉:(랭:) - 4",
   "sound": "냉",
@@ -7230,7 +7245,7 @@
   "radical_count": 4
  },
  {
-  "id": 483,
+  "id": 484,
   "hanja": "露",
   "huneum": "露 이슬 노(로)",
   "sound": "노",
@@ -7245,7 +7260,7 @@
   "radical_count": 12
  },
  {
-  "id": 484,
+  "id": 485,
   "hanja": "露",
   "huneum": "露 이슬 노:(로:)",
   "sound": "노",
@@ -7260,7 +7275,7 @@
   "radical_count": 12
  },
  {
-  "id": 485,
+  "id": 486,
   "hanja": "怒",
   "huneum": "怒 성낼 노:",
   "sound": "노",
@@ -7275,7 +7290,7 @@
   "radical_count": 76
  },
  {
-  "id": 486,
+  "id": 487,
   "hanja": "勞",
   "huneum": "勞 일할 노(로)",
   "sound": "노",
@@ -7290,7 +7305,7 @@
   "radical_count": 17
  },
  {
-  "id": 487,
+  "id": 488,
   "hanja": "老",
   "huneum": "老 늙을 노:(로:) - 1",
   "sound": "노",
@@ -7305,7 +7320,7 @@
   "radical_count": 3
  },
  {
-  "id": 488,
+  "id": 489,
   "hanja": "老",
   "huneum": "老 늙을 노:(로:) - 2",
   "sound": "노",
@@ -7320,7 +7335,7 @@
   "radical_count": 3
  },
  {
-  "id": 489,
+  "id": 490,
   "hanja": "老",
   "huneum": "老 늙을 노:(로:) - 3",
   "sound": "노",
@@ -7335,7 +7350,7 @@
   "radical_count": 3
  },
  {
-  "id": 490,
+  "id": 491,
   "hanja": "老",
   "huneum": "老 늙을 노:(로:) - 4",
   "sound": "노",
@@ -7350,7 +7365,7 @@
   "radical_count": 3
  },
  {
-  "id": 491,
+  "id": 492,
   "hanja": "路",
   "huneum": "路 길 노:(로:)",
   "sound": "노",
@@ -7365,7 +7380,7 @@
   "radical_count": 8
  },
  {
-  "id": 492,
+  "id": 493,
   "hanja": "綠",
   "huneum": "綠 푸를 녹(록)",
   "sound": "녹",
@@ -7380,7 +7395,7 @@
   "radical_count": 48
  },
  {
-  "id": 493,
+  "id": 494,
   "hanja": "論",
   "huneum": "論 논할 논(론)",
   "sound": "논",
@@ -7395,7 +7410,7 @@
   "radical_count": 60
  },
  {
-  "id": 494,
+  "id": 495,
   "hanja": "農",
   "huneum": "農 농사 농 - 1",
   "sound": "농",
@@ -7410,7 +7425,7 @@
   "radical_count": 3
  },
  {
-  "id": 495,
+  "id": 496,
   "hanja": "農",
   "huneum": "農 농사 농 - 2",
   "sound": "농",
@@ -7425,7 +7440,7 @@
   "radical_count": 3
  },
  {
-  "id": 496,
+  "id": 497,
   "hanja": "能",
   "huneum": "能 능할 능",
   "sound": "능",
@@ -7440,7 +7455,7 @@
   "radical_count": 25
  },
  {
-  "id": 497,
+  "id": 498,
   "hanja": "多",
   "huneum": "多 많을 다 - 1",
   "sound": "다",
@@ -7455,7 +7470,7 @@
   "radical_count": 5
  },
  {
-  "id": 498,
+  "id": 499,
   "hanja": "多",
   "huneum": "多 많을 다 - 2",
   "sound": "다",
@@ -7470,7 +7485,7 @@
   "radical_count": 5
  },
  {
-  "id": 499,
+  "id": 500,
   "hanja": "單",
   "huneum": "單 홑 단 - 1",
   "sound": "단",
@@ -7485,7 +7500,7 @@
   "radical_count": 52
  },
  {
-  "id": 500,
+  "id": 501,
   "hanja": "單",
   "huneum": "單 홑 단 - 2",
   "sound": "단",
@@ -7500,7 +7515,7 @@
   "radical_count": 52
  },
  {
-  "id": 501,
+  "id": 502,
   "hanja": "端",
   "huneum": "端 끝 단",
   "sound": "단",
@@ -7515,7 +7530,7 @@
   "radical_count": 7
  },
  {
-  "id": 502,
+  "id": 503,
   "hanja": "丹",
   "huneum": "丹 붉을 단",
   "sound": "단",
@@ -7530,7 +7545,7 @@
   "radical_count": 3
  },
  {
-  "id": 503,
+  "id": 504,
   "hanja": "但",
   "huneum": "但 다만 단:",
   "sound": "단",
@@ -7545,7 +7560,7 @@
   "radical_count": 88
  },
  {
-  "id": 504,
+  "id": 505,
   "hanja": "短",
   "huneum": "短 짧을 단:",
   "sound": "단",
@@ -7560,7 +7575,7 @@
   "radical_count": 5
  },
  {
-  "id": 505,
+  "id": 506,
   "hanja": "達",
   "huneum": "達 통달할 달",
   "sound": "달",
@@ -7575,7 +7590,7 @@
   "radical_count": 45
  },
  {
-  "id": 506,
+  "id": 507,
   "hanja": "談",
   "huneum": "談 말씀 담",
   "sound": "담",
@@ -7590,7 +7605,7 @@
   "radical_count": 60
  },
  {
-  "id": 507,
+  "id": 508,
   "hanja": "答",
   "huneum": "答 대답 답",
   "sound": "답",
@@ -7605,7 +7620,7 @@
   "radical_count": 18
  },
  {
-  "id": 508,
+  "id": 509,
   "hanja": "當",
   "huneum": "當 마땅 당 - 1",
   "sound": "당",
@@ -7620,7 +7635,7 @@
   "radical_count": 17
  },
  {
-  "id": 509,
+  "id": 510,
   "hanja": "當",
   "huneum": "當 마땅 당 - 2",
   "sound": "당",
@@ -7635,7 +7650,7 @@
   "radical_count": 17
  },
  {
-  "id": 510,
+  "id": 511,
   "hanja": "堂",
   "huneum": "堂 집 당",
   "sound": "당",
@@ -7650,7 +7665,7 @@
   "radical_count": 34
  },
  {
-  "id": 511,
+  "id": 512,
   "hanja": "大",
   "huneum": "大 큰 대",
   "sound": "대",
@@ -7665,7 +7680,7 @@
   "radical_count": 17
  },
  {
-  "id": 512,
+  "id": 513,
   "hanja": "大",
   "huneum": "大 큰 대: - 1",
   "sound": "대",
@@ -7680,7 +7695,7 @@
   "radical_count": 17
  },
  {
-  "id": 513,
+  "id": 514,
   "hanja": "大",
   "huneum": "大 큰 대: - 2",
   "sound": "대",
@@ -7695,7 +7710,7 @@
   "radical_count": 17
  },
  {
-  "id": 514,
+  "id": 515,
   "hanja": "大",
   "huneum": "大 큰 대: - 3",
   "sound": "대",
@@ -7710,7 +7725,7 @@
   "radical_count": 17
  },
  {
-  "id": 515,
+  "id": 516,
   "hanja": "大",
   "huneum": "大 큰 대: - 4",
   "sound": "대",
@@ -7725,7 +7740,7 @@
   "radical_count": 17
  },
  {
-  "id": 516,
+  "id": 517,
   "hanja": "大",
   "huneum": "大 큰 대: - 5",
   "sound": "대",
@@ -7740,7 +7755,7 @@
   "radical_count": 17
  },
  {
-  "id": 517,
+  "id": 518,
   "hanja": "代",
   "huneum": "代 대신할 대: - 1",
   "sound": "대",
@@ -7755,7 +7770,7 @@
   "radical_count": 88
  },
  {
-  "id": 518,
+  "id": 519,
   "hanja": "代",
   "huneum": "代 대신할 대: - 2",
   "sound": "대",
@@ -7770,7 +7785,7 @@
   "radical_count": 88
  },
  {
-  "id": 519,
+  "id": 520,
   "hanja": "待",
   "huneum": "待 기다릴 대:",
   "sound": "대",
@@ -7785,7 +7800,7 @@
   "radical_count": 19
  },
  {
-  "id": 520,
+  "id": 521,
   "hanja": "對",
   "huneum": "對 대할 대: - 1",
   "sound": "대",
@@ -7800,7 +7815,7 @@
   "radical_count": 10
  },
  {
-  "id": 521,
+  "id": 522,
   "hanja": "對",
   "huneum": "對 대할 대: - 2",
   "sound": "대",
@@ -7815,7 +7830,7 @@
   "radical_count": 10
  },
  {
-  "id": 522,
+  "id": 523,
   "hanja": "德",
   "huneum": "德 큰 덕",
   "sound": "덕",
@@ -7830,7 +7845,7 @@
   "radical_count": 19
  },
  {
-  "id": 523,
+  "id": 524,
   "hanja": "圖",
   "huneum": "圖 그림 도",
   "sound": "도",
@@ -7845,7 +7860,7 @@
   "radical_count": 12
  },
  {
-  "id": 524,
+  "id": 525,
   "hanja": "都",
   "huneum": "都 도읍 도",
   "sound": "도",
@@ -7860,7 +7875,7 @@
   "radical_count": 13
  },
  {
-  "id": 525,
+  "id": 526,
   "hanja": "島",
   "huneum": "島 섬 도",
   "sound": "도",
@@ -7875,7 +7890,7 @@
   "radical_count": 9
  },
  {
-  "id": 526,
+  "id": 527,
   "hanja": "徒",
   "huneum": "徒 무리 도",
   "sound": "도",
@@ -7890,7 +7905,7 @@
   "radical_count": 19
  },
  {
-  "id": 527,
+  "id": 528,
   "hanja": "刀",
   "huneum": "刀 칼 도",
   "sound": "도",
@@ -7905,7 +7920,7 @@
   "radical_count": 26
  },
  {
-  "id": 528,
+  "id": 529,
   "hanja": "道",
   "huneum": "道 길 도:",
   "sound": "도",
@@ -7920,7 +7935,7 @@
   "radical_count": 45
  },
  {
-  "id": 529,
+  "id": 530,
   "hanja": "到",
   "huneum": "到 이를 도:",
   "sound": "도",
@@ -7935,7 +7950,7 @@
   "radical_count": 26
  },
  {
-  "id": 530,
+  "id": 531,
   "hanja": "度",
   "huneum": "度 법도 도:",
   "sound": "도",
@@ -7950,7 +7965,7 @@
   "radical_count": 19
  },
  {
-  "id": 531,
+  "id": 532,
   "hanja": "獨",
   "huneum": "獨 홀로 독",
   "sound": "독",
@@ -7965,7 +7980,7 @@
   "radical_count": 13
  },
  {
-  "id": 532,
+  "id": 533,
   "hanja": "讀",
   "huneum": "讀 읽을 독",
   "sound": "독",
@@ -7980,7 +7995,7 @@
   "radical_count": 60
  },
  {
-  "id": 533,
+  "id": 534,
   "hanja": "冬",
   "huneum": "冬 겨울 동",
   "sound": "동",
@@ -7995,7 +8010,7 @@
   "radical_count": 4
  },
  {
-  "id": 534,
+  "id": 535,
   "hanja": "冬",
   "huneum": "冬 겨울 동:",
   "sound": "동",
@@ -8010,7 +8025,7 @@
   "radical_count": 4
  },
  {
-  "id": 535,
+  "id": 536,
   "hanja": "同",
   "huneum": "同 한가지 동 - 1",
   "sound": "동",
@@ -8025,7 +8040,7 @@
   "radical_count": 52
  },
  {
-  "id": 536,
+  "id": 537,
   "hanja": "同",
   "huneum": "同 한가지 동 - 2",
   "sound": "동",
@@ -8040,7 +8055,7 @@
   "radical_count": 52
  },
  {
-  "id": 537,
+  "id": 538,
   "hanja": "同",
   "huneum": "同 한가지 동:",
   "sound": "동",
@@ -8055,7 +8070,7 @@
   "radical_count": 52
  },
  {
-  "id": 538,
+  "id": 539,
   "hanja": "東",
   "huneum": "東 동녘 동",
   "sound": "동",
@@ -8070,7 +8085,7 @@
   "radical_count": 64
  },
  {
-  "id": 539,
+  "id": 540,
   "hanja": "童",
   "huneum": "童 아이 동",
   "sound": "동",
@@ -8085,7 +8100,7 @@
   "radical_count": 7
  },
  {
-  "id": 540,
+  "id": 541,
   "hanja": "童",
   "huneum": "童 아이 동:",
   "sound": "동",
@@ -8100,7 +8115,7 @@
   "radical_count": 7
  },
  {
-  "id": 541,
+  "id": 542,
   "hanja": "動",
   "huneum": "動 움직일 동:",
   "sound": "동",
@@ -8115,7 +8130,7 @@
   "radical_count": 17
  },
  {
-  "id": 542,
+  "id": 543,
   "hanja": "洞",
   "huneum": "洞 골 동:",
   "sound": "동",
@@ -8130,7 +8145,7 @@
   "radical_count": 91
  },
  {
-  "id": 543,
+  "id": 544,
   "hanja": "頭",
   "huneum": "頭 머리 두",
   "sound": "두",
@@ -8145,7 +8160,7 @@
   "radical_count": 17
  },
  {
-  "id": 544,
+  "id": 545,
   "hanja": "豆",
   "huneum": "豆 콩 두",
   "sound": "두",
@@ -8160,7 +8175,7 @@
   "radical_count": 3
  },
  {
-  "id": 545,
+  "id": 546,
   "hanja": "斗",
   "huneum": "斗 말 두",
   "sound": "두",
@@ -8175,7 +8190,7 @@
   "radical_count": 3
  },
  {
-  "id": 546,
+  "id": 547,
   "hanja": "得",
   "huneum": "得 얻을 득",
   "sound": "득",
@@ -8190,7 +8205,7 @@
   "radical_count": 19
  },
  {
-  "id": 547,
+  "id": 548,
   "hanja": "登",
   "huneum": "登 오를 등",
   "sound": "등",
@@ -8205,7 +8220,7 @@
   "radical_count": 3
  },
  {
-  "id": 548,
+  "id": 549,
   "hanja": "燈",
   "huneum": "燈 등 등",
   "sound": "등",
@@ -8220,7 +8235,7 @@
   "radical_count": 23
  },
  {
-  "id": 549,
+  "id": 550,
   "hanja": "等",
   "huneum": "等 무리 등:",
   "sound": "등",
@@ -8235,7 +8250,7 @@
   "radical_count": 18
  },
  {
-  "id": 550,
+  "id": 551,
   "hanja": "那",
   "huneum": "那 어찌 나:",
   "sound": "나",
@@ -8250,7 +8265,7 @@
   "radical_count": 13
  },
  {
-  "id": 551,
+  "id": 552,
   "hanja": "羅",
   "huneum": "羅 벌릴 나(라)",
   "sound": "나",
@@ -8265,7 +8280,7 @@
   "radical_count": 7
  },
  {
-  "id": 552,
+  "id": 553,
   "hanja": "諾",
   "huneum": "諾 허락할 낙",
   "sound": "낙",
@@ -8280,7 +8295,7 @@
   "radical_count": 60
  },
  {
-  "id": 553,
+  "id": 554,
   "hanja": "絡",
   "huneum": "絡 이을/얽을 낙(락)",
   "sound": "낙",
@@ -8295,7 +8310,7 @@
   "radical_count": 48
  },
  {
-  "id": 554,
+  "id": 555,
   "hanja": "欄",
   "huneum": "欄 난간 난(란)",
   "sound": "난",
@@ -8310,7 +8325,7 @@
   "radical_count": 64
  },
  {
-  "id": 555,
+  "id": 556,
   "hanja": "蘭",
   "huneum": "蘭 난초 난(란)",
   "sound": "난",
@@ -8325,7 +8340,7 @@
   "radical_count": 41
  },
  {
-  "id": 556,
+  "id": 557,
   "hanja": "亂",
   "huneum": "亂 어지러울 난:(란:) - 1",
   "sound": "난",
@@ -8340,7 +8355,7 @@
   "radical_count": 7
  },
  {
-  "id": 557,
+  "id": 558,
   "hanja": "亂",
   "huneum": "亂 어지러울 난:(란:) - 2",
   "sound": "난",
@@ -8355,7 +8370,7 @@
   "radical_count": 7
  },
  {
-  "id": 558,
+  "id": 559,
   "hanja": "覽",
   "huneum": "覽 볼 남(람)",
   "sound": "남",
@@ -8370,7 +8385,7 @@
   "radical_count": 7
  },
  {
-  "id": 559,
+  "id": 560,
   "hanja": "濫",
   "huneum": "濫 넘칠 남:(람:)",
   "sound": "남",
@@ -8385,7 +8400,7 @@
   "radical_count": 91
  },
  {
-  "id": 560,
+  "id": 561,
   "hanja": "納",
   "huneum": "納 들일 납",
   "sound": "납",
@@ -8400,7 +8415,7 @@
   "radical_count": 48
  },
  {
-  "id": 561,
+  "id": 562,
   "hanja": "娘",
   "huneum": "娘 계집 낭",
   "sound": "낭",
@@ -8415,7 +8430,7 @@
   "radical_count": 29
  },
  {
-  "id": 562,
+  "id": 563,
   "hanja": "廊",
   "huneum": "廊 사랑채/행랑 낭(랑)",
   "sound": "낭",
@@ -8430,7 +8445,7 @@
   "radical_count": 19
  },
  {
-  "id": 563,
+  "id": 564,
   "hanja": "奈",
   "huneum": "奈 어찌 내",
   "sound": "내",
@@ -8445,7 +8460,7 @@
   "radical_count": 17
  },
  {
-  "id": 564,
+  "id": 565,
   "hanja": "耐",
   "huneum": "耐 견딜 내",
   "sound": "내",
@@ -8460,7 +8475,7 @@
   "radical_count": 2
  },
  {
-  "id": 565,
+  "id": 566,
   "hanja": "奴",
   "huneum": "奴 종 노",
   "sound": "노",
@@ -8475,7 +8490,7 @@
   "radical_count": 29
  },
  {
-  "id": 566,
+  "id": 567,
   "hanja": "努",
   "huneum": "努 힘쓸 노",
   "sound": "노",
@@ -8490,7 +8505,7 @@
   "radical_count": 17
  },
  {
-  "id": 567,
+  "id": 568,
   "hanja": "爐",
   "huneum": "爐 화로 노(로)",
   "sound": "노",
@@ -8505,7 +8520,7 @@
   "radical_count": 23
  },
  {
-  "id": 568,
+  "id": 569,
   "hanja": "祿",
   "huneum": "祿 녹 녹(록)",
   "sound": "녹",
@@ -8520,7 +8535,7 @@
   "radical_count": 17
  },
  {
-  "id": 569,
+  "id": 570,
   "hanja": "錄",
   "huneum": "錄 기록할 녹(록)",
   "sound": "녹",
@@ -8535,7 +8550,7 @@
   "radical_count": 23
  },
  {
-  "id": 570,
+  "id": 571,
   "hanja": "鹿",
   "huneum": "鹿 사슴 녹(록)",
   "sound": "녹",
@@ -8550,7 +8565,7 @@
   "radical_count": 2
  },
  {
-  "id": 571,
+  "id": 572,
   "hanja": "弄",
   "huneum": "弄 희롱할 농:(롱:)",
   "sound": "농",
@@ -8565,7 +8580,7 @@
   "radical_count": 2
  },
  {
-  "id": 572,
+  "id": 573,
   "hanja": "腦",
   "huneum": "腦 골/뇌수 뇌",
   "sound": "뇌",
@@ -8580,7 +8595,7 @@
   "radical_count": 25
  },
  {
-  "id": 573,
+  "id": 574,
   "hanja": "雷",
   "huneum": "雷 우레 뇌(뢰)",
   "sound": "뇌",
@@ -8595,7 +8610,7 @@
   "radical_count": 12
  },
  {
-  "id": 574,
+  "id": 575,
   "hanja": "惱",
   "huneum": "惱 번뇌할 뇌",
   "sound": "뇌",
@@ -8610,7 +8625,7 @@
   "radical_count": 76
  },
  {
-  "id": 575,
+  "id": 576,
   "hanja": "賴",
   "huneum": "賴 의뢰할 뇌:(뢰:)",
   "sound": "뇌",
@@ -8625,7 +8640,7 @@
   "radical_count": 32
  },
  {
-  "id": 576,
+  "id": 577,
   "hanja": "樓",
   "huneum": "樓 다락 누(루)",
   "sound": "누",
@@ -8640,7 +8655,7 @@
   "radical_count": 64
  },
  {
-  "id": 577,
+  "id": 578,
   "hanja": "屢",
   "huneum": "屢 여러 누:(루:)",
   "sound": "누",
@@ -8655,7 +8670,7 @@
   "radical_count": 12
  },
  {
-  "id": 578,
+  "id": 579,
   "hanja": "累",
   "huneum": "累 여러/자주 누:(루:)",
   "sound": "누",
@@ -8670,7 +8685,7 @@
   "radical_count": 48
  },
  {
-  "id": 579,
+  "id": 580,
   "hanja": "漏",
   "huneum": "漏 샐 누:(루:)",
   "sound": "누",
@@ -8685,7 +8700,7 @@
   "radical_count": 91
  },
  {
-  "id": 580,
+  "id": 581,
   "hanja": "淚",
   "huneum": "淚 눈물 누:(루:)",
   "sound": "누",
@@ -8700,7 +8715,7 @@
   "radical_count": 91
  },
  {
-  "id": 581,
+  "id": 582,
   "hanja": "陵",
   "huneum": "陵 언덕 능(릉)",
   "sound": "능",
@@ -8715,7 +8730,7 @@
   "radical_count": 23
  },
  {
-  "id": 582,
+  "id": 583,
   "hanja": "茶",
   "huneum": "茶 차 다",
   "sound": "다",
@@ -8730,7 +8745,7 @@
   "radical_count": 41
  },
  {
-  "id": 583,
+  "id": 584,
   "hanja": "團",
   "huneum": "團 둥글 단",
   "sound": "단",
@@ -8745,7 +8760,7 @@
   "radical_count": 12
  },
  {
-  "id": 584,
+  "id": 585,
   "hanja": "段",
   "huneum": "段 층계 단",
   "sound": "단",
@@ -8760,7 +8775,7 @@
   "radical_count": 4
  },
  {
-  "id": 585,
+  "id": 586,
   "hanja": "檀",
   "huneum": "檀 박달나무 단",
   "sound": "단",
@@ -8775,7 +8790,7 @@
   "radical_count": 64
  },
  {
-  "id": 586,
+  "id": 587,
   "hanja": "旦",
   "huneum": "旦 아침 단",
   "sound": "단",
@@ -8790,7 +8805,7 @@
   "radical_count": 35
  },
  {
-  "id": 587,
+  "id": 588,
   "hanja": "壇",
   "huneum": "壇 단 단",
   "sound": "단",
@@ -8805,7 +8820,7 @@
   "radical_count": 34
  },
  {
-  "id": 588,
+  "id": 589,
   "hanja": "斷",
   "huneum": "斷 끊을 단:",
   "sound": "단",
@@ -8820,7 +8835,7 @@
   "radical_count": 5
  },
  {
-  "id": 589,
+  "id": 590,
   "hanja": "擔",
   "huneum": "擔 멜 담",
   "sound": "담",
@@ -8835,7 +8850,7 @@
   "radical_count": 66
  },
  {
-  "id": 590,
+  "id": 591,
   "hanja": "淡",
   "huneum": "淡 맑을 담",
   "sound": "담",
@@ -8850,7 +8865,7 @@
   "radical_count": 91
  },
  {
-  "id": 591,
+  "id": 592,
   "hanja": "畓",
   "huneum": "畓 논 답",
   "sound": "답",
@@ -8865,7 +8880,7 @@
   "radical_count": 17
  },
  {
-  "id": 592,
+  "id": 593,
   "hanja": "踏",
   "huneum": "踏 밟을 답",
   "sound": "답",
@@ -8880,7 +8895,7 @@
   "radical_count": 8
  },
  {
-  "id": 593,
+  "id": 594,
   "hanja": "黨",
   "huneum": "黨 무리 당",
   "sound": "당",
@@ -8895,7 +8910,7 @@
   "radical_count": 4
  },
  {
-  "id": 594,
+  "id": 595,
   "hanja": "唐",
   "huneum": "唐 당나라/당황할 당",
   "sound": "당",
@@ -8910,7 +8925,7 @@
   "radical_count": 52
  },
  {
-  "id": 595,
+  "id": 596,
   "hanja": "糖",
   "huneum": "糖 엿 당",
   "sound": "당",
@@ -8925,7 +8940,7 @@
   "radical_count": 7
  },
  {
-  "id": 596,
+  "id": 597,
   "hanja": "隊",
   "huneum": "隊 무리 대",
   "sound": "대",
@@ -8940,7 +8955,7 @@
   "radical_count": 23
  },
  {
-  "id": 597,
+  "id": 598,
   "hanja": "臺",
   "huneum": "臺 대 대",
   "sound": "대",
@@ -8955,7 +8970,7 @@
   "radical_count": 3
  },
  {
-  "id": 598,
+  "id": 599,
   "hanja": "貸",
   "huneum": "貸 빌릴/뀔 대:",
   "sound": "대",
