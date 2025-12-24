@@ -100,7 +100,20 @@ class HanjaApp {
                         })
                         .then(encoded => {
                             // Base64 디코딩 후 JSON 파싱
-                            return JSON.parse(atob(encoded));
+                            // 1. Base64로 인코딩된 문자열을 이진 데이터로 변환
+                const binaryString = atob(encoded);
+                const len = binaryString.length;
+                const bytes = new Uint8Array(len);
+                
+                for (let j = 0; j < len; j++) {
+                    bytes[j] = binaryString.charCodeAt(j);
+                }
+                
+                // 2. 한글(UTF-8)을 제대로 인식하도록 디코딩
+                const decoded = new TextDecoder('utf-8').decode(bytes);
+                
+                // 3. 최종적으로 JSON 객체로 변환하여 반환
+                return JSON.parse(decoded);
                         })
                 );
             }
@@ -612,4 +625,5 @@ document.addEventListener('DOMContentLoaded', () => {
     const app = new HanjaApp();
     app.init();
 });
+
 
