@@ -83,17 +83,38 @@ class HanjaApp {
         if (this.dom.loadingMsg) this.dom.loadingMsg.style.display = 'block';
 
         try {
-            const response = await fetch('data.json');
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            // 1. 청크 메타데이터 가져오기
+            const metaResponse = await fetch('chunks_metadata.json');
+            if (!metaResponse.ok) throw new Error('메타데이터 로드 실패');
+            const { total_chunks } = await metaResponse.json();
 
-            const data = await response.json();
-            if (!Array.isArray(data) || data.length === 0) throw new Error('Invalid data format');
+            const fetchPromises = [];
 
-            // 1. 단순 로드 (CSV에서 이미 정렬 및 ID 부여됨)
+            // 2. 모든 조각 파일(.bin)을 병렬로 요청
+            for (let i = 0; i < total_chunks; i++) {
+                fetchPromises.push(
+                    fetch(`./data_chunks/c_${i}.bin`)
+                        .then(res => {
+                            if (!res.ok) throw new Error(`조각 ${i} 로드 실패`);
+                            return res.text();
+                        })
+                        .then(encoded => {
+                            // Base64 디코딩 후 JSON 파싱
+                            return JSON.parse(atob(encoded));
+                        })
+                );
+            }
+
+            // 3. 모든 조각 합치기
+            const chunks = await Promise.all(fetchPromises);
+            const data = [].concat(...chunks);
+
+            if (!Array.isArray(data) || data.length === 0) throw new Error('데이터 형식이 올바르지 않습니다.');
+
+            // 4. 상태 업데이트
             this.state.data = data;
 
-            // 2. 검색용 데이터 복사 (소리 기준 정렬은 이미 되어있다고 가정하거나 필요시 수행)
-            // CSV가 ID순이면 가나다순이 아닐 수 있음. 정렬 필요.
+            // 5. 검색용 데이터 가나다순 정렬
             this.state.sortedData = [...data].sort((a, b) => {
                 const soundA = a.sound || '';
                 const soundB = b.sound || '';
@@ -103,12 +124,12 @@ class HanjaApp {
                 return soundA.localeCompare(soundB, 'ko');
             });
 
-            // 3. Map 생성 (ID 기준)
+            // 6. Map 생성 (ID 기준)
             this.state.dataMap = new Map(data.map(item => [item.id, item]));
 
             this.buildSyllableCache();
             this.updateUI();
-            console.log(`✅ Loaded ${this.state.data.length} Hanja entries`);
+            console.log(`✅ Loaded ${this.state.data.length} Hanja entries from chunks`);
 
         } catch (error) {
             console.error('Data load failed:', error);
@@ -119,6 +140,7 @@ class HanjaApp {
             if (this.dom.loadingMsg) this.dom.loadingMsg.style.display = 'none';
         }
     }
+
 
     // loadSettings removed - handled by Managers
 
@@ -590,3 +612,4 @@ document.addEventListener('DOMContentLoaded', () => {
     const app = new HanjaApp();
     app.init();
 });
+
