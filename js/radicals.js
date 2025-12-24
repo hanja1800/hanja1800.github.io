@@ -71,16 +71,25 @@ async function fetchFullData() {
                         return res.text();
                     })
                     .then(encoded => {
-                        // 한글 깨짐 방지 디코딩 (index.js와 동일)
-                        const binaryString = atob(encoded);
-                        const len = binaryString.length;
-                        const bytes = new Uint8Array(len);
-                        for (let j = 0; j < len; j++) {
-                            bytes[j] = binaryString.charCodeAt(j);
-                        }
-                        const decoded = new TextDecoder('utf-8').decode(bytes);
-                        return JSON.parse(decoded);
-                    })
+                        // 보안 키 (파이썬 스크립트의 SECRET_KEY와 똑같은 숫자여야 합니다!)
+                   const SECRET_KEY = 158; 
+
+                   // 1. Base64 암호 해독
+                  const binaryString = atob(encoded);
+                  const len = binaryString.length;
+                  const bytes = new Uint8Array(len);
+    
+                  for (let j = 0; j < len; j++) {
+                  // 2. [복호화 핵심] 비밀 키를 사용하여 꼬인 비트를 원래대로 되돌림 (XOR 연산)
+                     bytes[j] = binaryString.charCodeAt(j) ^ SECRET_KEY;
+                  }
+    
+                 // 3. 한글(UTF-8)로 변환
+                 const decoded = new TextDecoder('utf-8').decode(bytes);
+    
+                 // 4. JSON으로 변환
+                 return JSON.parse(decoded);
+                 })
             );
         }
 
@@ -485,4 +494,5 @@ function initializeEventListeners() {
         tableBody.addEventListener('click', handleTableClick);
     }
 }
+
 
