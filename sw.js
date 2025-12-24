@@ -1,5 +1,5 @@
 // Service Worker for Hanja 1800 PWA
-const CACHE_VERSION = 'hanja-pwa-v2';
+const CACHE_VERSION = 'hanja-pwa-v3';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const DATA_CACHE = `${CACHE_VERSION}-data`;
 
@@ -110,4 +110,5 @@ self.addEventListener('fetch', event => {
             })
     );
 });
+
 
