@@ -1,1 +1,952 @@
+/* =========================================
+   COMPONENTS STYLES
+   - Buttons
+   - Badges
+   - Input Fields
+   - Filter Chips
+   - Modals
+   - Other Reusable Components
+   ========================================= */
 
+/* ==================== 
+   Input Fields
+   ==================== */
+#searchInput {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    font-size: 1rem;
+    background: var(--bg-element);
+    color: var(--text-primary);
+    border: 2px solid var(--border-default);
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+#radicalSearchInput {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    font-size: 1rem;
+    background: var(--bg-element);
+    color: var(--text-primary);
+    border: 2px solid var(--border-default);
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+#radicalSearchInput:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid var(--border-default);
+    border-radius: 8px;
+    font-size: 1rem;
+    background: var(--bg-element);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-group select:focus {
+    outline: none;
+    border-color: var(--border-focus);
+}
+
+.dropdown-search-input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border-default);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    background: var(--bg-element);
+    color: var(--text-primary);
+}
+
+.dropdown-search-input:focus {
+    outline: none;
+    border-color: var(--border-focus);
+}
+
+/* ==================== 
+   Buttons
+   ==================== */
+
+/* Clear Search Button */
+.clear-search-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    display: none;
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.clear-search-btn:hover {
+    color: var(--text-primary);
+    background: var(--bg-hover-hard);
+}
+
+/* Favorites Toggle Button */
+.favorites-toggle-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    background: var(--bg-element);
+    color: var(--text-primary);
+    border: 2px solid var(--border-default);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px var(--shadow-default);
+}
+
+.favorites-toggle-btn:hover {
+    background: var(--accent-orange-bg);
+    border-color: var(--accent-orange);
+    color: var(--accent-orange-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 152, 0, 0.2);
+}
+
+.favorites-toggle-btn.active {
+    background: var(--accent-orange);
+    color: white;
+    border-color: var(--accent-orange);
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+}
+
+.favorites-toggle-btn #favoritesCount {
+    font-weight: 700;
+}
+
+/* Chosung Buttons */
+.chosung-btn {
+    min-width: 50px;
+    padding: 10px 16px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background: var(--bg-element);
+    color: var(--text-primary);
+    border: 2px solid var(--border-default);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px var(--shadow-default);
+}
+
+.chosung-btn:hover {
+    background: var(--bg-hover-hard);
+    color: var(--text-primary);
+    border-color: var(--border-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px var(--shadow-default);
+}
+
+.chosung-btn.active {
+    background: var(--bg-hover-hard);
+    color: var(--text-primary);
+    border: 2px solid var(--border-dark);
+    box-shadow: none;
+}
+
+/* Syllable Buttons */
+.syllable-btn {
+    min-width: 45px;
+    padding: 8px 12px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    background: var(--bg-hover-soft);
+    color: var(--text-primary);
+    border: 1px solid var(--border-default);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.syllable-btn:hover {
+    background: var(--bg-hover-hard);
+    color: var(--text-primary);
+    border-color: var(--border-dark);
+    transform: translateY(-1px);
+}
+
+.syllable-btn.active {
+    background: var(--bg-hover-hard);
+    color: var(--text-primary);
+    border-color: var(--border-dark);
+    font-weight: 600;
+}
+
+/* Pagination Buttons */
+.pagination > button {
+    min-width: 32px;
+    height: 32px;
+    padding: 0;
+    font-size: 1.4rem;
+    font-weight: 400;
+    background: var(--bg-element);
+    color: var(--text-primary);
+    border: 1px solid var(--border-default);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pagination > button:hover:not(:disabled) {
+    background: var(--accent-blue-bg);
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+}
+
+.pagination > button:disabled {
+    background: var(--bg-element);
+    color: var(--border-default);
+    border-color: var(--border-light);
+    cursor: not-allowed;
+}
+
+.page-numbers button {
+    min-width: 32px;
+    height: 32px;
+    padding: 0;
+    font-size: 0.9rem;
+    font-weight: 400;
+    background: var(--bg-element);
+    color: var(--text-primary);
+    border: 1px solid var(--border-default);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.page-numbers button:hover {
+    background: var(--accent-blue-bg);
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+}
+
+.page-numbers button.active {
+    background: var(--accent-blue);
+    color: white;
+    border-color: var(--accent-blue);
+    font-weight: 600;
+    cursor: default;
+}
+
+.page-numbers button.active:hover {
+    background: var(--accent-blue);
+    border-color: var(--accent-blue);
+}
+
+/* Dark Mode Toggle Button */
+.dark-mode-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 1.5rem;
+    background: var(--bg-element);
+    color: var(--text-primary);
+    border: 2px solid var(--border-default);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px var(--shadow-default);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.dark-mode-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px var(--shadow-default);
+}
+
+/* Recent View Button */
+.recent-view-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    background: var(--bg-element);
+    color: var(--text-primary);
+    border: 2px solid var(--border-default);
+    border-radius: 8px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px var(--shadow-default);
+}
+
+.recent-view-btn:hover {
+    background: var(--accent-teal-bg);
+    border-color: var(--accent-teal);
+    color: var(--accent-teal-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 150, 136, 0.2);
+}
+
+.recent-view-btn #recentViewCount {
+    font-weight: 700;
+}
+
+/* Close Recent Button */
+.close-recent-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+/* Delete Recent Button */
+.delete-recent-btn {
+    background: none;
+    border: none;
+    color: var(--accent-delete);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 5px;
+}
+
+.delete-recent-btn:hover {
+    color: var(--accent-delete-hover);
+}
+
+/* Clear Recent Button */
+.clear-recent-btn {
+    background: var(--length-none-bg);
+    border: 1px solid var(--border-default);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+}
+
+.clear-recent-btn:hover {
+    background: var(--accent-delete-bg);
+    color: var(--accent-delete-hover);
+    border-color: #ffcdd2;
+}
+
+/* Dropdown Buttons */
+.dropdown-button {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--bg-element);
+    border: 1px solid var(--border-default);
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+    color: var(--text-primary);
+}
+
+.dropdown-button:hover {
+    border-color: var(--border-dark);
+    background: var(--bg-hover-soft);
+}
+
+.dropdown-button:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.dropdown-label {
+    flex: 1;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-arrow {
+    margin-left: 8px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    transition: transform 0.2s ease;
+}
+
+.custom-dropdown.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-apply-btn,
+.dropdown-reset-btn {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dropdown-apply-btn {
+    background: var(--primary-color);
+    color: white;
+}
+
+.dropdown-apply-btn:hover {
+    background: var(--border-focus);
+}
+
+.dropdown-reset-btn {
+    background: var(--length-none-bg);
+    color: var(--text-secondary);
+}
+
+.dropdown-reset-btn:hover {
+    background: var(--border-default);
+}
+
+/* Stroke Buttons (Radicals Page) */
+.stroke-btn {
+    flex: 0 0 auto;
+    padding: 10px 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    background-color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.stroke-btn:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-2px);
+}
+
+.stroke-btn.active {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);
+}
+
+/* Radical Buttons */
+.radical-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.radical-btn:hover {
+    background: var(--accent-blue-bg);
+    border-color: var(--accent-blue);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px var(--shadow-default);
+}
+
+.radical-btn:active {
+    transform: translateY(-1px);
+}
+
+/* ==================== 
+   Badges
+   ==================== */
+
+/* Grade Badges */
+.grade-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: 600;
+    text-align: center;
+    min-width: 60px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.grade-badge:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 12px var(--shadow-strong);
+    filter: brightness(1.1);
+}
+
+.grade-badge:active {
+    transform: translateY(0) scale(1.02);
+}
+
+.grade-8 {
+    background: var(--grade-8-bg);
+    color: var(--grade-8-text);
+    border-color: var(--grade-8-border);
+}
+
+.grade-7-2 {
+    background: var(--grade-7-2-bg);
+    color: var(--grade-7-2-text);
+}
+
+.grade-7 {
+    background: var(--grade-7-bg);
+    color: var(--grade-7-text);
+}
+
+.grade-6-2 {
+    background: var(--grade-6-2-bg);
+    color: var(--grade-6-2-text);
+}
+
+.grade-6 {
+    background: var(--grade-6-bg);
+    color: var(--grade-6-text);
+}
+
+.grade-5-2 {
+    background: var(--grade-5-2-bg);
+    color: var(--grade-5-2-text);
+}
+
+.grade-5 {
+    background: var(--grade-5-bg);
+    color: var(--grade-5-text);
+}
+
+.grade-4-2 {
+    background: var(--grade-4-2-bg);
+    color: var(--grade-4-2-text);
+}
+
+.grade-4 {
+    background: var(--grade-4-bg);
+    color: var(--grade-4-text);
+}
+
+.grade-3-2 {
+    background: var(--grade-3-2-bg);
+    color: var(--grade-3-2-text);
+}
+
+.grade-3 {
+    background: var(--grade-3-bg);
+    color: var(--grade-3-text);
+    border: 2px solid var(--grade-3-border);
+    font-weight: 700;
+}
+
+.grade-special-2 {
+    background: var(--grade-sp2-bg);
+    color: var(--grade-sp2-text);
+    border: 2px solid var(--grade-sp2-border);
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(100, 181, 246, 0.3);
+}
+
+.grade-special {
+    background: linear-gradient(135deg, var(--grade-sp-bg-grad-start) 0%, var(--grade-sp-bg-grad-end) 100%);
+    color: var(--grade-sp-text);
+    border: 2px solid var(--grade-sp-border);
+    font-weight: 700;
+    box-shadow: 0 3px 10px rgba(255, 215, 0, 0.4);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.grade-default {
+    background: var(--length-none-bg);
+    color: var(--length-none-text);
+    border: 1px solid var(--length-none-border);
+}
+
+/* Length Badges */
+.length-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.length-badge:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 8px var(--shadow-default);
+    filter: brightness(1.1);
+}
+
+.length-장음 {
+    background: var(--length-long-bg);
+    color: var(--length-long-text);
+    border: 1px solid var(--length-long-border);
+}
+
+.length-단음 {
+    background: var(--length-short-bg);
+    color: var(--length-short-text);
+    border: 1px solid var(--length-short-border);
+}
+
+.length-없음 {
+    background: var(--length-none-bg);
+    color: var(--length-none-text);
+    border: 1px solid var(--length-none-border);
+}
+
+/* ==================== 
+   Filter Chips
+   ==================== */
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 4px 6px 12px;
+    background: var(--bg-element);
+    border: 1px solid var(--border-default);
+    border-radius: 16px;
+    font-size: 0.9rem;
+    box-shadow: 0 1px 3px var(--shadow-default);
+    transition: all 0.2s ease;
+}
+
+.filter-chip:hover {
+    box-shadow: 0 2px 6px var(--shadow-default);
+}
+
+.filter-chip-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+.filter-chip-value {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.filter-chip-remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: var(--border-light);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    line-height: 1;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.filter-chip-remove:hover {
+    background: var(--accent-delete-hover);
+    color: white;
+    transform: scale(1.1);
+}
+
+.filter-chip-remove:active {
+    transform: scale(0.95);
+}
+
+/* ==================== 
+   Special Text Elements
+   ==================== */
+.hanja-char {
+    font-size: 1rem;
+    font-weight: normal;
+    color: var(--text-primary);
+    font-family: 'Noto Serif KR', 'HanaMinB', 'Malgun Gothic', 'Dotum', sans-serif;
+}
+
+.blog-link {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 1.4rem;
+    display: inline-block;
+    transition: all 0.3s;
+    line-height: 1;
+}
+
+body.dark-mode .blog-link {
+    color: var(--text-link);
+}
+
+.blog-link:hover {
+    transform: scale(1.2);
+    filter: brightness(1.3);
+}
+
+.radical-char {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0;
+    font-family: 'Noto Serif KR', 'HanaMinB', 'Malgun Gothic', 'Dotum', serif;
+}
+
+.radical-count {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.radical-meaning {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+    font-weight: 500;
+}
+
+.selected-radical-meaning {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: normal;
+}
+
+#selectedRadical {
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    margin-right: 15px;
+}
+
+.recent-hanja {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--accent-teal-dark);
+    font-family: 'Times New Roman', serif;
+}
+
+.recent-hanja sup {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    margin-left: 2px;
+    vertical-align: super;
+}
+
+.recent-detail {
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+}
+
+/* ==================== 
+   Favorite Star Button
+   ==================== */
+.favorite-star {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    transition: all 0.2s ease;
+    filter: grayscale(100%);
+    opacity: 0.5;
+}
+
+.favorite-star:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.favorite-star.active {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+.favorite-star.active:hover {
+    transform: scale(1.3) rotate(20deg);
+}
+
+.favorite-btn {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    transition: all 0.2s ease;
+    filter: grayscale(100%);
+    opacity: 0.5;
+}
+
+.favorite-btn:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.favorite-btn.active {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+.favorite-btn.active:hover {
+    transform: scale(1.3) rotate(20deg);
+}
+
+/* ==================== 
+   Checkbox Items
+   ==================== */
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+    user-select: none;
+    color: var(--text-primary);
+}
+
+.checkbox-item:hover {
+    background: var(--bg-hover-soft);
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin: 0 8px 0 0;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
+
+/* ==================== 
+   Messages
+   ==================== */
+.loading-msg {
+    text-align: center;
+    padding: 30px;
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    background: var(--bg-hover-soft);
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.no-syllables-message {
+    padding: 15px;
+    background: var(--bg-element);
+    border-radius: 8px;
+    color: var(--text-tertiary);
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.empty-msg {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-tertiary);
+}
+
+.no-radicals {
+    padding: 30px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    grid-column: 1 / -1;
+}
+
+/* ==================== 
+   Mobile Responsive Components
+   ==================== */
+@media (max-width: 768px) {
+    .dark-mode-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 1.1rem;
+    }
+
+    .favorites-toggle-btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+
+    .chosung-btn {
+        min-width: 42px;
+        padding: 8px 12px;
+        font-size: 1rem;
+    }
+
+    .syllable-btn {
+        min-width: 40px;
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+
+    .hanja-char {
+        font-size: 0.85rem;
+    }
+
+    .pagination > button {
+        min-width: 28px;
+        height: 28px;
+        font-size: 1.2rem;
+    }
+
+    .page-numbers button {
+        min-width: 28px;
+        height: 28px;
+        font-size: 0.85rem;
+    }
+
+    .recent-view-btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+        margin-left: 5px;
+    }
+
+    .radical-btn {
+        padding: 12px 8px;
+        min-height: 70px;
+    }
+
+    .radical-char {
+        font-size: 1.6rem;
+    }
+
+    .radical-count {
+        font-size: 0.75rem;
+    }
+
+    #selectedRadical {
+        font-size: 1.1rem;
+    }
+
+    .nav-link {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+}
