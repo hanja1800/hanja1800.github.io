@@ -101,7 +101,7 @@ class HanjaApp {
                         .then(encoded => {
                             // Base64 디코딩 후 JSON 파싱
                 // 보안 키 (파이썬 스크립트의 SECRET_KEY와 똑같은 숫자여야 합니다!)
-    const SECRET_KEY = 42; 
+    const SECRET_KEY = 185; 
 
     // 1. Base64 암호 해독
     const binaryString = atob(encoded);
@@ -629,6 +629,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const app = new HanjaApp();
     app.init();
 });
+
 
 
 
