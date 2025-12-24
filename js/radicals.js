@@ -55,10 +55,40 @@ async function loadRadicalsData() {
 
 async function fetchFullData() {
     try {
-        const response = await fetch('data.json');
-        allData = await response.json();
+        // 1. 청크 메타데이터 가져오기
+        const metaResponse = await fetch('chunks_metadata.json');
+        if (!metaResponse.ok) throw new Error('메타데이터 로드 실패');
+        const { total_chunks } = await metaResponse.json();
 
-        // Sort by Sound (Eum) to match Main Page
+        const fetchPromises = [];
+
+        // 2. 모든 조각 파일(.bin)을 병렬로 요청
+        for (let i = 0; i < total_chunks; i++) {
+            fetchPromises.push(
+                fetch(`./data_chunks/c_${i}.bin`)
+                    .then(res => {
+                        if (!res.ok) throw new Error(`조각 ${i} 로드 실패`);
+                        return res.text();
+                    })
+                    .then(encoded => {
+                        // 한글 깨짐 방지 디코딩 (index.js와 동일)
+                        const binaryString = atob(encoded);
+                        const len = binaryString.length;
+                        const bytes = new Uint8Array(len);
+                        for (let j = 0; j < len; j++) {
+                            bytes[j] = binaryString.charCodeAt(j);
+                        }
+                        const decoded = new TextDecoder('utf-8').decode(bytes);
+                        return JSON.parse(decoded);
+                    })
+            );
+        }
+
+        // 3. 모든 조각 합치기
+        const chunks = await Promise.all(fetchPromises);
+        allData = [].concat(...chunks);
+
+        // 4. 소리(음) 기준으로 정렬
         allData.sort((a, b) => {
             const soundA = a.sound || '';
             const soundB = b.sound || '';
@@ -68,15 +98,16 @@ async function fetchFullData() {
             return soundA.localeCompare(soundB, 'ko');
         });
 
-        console.log('✅ Full data loaded in background:', allData.length);
+        console.log('✅ Full data loaded from chunks:', allData.length);
 
-        // If we didn't have metadata (fallback case), we process manually
+        // 메타데이터가 없는 경우를 대비한 처리 (기존 로직 유지)
         if (radicalsList.length === 0) {
             processRadicals();
             displayStrokes();
         }
+
     } catch (error) {
-        console.error('Error loading full data:', error);
+        console.error('Error loading full data from chunks:', error);
     }
 }
 
@@ -454,3 +485,4 @@ function initializeEventListeners() {
         tableBody.addEventListener('click', handleTableClick);
     }
 }
+
