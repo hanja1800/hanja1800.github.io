@@ -72,7 +72,7 @@ async function fetchFullData() {
                     })
                     .then(encoded => {
                         // 보안 키 (파이썬 스크립트의 SECRET_KEY와 똑같은 숫자여야 합니다!)
-                   const SECRET_KEY = 158; 
+                   const SECRET_KEY = 185; 
 
                    // 1. Base64 암호 해독
                   const binaryString = atob(encoded);
@@ -494,5 +494,6 @@ function initializeEventListeners() {
         tableBody.addEventListener('click', handleTableClick);
     }
 }
+
 
 
