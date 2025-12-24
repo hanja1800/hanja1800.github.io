@@ -1,11 +1,3 @@
-/* ==================================================
-   base.css
-   - reset / normalize
-   - typography (font, line-height)
-   - color variables, CSS variables
-   - html, body, a, ul, button 등 전역 요소
-   ================================================== */
-
 /* 전역 리셋 */
 * {
     margin: 0;
