@@ -1,6 +1,6 @@
 // Service Worker for Hanja 1800 PWA
 // 버전을 올려서 브라우저가 새 설정을 즉시 반영하게 합니다.
-const CACHE_VERSION = 'hanja-pwa-v21'; 
+const CACHE_VERSION = 'hanja-pwa-v22'; 
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const DATA_CACHE = `${CACHE_VERSION}-data`;
 
@@ -82,3 +82,4 @@ self.addEventListener('fetch', event => {
             })
     );
 });
+
