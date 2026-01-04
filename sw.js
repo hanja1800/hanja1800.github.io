@@ -1,31 +1,29 @@
 // Service Worker for Hanja 1800 PWA
-// 버전을 올려서 브라우저가 새 설정을 즉시 반영하게 합니다.
-const CACHE_VERSION = 'hanja-pwa-v22'; 
+// 버전을 바꿔야 브라우저가 "어? 새거네?" 하고 인식합니다. 숫자를 하나 올렸습니다.
+const CACHE_VERSION = 'hanja-pwa-v23'; 
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const DATA_CACHE = `${CACHE_VERSION}-data`;
 
-// 1. 현재의 쪼개진 파일명들에 맞게 수정했습니다.
 const STATIC_RESOURCES = [
     '/',
     '/index.html',
     '/radicals.html',
-    '/css/base.css',      // 수정됨
-    '/css/layout.css',    // 수정됨
-    '/css/components.css', // 수정됨
-    '/js/common.js',      // 수정됨
-    '/js/index.js',       // script.js 대신 index.js
+    '/css/base.css',
+    '/css/layout.css',
+    '/css/components.css',
+    '/js/common.js',
+    '/js/index.js',
     '/js/radicals.js',
     '/manifest.json'
 ];
 
-// 2. data.json 하나만 캐시하도록 설정했습니다.
 const DATA_RESOURCES = [
     '/data.json',
     '/radicals_metadata.json',
     '/version.json'
 ];
 
-// Install event - 정적 리소스 캐싱
+// 1. 설치 (Install)
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(STATIC_CACHE)
@@ -34,7 +32,7 @@ self.addEventListener('install', event => {
     );
 });
 
-// Activate event - 오래된 캐시 삭제
+// 2. 활성화 및 옛날 캐시 청소 (Activate)
 self.addEventListener('activate', event => {
     event.waitUntil(
         caches.keys()
@@ -49,37 +47,32 @@ self.addEventListener('activate', event => {
     );
 });
 
-// Fetch event - 데이터는 네트워크 우선, 정적 파일은 캐시 우선
+// 3. 파일 요청 처리 (Fetch) - 여기가 핵심 변경 사항입니다!
 self.addEventListener('fetch', event => {
     const { request } = event;
     const url = new URL(request.url);
 
     if (request.method !== 'GET' || url.origin !== location.origin) return;
 
-    // 데이터 파일 처리 (Network First)
-    if (DATA_RESOURCES.some(resource => url.pathname.endsWith(resource))) {
-        event.respondWith(
-            fetch(request)
-                .then(response => {
-                    const responseClone = response.clone();
-                    caches.open(DATA_CACHE).then(cache => cache.put(request, responseClone));
-                    return response;
-                })
-                .catch(() => caches.match(request))
-        );
-        return;
-    }
-
-    // 정적 파일 처리 (Cache First)
+    // 전략 변경: Network First (네트워크 우선)
+    // 설명: 무조건 서버에 먼저 요청해서 최신 파일을 가져옵니다.
+    // 만약 인터넷이 끊겼거나 서버 에러가 나면, 그때 캐시(저장된 파일)를 보여줍니다.
     event.respondWith(
-        caches.match(request)
-            .then(cached => {
-                return cached || fetch(request).then(response => {
-                    const responseClone = response.clone();
+        fetch(request)
+            .then(response => {
+                // 서버에서 잘 받아왔으면, 다음을 위해 캐시를 최신으로 갱신해둠
+                const responseClone = response.clone();
+                // 데이터 파일인지 정적 파일인지 구분해서 저장
+                if (DATA_RESOURCES.some(res => url.pathname.endsWith(res))) {
+                    caches.open(DATA_CACHE).then(cache => cache.put(request, responseClone));
+                } else {
                     caches.open(STATIC_CACHE).then(cache => cache.put(request, responseClone));
-                    return response;
-                });
+                }
+                return response;
+            })
+            .catch(() => {
+                // 인터넷 연결 안 됨 -> 저장된 캐시라도 보여주자
+                return caches.match(request);
             })
     );
 });
-
