@@ -1,0 +1,191 @@
+/* =========================================
+   BASE STYLES
+   - Global Reset
+   - CSS Variables (Light/Dark Mode)
+   - Typography
+   - Basic Elements
+   ========================================= */
+
+/* 전역 리셋 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* =========================================
+   CSS Variables System (Custom Properties)
+   ========================================= */
+:root {
+    /* --- Base Colors (Light Mode) --- */
+    --bg-body: #f5f7fa;
+    --bg-container: #ffffff;
+    --bg-element: #ffffff;
+    --bg-intro: rgba(255, 255, 255, 0.95);
+    --bg-hover-soft: #f8f9ff;
+    --bg-hover-hard: #e9ecef;
+    --bg-filter-chip: #f8f9ff;
+
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --text-tertiary: #999999;
+    --text-link: #1976d2;
+
+    --border-default: #dddddd;
+    --border-light: #eeeeee;
+    --border-dark: #999999;
+    --border-focus: #667eea;
+
+    --shadow-default: rgba(0, 0, 0, 0.1);
+    --shadow-strong: rgba(0, 0, 0, 0.3);
+
+    /* --- Brand & Accents -- */
+    --primary-color: #667eea;
+
+    /* Orange (Favorites) */
+    --accent-orange: #ff9800;
+    --accent-orange-bg: #fff3e0;
+    --accent-orange-hover: #e65100;
+
+    /* Blue (Pagination, Selected) */
+    --accent-blue: #4374d9;
+    --accent-blue-bg: #e8f0fe;
+
+    /* Red (Delete/Clear) */
+    --accent-delete: #666666;
+    --accent-delete-hover: #d32f2f;
+    --accent-delete-bg: #ffebee;
+
+    /* Teal (Recent View) */
+    --accent-teal: #009688;
+    --accent-teal-dark: #00695c;
+    --accent-teal-bg: #e0f2f1;
+
+    /* --- Grade Badge Colors (Light) --- */
+    --grade-8-bg: #E3F2FD;
+    --grade-8-text: #01579B;
+    --grade-8-border: #BBDEFB;
+    --grade-7-2-bg: #BBDEFB;
+    --grade-7-2-text: #01579B;
+    --grade-7-bg: #90CAF9;
+    --grade-7-text: #01579B;
+    --grade-6-2-bg: #64B5F6;
+    --grade-6-2-text: #01579B;
+    --grade-6-bg: #42A5F5;
+    --grade-6-text: white;
+    --grade-5-2-bg: #2196F3;
+    --grade-5-2-text: white;
+    --grade-5-bg: #1E88E5;
+    --grade-5-text: white;
+    --grade-4-2-bg: #1976D2;
+    --grade-4-2-text: white;
+    --grade-4-bg: #1565C0;
+    --grade-4-text: white;
+    --grade-3-2-bg: #0D47A1;
+    --grade-3-2-text: white;
+    --grade-3-bg: #0C3D8A;
+    --grade-3-text: white;
+    --grade-3-border: #42A5F5;
+    --grade-sp2-bg: #0A3474;
+    --grade-sp2-text: white;
+    --grade-sp2-border: #64B5F6;
+
+    --grade-sp-bg-grad-start: #082A5E;
+    --grade-sp-bg-grad-end: #051A3D;
+    --grade-sp-text: #FFD700;
+    --grade-sp-border: #FFD700;
+
+    /* Length Badges */
+    --length-long-bg: #e3f2fd;
+    --length-long-text: #1976d2;
+    --length-long-border: #90caf9;
+    --length-short-bg: #fff3e0;
+    --length-short-text: #f57c00;
+    --length-short-border: #ffb74d;
+    --length-none-bg: #f5f5f5;
+    --length-none-text: #9e9e9e;
+    --length-none-border: #e0e0e0;
+}
+
+/* --- Dark Mode Variables Overrides --- */
+body.dark-mode {
+    --bg-body: #1a1a1a;
+    --bg-container: #2d2d2d;
+    --bg-element: #3a3a3a;
+    --bg-intro: #2d2d2d;
+    --bg-hover-soft: #3a3a3a;
+    --bg-hover-hard: #4a4a4a;
+    --bg-filter-chip: #2d2d2d;
+
+    --text-primary: #e0e0e0;
+    --text-secondary: #aaaaaa;
+    --text-tertiary: #777777;
+    --text-link: #64b5f6;
+
+    --border-default: #444444;
+    --border-light: #3a3a3a;
+    --border-dark: #666666;
+
+    --shadow-default: rgba(0, 0, 0, 0.3);
+    --shadow-strong: rgba(0, 0, 0, 0.8);
+
+    /* Accents adjusted for Dark Mode */
+    --accent-blue-bg: #3a3a3a;
+    --accent-teal-dark: #80cbc4;
+    --accent-teal-bg: #252525;
+    --accent-delete: #aaa;
+    --accent-delete-bg: #3a3a3a;
+
+    /* Specific Grade Tweaks for Dark Mode */
+    --grade-8-bg: #BBDEFB;
+    --grade-7-2-bg: #90CAF9;
+    --grade-7-bg: #64B5F6;
+    --grade-sp-bg-grad-start: #1565C0;
+    --grade-sp-bg-grad-end: #0D47A1;
+}
+
+/* Animation Reset in Dark Mode */
+body.dark-mode,
+body.dark-mode * {
+    transition: none !important;
+}
+
+/* 스무스 스크롤 */
+html {
+    scroll-behavior: smooth;
+}
+
+/* 스크린 리더 전용 */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg-body);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 20px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Typography */
+h1 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
