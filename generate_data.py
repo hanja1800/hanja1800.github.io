@@ -2,8 +2,8 @@ import csv
 import json
 import os
 
-CSV_FILE = '블로그스팟검색_초성.csv'
-JSON_FILE = 'public/data.json'
+CSV_FILE = r'E:\Program\Antigravity\hanja-search\블로그스팟검색_초성.csv'
+JSON_FILE = r'E:\Program\Antigravity\hanja-search\public/data.json'
 
 def generate_data():
     if not os.path.exists(CSV_FILE):
